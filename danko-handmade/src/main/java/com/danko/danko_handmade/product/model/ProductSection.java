@@ -1,0 +1,6 @@
+package com.danko.danko_handmade.product.model;
+
+public enum ProductSection {
+    CUPS_AND_MUGS, ALL, HAPPY_HALLOWEEN, TEAPOTS, SUGAR_CREAMERS_CANISTERS, PITCHERS_JUGS_BOTTLES, SETS,
+    TRAYS_PLATES_WALL, HOME_DECOR, TILES, CHRISTMAS_GIFTS
+}
