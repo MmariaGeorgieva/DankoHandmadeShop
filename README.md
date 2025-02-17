@@ -19,8 +19,8 @@ Technologies Used
 
 Installation
 - Clone the repository:
--- git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
--- cd YOUR_REPOSITORY
+-- git clone https://github.com/MmariaGeorgieva/DankoHandmadeShop.git
+-- cd DankoHandmadeShop
   
 Configure the database (update application.properties)
 
