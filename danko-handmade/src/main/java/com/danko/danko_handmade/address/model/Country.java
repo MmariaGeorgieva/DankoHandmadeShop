@@ -1,4 +1,4 @@
-package com.danko.danko_handmade.Address.model;
+package com.danko.danko_handmade.address.model;
 
 public enum Country {
     AFGHANISTAN,

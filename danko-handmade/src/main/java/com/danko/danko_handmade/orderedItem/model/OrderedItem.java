@@ -1,12 +1,9 @@
-package com.danko.danko_handmade.orderItem.model;
+package com.danko.danko_handmade.orderedItem.model;
 
 import com.danko.danko_handmade.order.model.Order;
 import com.danko.danko_handmade.product.model.Product;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.UUID;
@@ -16,7 +13,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderItem {
+@EqualsAndHashCode(of = {"order", "product"})
+public class OrderedItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -29,6 +27,8 @@ public class OrderItem {
     private Product product;
 
     private int quantity;
+
+    private int discountAtPurchase;
 
     private BigDecimal priceAtPurchase;
 }

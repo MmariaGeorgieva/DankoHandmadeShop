@@ -1,8 +1,7 @@
 package com.danko.danko_handmade.user.model;
 
-import com.danko.danko_handmade.Address.model.Address;
+import com.danko.danko_handmade.address.model.UserAddress;
 import com.danko.danko_handmade.order.model.Order;
-import com.danko.danko_handmade.product.model.Product;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,10 +12,12 @@ import java.util.UUID;
 
 @Builder
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class RegisteredUser {
+@EqualsAndHashCode(of = "id")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -44,19 +45,15 @@ public class RegisteredUser {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private UserStatus userStatus;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
     @Column(nullable = false)
     private LocalDateTime registeredOn;
 
-    @OneToMany(mappedBy = "registeredUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Address> userAddressList = new ArrayList<>();
+    @OneToMany(mappedBy = "user")
+    private List<UserAddress> userAddressList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "registeredUser", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> userOrders = new ArrayList<>();
 
 }

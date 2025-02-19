@@ -1,9 +1,9 @@
 package com.danko.danko_handmade.order.model;
 
-import com.danko.danko_handmade.Address.model.Address;
-import com.danko.danko_handmade.orderItem.model.OrderItem;
-import com.danko.danko_handmade.user.model.GuestUser;
-import com.danko.danko_handmade.user.model.RegisteredUser;
+import com.danko.danko_handmade.address.model.OrderDeliveryAddress;
+import com.danko.danko_handmade.message.model.Message;
+import com.danko.danko_handmade.orderedItem.model.OrderedItem;
+import com.danko.danko_handmade.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,10 +14,11 @@ import java.util.UUID;
 
 @Entity
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "orders")
+@EqualsAndHashCode(of = "id")
 public class Order {
 
     @Id
@@ -25,7 +26,10 @@ public class Order {
     private UUID id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private RegisteredUser registeredUser;
+    private User user;
+
+    @Column(nullable = true, length = 500)
+    private String noteToSeller;
 
     @Column(nullable = false)
     private LocalDateTime orderedOn;
@@ -33,20 +37,20 @@ public class Order {
     @Column(nullable = false)
     private LocalDateTime shipBy;
 
-    @Column(nullable = false)
     private LocalDateTime shippedOn;
 
     private String adminNote;
 
-    @ManyToOne
-    private GuestUser guestUser;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private OrderStatus orderStatus;
 
     @OneToOne(fetch = FetchType.EAGER)
-    private Address deliveryAddress;
+    private OrderDeliveryAddress address;
 
-    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
-    private List<OrderItem> orderedItems = new ArrayList<>();
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<OrderedItem> orderedItems = new ArrayList<>();
 
-//    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    private List<Message> orderMessages = new ArrayList<>();
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    private List<Message> orderMessages = new ArrayList<>();
 }
