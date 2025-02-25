@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Our Handmade Store</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .container {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .intro {
+            margin-bottom: 50px;
+        }
+
+        .intro h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+
+        .intro p {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        .buttons a {
+            display: inline-block;
+            margin: 10px 20px;
+            padding: 15px 30px;
+            background-color: #27ae60;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .buttons a:hover {
+            background-color: #2ecc71;
+        }
+
+        .logout-button {
+            background-color: #e74c3c;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Welcome to DankoHandmade</h1>
+</header>
+
+<div class="container">
+    <div class="intro">
+        <h1>About the Artist</h1>
+        <p>Welcome to our store, where every piece is created with passion and craftsmanship by the artist. Each product is a unique expression of creativity, designed to bring warmth and beauty to your home.</p>
+    </div>
+
+    <div class="intro">
+        <h1>About the Shop</h1>
+        <p>Our handmade store offers a variety of artistic products that make perfect gifts or additions to your home. Every product is crafted with love and attention to detail.</p>
+    </div>
+
+    <div class="buttons">
+        <!-- Check if user is logged in and show appropriate buttons -->
+        <div id="auth-buttons">
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        </div>
+        <div id="logout-button" style="display:none;">
+            <a href="/logout" class="logout-button">Logout</a>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 DankoHandmade</p>
+</footer>
+
+<script>
+    // Placeholder script to toggle login/logout buttons
+    // In a real-world app, this could be handled by checking session or authentication status
+
+    // Example: Check if the user is logged in (use a server-side check or session variable in real implementation)
+    const userLoggedIn = false; // Set this dynamically based on the user's session or authentication status
+
+    if (userLoggedIn) {
+        document.getElementById('auth-buttons').style.display = 'none';
+        document.getElementById('logout-button').style.display = 'block';
+    } else {
+        document.getElementById('auth-buttons').style.display = 'block';
+        document.getElementById('logout-button').style.display = 'none';
+    }
+</script>
+
+</body>
+</html>

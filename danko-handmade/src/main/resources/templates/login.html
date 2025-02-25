@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            text-align: center;
+        }
+
+        .form-container h2 {
+            margin-top: 0;
+            font-size: 24px;
+        }
+
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .form-container button {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #2ecc71;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Login</h1>
+</header>
+
+<div class="container">
+    <div class="form-container">
+        <h2>Sign in to Your Account</h2>
+
+        <div th:if="${errorMessage}" class="error-message">
+            <p th:text="${errorMessage}"></p>
+        </div>
+
+        <form th:action="@{/login}" th:method="POST" th:object="${loginRequest}">
+<!--            <input type="hidden" name="_csrf" value="${_csrf.token}"/>-->
+
+            <!-- Username -->
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" th:field="*{username}" required>
+
+            <!-- Password -->
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" th:field="*{password}" required>
+            <div th:if="${errorMessage}" th:text="${errorMessage}" class="error-message"
+                 id="passwordError"></div>
+
+            <!-- Submit Button -->
+            <button type="submit">Login</button>
+
+            <p class="form-already">Don't have an account? <a href="/register">Register now</a>!</p>
+        </form>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2025 DankoHandmade</p>
+</footer>
+
+<script>
+    // This script can be used to show the error messages when validation fails
+    // For example, you can use JavaScript to handle form validation if needed
+</script>
+
+</body>
+</html>

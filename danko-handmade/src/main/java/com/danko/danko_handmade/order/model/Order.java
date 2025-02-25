@@ -19,6 +19,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
+@Table(name = "orders")
 public class Order {
 
     @Id

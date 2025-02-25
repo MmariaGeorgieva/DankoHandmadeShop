@@ -1,7 +1,6 @@
 package com.danko.danko_handmade.product.model;
 
 import com.danko.danko_handmade.discount.model.Discount;
-import com.danko.danko_handmade.productphoto.model.ProductPhoto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 @EqualsAndHashCode(of = "id")
-@ToString(exclude = "productPhotos")
 public class Product {
 
     @Id
@@ -37,7 +35,7 @@ public class Product {
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    private ProductSection productSection;
+    private List<ProductSection> productSection;
 
     @Column(nullable = false)
     private int stockQuantity;
@@ -49,19 +47,11 @@ public class Product {
 
     private String mainPhotoUrl;
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
-    private List<ProductPhoto> productPhotos = new ArrayList<>();
+    @ElementCollection
+    private List<String> productPhotoUrls = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime addedOn;
-
-    @ManyToMany
-    @JoinTable(
-            name = "product_discount",
-            joinColumns = @JoinColumn(name = "product_id"),
-            inverseJoinColumns = @JoinColumn(name = "discount_id")
-    )
-    private List<Discount> discounts = new ArrayList<>();
 
     @Column(nullable = false)
     private double weight;

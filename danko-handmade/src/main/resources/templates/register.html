@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #333;
+      color: white;
+      padding: 15px 0;
+      text-align: center;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    .form-container h2 {
+      margin-top: 0;
+      font-size: 24px;
+    }
+
+    .form-container label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    .form-container input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      border: 1px solid #ddd;
+    }
+
+    .form-container button {
+      background-color: #27ae60;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .form-container button:hover {
+      background-color: #2ecc71;
+    }
+
+    .error-message {
+      color: red;
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Register</h1>
+</header>
+
+<div class="container">
+  <div class="form-container">
+    <h2>Create a New Account</h2>
+    <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
+
+      <!-- Username -->
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" th:field="*{username}" required>
+      <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error-message"
+           id="usernameError"></div>
+
+      <!-- Password -->
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" th:field="*{password}" required>
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"
+           id="passwordError"></div>
+
+      <!-- Email -->
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" th:field="*{email}" required>
+      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message"
+           id="emailError"></div>
+
+      <!-- Submit Button -->
+      <button type="submit">Register</button>
+
+      <p class="form-already">Already have an account? <a href="/login">Login here</a></p>
+    </form>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 DankoHandmade</p>
+</footer>
+
+<script>
+  // This script can be used to show the error messages when validation fails
+  // For example, you can use JavaScript to handle form validation if needed
+</script>
+
+</body>
+</html>

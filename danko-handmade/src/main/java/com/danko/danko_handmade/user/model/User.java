@@ -29,16 +29,16 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
+    @Column
     private String firstName;
 
-    @Column(nullable = false)
+    @Column
     private String lastName;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(unique = true)
+    @Column
     private String phone;
 
     private String profilePicture;
