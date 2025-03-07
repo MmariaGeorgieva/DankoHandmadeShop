@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,7 +14,6 @@ import java.util.List;
 @Data
 public class AddProductRequest {
 
-    @NotBlank(message = "Product code cannot be empty")
     private String productCode;
 
     @NotBlank(message = "Listing title cannot be empty")
@@ -33,14 +33,12 @@ public class AddProductRequest {
     @Min(value = 0, message = "Stock quantity cannot be negative")
     private int stockQuantity;
 
-    @NotBlank(message = "Main Photo cannot be empty")
-    private String mainPhotoUrl;
-
-    private List<String> productPhotoUrls;
-
     @NotNull(message = "Weight is required")
     @Positive(message = "Weight must be greater than 0")
     private double weight;
 
+    private MultipartFile mainPhoto;
+
+    private List<MultipartFile> additionalPhotos;
 
 }

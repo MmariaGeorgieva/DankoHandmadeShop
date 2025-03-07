@@ -7,8 +7,11 @@ import com.danko.danko_handmade.web.dto.AddProductRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -16,10 +19,12 @@ public class ProductService {
     private static int start = 1000;
 
     private final ProductRepository productRepository;
+    private final CloudflareR2Service cloudflareR2Service;
 
     @Autowired
-    public ProductService(ProductRepository productRepository) {
+    public ProductService(ProductRepository productRepository, CloudflareR2Service cloudflareR2Service) {
         this.productRepository = productRepository;
+        this.cloudflareR2Service = cloudflareR2Service;
     }
 
     public List<Product> getAllProducts() {
@@ -27,18 +32,33 @@ public class ProductService {
     }
 
     @Transactional
-    public void createProduct(AddProductRequest addProductRequest) {
+    public void createProduct(AddProductRequest addProductRequest,
+                              MultipartFile mainPhoto, List<MultipartFile> additionalPhotos)
+            throws IOException {
 
         String productCode = generateProductCode(addProductRequest);
+
+        String mainPhotoFileName = System.currentTimeMillis() + "_" + mainPhoto.getOriginalFilename();
+        String mainPhotoUrl = cloudflareR2Service.uploadFile(mainPhoto.getOriginalFilename(),
+                "products/main/" + mainPhotoFileName);
+
+        List<String> additionalPhotosUrls = new ArrayList<>();
+
+        for (MultipartFile additionalPhoto : additionalPhotos) {
+            String additionalPhotoFileName = System.currentTimeMillis() + "_" + additionalPhoto.getOriginalFilename();
+            String url = cloudflareR2Service.uploadFile(additionalPhoto.getOriginalFilename(),
+                    "products/additional/" + additionalPhotoFileName);
+            additionalPhotosUrls.add(url);
+        }
 
         Product product = Product.builder()
                 .listingTitle(addProductRequest.getListingTitle())
                 .description(addProductRequest.getDescription())
                 .price(addProductRequest.getPrice())
                 .productCode(productCode)
+                .mainPhotoUrl(mainPhotoUrl)
+                .additionalPhotos(additionalPhotosUrls)
                 .addedOn(LocalDateTime.now())
-                .mainPhotoUrl(addProductRequest.getMainPhotoUrl())
-                .productPhotoUrls(addProductRequest.getProductPhotoUrls())
                 .weight(addProductRequest.getWeight())
                 .stockQuantity(addProductRequest.getStockQuantity())
                 .build();
@@ -53,7 +73,6 @@ public class ProductService {
 
         String prefix = switch (addProductRequest.getProductSection().toString()) {
             case "CUPS_AND_MUGS" -> "C&M";
-            case "ALL" -> "ALL";
             case "HAPPY_HALLOWEEN" -> "HAllO";
             case "TEAPOTS" -> "TEA";
             case "SUGAR_CREAMERS_CANISTERS" -> "SCC";

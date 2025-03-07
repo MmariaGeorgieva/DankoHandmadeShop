@@ -2,6 +2,7 @@ package com.danko.danko_handmade.web.controller;
 
 import com.danko.danko_handmade.config.SecurityConfiguration;
 import com.danko.danko_handmade.product.model.Product;
+import com.danko.danko_handmade.product.service.CloudflareR2Service;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
@@ -13,8 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -51,11 +55,14 @@ public class AdminController {
     @PostMapping("/add-product")
     public String addProduct(@Valid AddProductRequest addProductRequest,
                              BindingResult bindingResult,
-                             @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
+                             @RequestParam("mainPhoto") MultipartFile mainPhoto,
+                             @RequestParam("additionalPhotos") List<MultipartFile> additionalPhotos,
+                             @AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) throws IOException {
         if (bindingResult.hasErrors()) {
             return "add-product";
         }
-        productService.createProduct(addProductRequest);
+
+        productService.createProduct(addProductRequest, mainPhoto, additionalPhotos);
         return "redirect:/admin/products";
     }
 

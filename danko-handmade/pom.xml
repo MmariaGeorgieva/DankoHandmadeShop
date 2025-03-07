@@ -8,11 +8,11 @@
 		<version>3.3.5</version>
 		<relativePath/>
 	</parent>
-	<groupId>smart-wallet</groupId>
-	<artifactId>smart-wallet-application</artifactId>
+	<groupId>danko-handmade</groupId>
+	<artifactId>dankohandmade</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Smart Wallet Application</name>
-	<description>Smart Wallet Application</description>
+	<name>Danko Handmade</name>
+	<description>Danko Handmade</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>17</java.version>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -80,10 +81,10 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/software.amazon.awssdk/s3 -->
 		<dependency>
 			<groupId>software.amazon.awssdk</groupId>
