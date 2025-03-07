@@ -1,20 +1,17 @@
 package com.danko.danko_handmade.web.controller;
 
-import com.danko.danko_handmade.config.SecurityConfiguration;
 import com.danko.danko_handmade.product.model.Product;
-import com.danko.danko_handmade.product.service.CloudflareR2Service;
+import com.danko.danko_handmade.product.service.CloudinaryService;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
+import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,9 +23,11 @@ import java.util.List;
 public class AdminController {
 
     private final ProductService productService;
+    private final CloudinaryService cloudinaryService;
 
-    public AdminController(ProductService productService) {
+    public AdminController(ProductService productService, CloudinaryService cloudinaryService) {
         this.productService = productService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     //hasAnyRole - checking for one of the roles that follow
@@ -67,14 +66,33 @@ public class AdminController {
     }
 
 
-//    @GetMapping("/products")
-//    public ModelAndView viewProducts() {
-//        List<Product> products = productService.getAllProducts();
-//
-//        ModelAndView modelAndView = new ModelAndView();
-//        modelAndView.addObject("products", products);
-//        modelAndView.setViewName("admin/products");
-//
-//        return modelAndView;
-//    }
+    @GetMapping("/products")
+    public ModelAndView viewProducts() {
+        List<Product> products = productService.getAllProducts();
+
+        EditProductsPageRequest editProductsPageRequest = new EditProductsPageRequest();
+        editProductsPageRequest.setProducts(products.stream().map(product -> {
+            EditProductsPageRequest.ProductEditRequest dto = new EditProductsPageRequest.ProductEditRequest();
+            dto.setId(product.getId());
+            dto.setStockQuantity(product.getStockQuantity());
+            dto.setPrice(product.getPrice());
+            return dto;
+        }).toList());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("products", products);
+        modelAndView.addObject("editProductsPageRequest", editProductsPageRequest);
+        modelAndView.setViewName("products");
+
+        return modelAndView;
+    }
+
+    @PostMapping("/products")
+    public ModelAndView editProductsPage(@Valid @ModelAttribute("editProductsPageRequest") EditProductsPageRequest editProductsPageRequest,
+                                         BindingResult bindingResult) {
+        if (!bindingResult.hasErrors()) {
+            productService.editProductsPage(editProductsPageRequest);
+        }
+        return viewProducts();
+    }
 }

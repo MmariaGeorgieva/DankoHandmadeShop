@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            padding: 30px;
+        }
+
+        .product-card {
+            background-color: white;
+            width: 250px;
+            margin: 15px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            padding: 15px;
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .product-card h3 {
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        .product-card p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .input-field {
+            width: 80px;
+            padding: 5px;
+            margin-right: 10px;
+        }
+
+        .btn-save {
+            background-color: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-save:hover {
+            background-color: #2ecc71;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Products Management</h1>
+</header>
+
+<form th:action="@{/admin/products}" th:method="post" th:object="${editProductsPageRequest}">
+    <div class="container">
+        <div th:each="product, iterStat : *{products}" class="product-card">
+            <a th:href="@{/admin/product/edit/{id}(id=${product.id})}">
+                <img th:src="@{${product.mainImageUrl}}" th:alt="${product.listingTitle}">
+            </a>
+            <h3 th:text="${product.listingTitle}"></h3>
+
+            <input type="hidden" th:field="*{products[__${iterStat.index}__].id}" />
+
+            <div>
+                <label>Stock:</label>
+                <input type="number" th:field="*{products[__${iterStat.index}__].stockQuantity}" class="input-field" min="0" />
+            </div>
+
+            <div>
+                <label>Price:</label>
+                <input type="number" th:field="*{products[__${iterStat.index}__].price}" class="input-field" min="0" step="0.01" />
+            </div>
+
+        </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <button type="submit" class="btn-save">Save Changes</button>
+    </div>
+</form>
+
+<footer>
+    <p>&copy; 2025 DankoHandmade</p>
+</footer>
+
+</body>
+</html>

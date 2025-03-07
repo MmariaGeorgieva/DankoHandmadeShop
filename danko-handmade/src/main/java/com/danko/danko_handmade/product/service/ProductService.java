@@ -4,7 +4,9 @@ import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
+import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,18 +15,19 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ProductService {
     private static int start = 1000;
 
     private final ProductRepository productRepository;
-    private final CloudflareR2Service cloudflareR2Service;
+    private final CloudinaryService cloudinaryService;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CloudflareR2Service cloudflareR2Service) {
+    public ProductService(ProductRepository productRepository, CloudinaryService cloudinaryService) {
         this.productRepository = productRepository;
-        this.cloudflareR2Service = cloudflareR2Service;
+        this.cloudinaryService = cloudinaryService;
     }
 
     public List<Product> getAllProducts() {
@@ -33,23 +36,19 @@ public class ProductService {
 
     @Transactional
     public void createProduct(AddProductRequest addProductRequest,
-                              MultipartFile mainPhoto, List<MultipartFile> additionalPhotos)
-            throws IOException {
+                              MultipartFile mainPhoto,
+                              List<MultipartFile> additionalPhotos) throws IOException {
 
         String productCode = generateProductCode(addProductRequest);
 
-        String mainPhotoFileName = System.currentTimeMillis() + "_" + mainPhoto.getOriginalFilename();
-        String mainPhotoUrl = cloudflareR2Service.uploadFile(mainPhoto.getOriginalFilename(),
-                "products/main/" + mainPhotoFileName);
+        String mainPhotoUrl = cloudinaryService.uploadPhoto(mainPhoto, "products/main/");
 
         List<String> additionalPhotosUrls = new ArrayList<>();
-
         for (MultipartFile additionalPhoto : additionalPhotos) {
-            String additionalPhotoFileName = System.currentTimeMillis() + "_" + additionalPhoto.getOriginalFilename();
-            String url = cloudflareR2Service.uploadFile(additionalPhoto.getOriginalFilename(),
-                    "products/additional/" + additionalPhotoFileName);
-            additionalPhotosUrls.add(url);
+            String additionalPhotoUrl = cloudinaryService.uploadPhoto(additionalPhoto, "products/additional/");
+            additionalPhotosUrls.add(additionalPhotoUrl);
         }
+
 
         Product product = Product.builder()
                 .listingTitle(addProductRequest.getListingTitle())
@@ -58,6 +57,7 @@ public class ProductService {
                 .productCode(productCode)
                 .mainPhotoUrl(mainPhotoUrl)
                 .additionalPhotos(additionalPhotosUrls)
+                .productSection(new ArrayList<>())
                 .addedOn(LocalDateTime.now())
                 .weight(addProductRequest.getWeight())
                 .stockQuantity(addProductRequest.getStockQuantity())
@@ -73,6 +73,7 @@ public class ProductService {
 
         String prefix = switch (addProductRequest.getProductSection().toString()) {
             case "CUPS_AND_MUGS" -> "C&M";
+            case "All" -> "ALL";
             case "HAPPY_HALLOWEEN" -> "HAllO";
             case "TEAPOTS" -> "TEA";
             case "SUGAR_CREAMERS_CANISTERS" -> "SCC";
@@ -87,5 +88,16 @@ public class ProductService {
 
         int suffix = start++;
         return prefix + "-" + suffix;
+    }
+
+    public void editProductsPage(EditProductsPageRequest editProductsPageRequest) {
+        for (EditProductsPageRequest.ProductEditRequest dto : editProductsPageRequest.getProducts()) {
+            Product product = productRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Product not found"));
+            if (product.getPrice().compareTo(dto.getPrice()) != 0 || product.getStockQuantity() != dto.getStockQuantity()) {
+                product.setPrice(dto.getPrice());
+                product.setStockQuantity(dto.getStockQuantity());
+                productRepository.save(product);
+            }
+        }
     }
 }

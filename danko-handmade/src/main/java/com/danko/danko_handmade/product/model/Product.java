@@ -1,10 +1,9 @@
 package com.danko.danko_handmade.product.model;
 
-import com.danko.danko_handmade.discount.model.Discount;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.web.multipart.MultipartFile;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -37,7 +36,7 @@ public class Product {
     private BigDecimal price;
 
     @Enumerated(EnumType.STRING)
-    private List<ProductSection> productSection;
+    private List<ProductSection> productSection = new ArrayList<>();
 
     @Column(nullable = false)
     private int stockQuantity;

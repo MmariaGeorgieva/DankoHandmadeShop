@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Product - Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+        }
+
+        .container {
+            width: 60%;
+            margin: 0 auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="number"], input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #27ae60;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #2ecc71;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Edit Product</h1>
+</header>
+
+<div class="container">
+    <!-- Форма за редактиране на продукта -->
+    <form th:action="@{/admin/product/edit/{id}(id=${product.id})}" th:object="${product}" th:method="post">
+
+        <!-- Име на продукта -->
+        <div class="form-group">
+            <label for="name">Product Name</label>
+            <input type="text" id="name" th:field="*{name}" placeholder="Enter product name" />
+        </div>
+
+        <!-- Цена на продукта -->
+        <div class="form-group">
+            <label for="price">Price</label>
+            <input type="number" id="price" th:field="*{price}" placeholder="Enter product price" />
+        </div>
+
+        <!-- Брой налични продукти -->
+        <div class="form-group">
+            <label for="stock">Stock</label>
+            <input type="number" id="stock" th:field="*{stock}" placeholder="Enter stock quantity" />
+        </div>
+
+        <!-- Основна снимка на продукта -->
+        <div class="form-group">
+            <label for="mainImageUrl">Main Image URL</label>
+            <input type="url" id="mainImageUrl" th:field="*{mainImageUrl}" placeholder="Enter image URL" />
+        </div>
+
+        <!-- Бутон за изпращане на формата -->
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+
+<footer>
+    <p>&copy; 2025 DankoHandmade</p>
+</footer>
+
+</body>
+</html>
