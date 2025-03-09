@@ -4,6 +4,7 @@ import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
+import com.danko.danko_handmade.web.dto.EditProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Service
 public class ProductService {
@@ -49,7 +51,6 @@ public class ProductService {
             additionalPhotosUrls.add(additionalPhotoUrl);
         }
 
-
         Product product = Product.builder()
                 .listingTitle(addProductRequest.getListingTitle())
                 .description(addProductRequest.getDescription())
@@ -63,9 +64,7 @@ public class ProductService {
                 .stockQuantity(addProductRequest.getStockQuantity())
                 .build();
 
-        product.getProductSection().add(ProductSection.ALL);
-        product.getProductSection().add(addProductRequest.getProductSection());
-
+        product.setProductSection(List.of(ProductSection.ALL, addProductRequest.getProductSection()));
         productRepository.save(product);
     }
 
@@ -99,5 +98,24 @@ public class ProductService {
                 productRepository.save(product);
             }
         }
+    }
+
+    public Product getProductById(UUID id) {
+        return productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found"));
+    }
+
+    public void editProductDetails(UUID id, EditProductRequest editProductRequest) {
+        Product product = getProductById(id);
+
+        product.setListingTitle(editProductRequest.getListingTitle());
+        product.setDescription(editProductRequest.getDescription());
+        product.setPrice(editProductRequest.getPrice());
+        product.setProductSection(editProductRequest.getProductSection());
+        product.setWeight(editProductRequest.getWeight());
+        product.setStockQuantity(editProductRequest.getStockQuantity());
+        product.setMainPhotoUrl(editProductRequest.getMainPhotoUrl());
+        product.setAdditionalPhotos(editProductRequest.getAdditionalPhotos());
+
+        productRepository.save(product);
     }
 }

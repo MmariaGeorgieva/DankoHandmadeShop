@@ -11,42 +11,36 @@
             margin: 0;
             padding: 0;
         }
-
         header {
             background-color: #333;
             color: white;
             padding: 15px 0;
             text-align: center;
         }
-
         .container {
             width: 60%;
-            margin: 0 auto;
+            margin: 20px auto;
             padding: 30px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-
         .form-group {
             margin-bottom: 15px;
         }
-
         label {
             font-size: 14px;
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
-
-        input[type="text"], input[type="number"], input[type="url"] {
+        input[type="text"], input[type="number"], input[type="url"], textarea, select {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
         }
-
         button {
             background-color: #27ae60;
             color: white;
@@ -56,11 +50,9 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         button:hover {
             background-color: #2ecc71;
         }
-
         footer {
             background-color: #333;
             color: white;
@@ -77,33 +69,89 @@
 
 <div class="container">
     <!-- Форма за редактиране на продукта -->
-    <form th:action="@{/admin/product/edit/{id}(id=${product.id})}" th:object="${product}" th:method="post">
+    <form th:action="@{/admin/product/edit/{id}(id=${product.id})}"
+          th:object="${editProductRequest}"
+          th:method="PUT">
 
-        <!-- Име на продукта -->
         <div class="form-group">
-            <label for="name">Product Name</label>
-            <input type="text" id="name" th:field="*{name}" placeholder="Enter product name" />
+            <label for="name">Listing Title</label>
+            <input type="text" id="name" th:field="*{listingTitle}" placeholder="Enter product name" />
         </div>
 
-        <!-- Цена на продукта -->
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" th:field="*{description}" placeholder="Enter product description"></textarea>
+        </div>
+
         <div class="form-group">
             <label for="price">Price</label>
             <input type="number" id="price" th:field="*{price}" placeholder="Enter product price" />
         </div>
 
-        <!-- Брой налични продукти -->
         <div class="form-group">
-            <label for="stock">Stock</label>
-            <input type="number" id="stock" th:field="*{stock}" placeholder="Enter stock quantity" />
+            <label for="stock">Stock Quantity</label>
+            <input type="number" id="stock" th:field="*{stockQuantity}" placeholder="Enter stock quantity" />
         </div>
 
-        <!-- Основна снимка на продукта -->
         <div class="form-group">
-            <label for="mainImageUrl">Main Image URL</label>
-            <input type="url" id="mainImageUrl" th:field="*{mainImageUrl}" placeholder="Enter image URL" />
+            <label for="productSection">Product Section</label>
+            <select id="productSection" th:field="*{productSection}">
+                <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
+                        th:value="${section}"
+                        th:text="${section}"></option>
+            </select>
         </div>
 
-        <!-- Бутон за изпращане на формата -->
+        <div class="form-group">
+            <label>Current Main Photo</label>
+            <div id="main-photo-preview">
+                <img th:src="${product.mainPhotoUrl}" alt="Main Photo" width="150" height="120"
+                     style="border: 1px solid #ccc; border-radius: 5px; display: block; margin-bottom: 10px;">
+                <input type="hidden" name="keepMainPhoto" value="true">
+                <button type="button" onclick="removeMainPhoto()">Remove Main Photo</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="newMainPhoto">Upload New Main Photo</label>
+            <input type="file" id="newMainPhoto" name="newMainPhoto" accept="image/*">
+        </div>
+
+        <div class="form-group">
+            <label>Current Additional Photos</label>
+            <div id="additional-photos-preview">
+                <div th:each="photoUrl : ${product.additionalPhotos}" style="display: inline-block; margin-right: 10px; position: relative;">
+                    <img th:src="${photoUrl}" alt="Additional Photo" width="100" height="80"
+                         style="border: 1px solid #ccc; border-radius: 5px;">
+                    <button type="button" th:data-url="${photoUrl}" onclick="removeAdditionalPhoto(this)">X</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="additionalPhotos">Upload New Additional Photos</label>
+            <input type="file" id="additionalPhotos" name="additionalPhotos" multiple accept="image/*">
+        </div>
+
+        <script>
+            function removeMainPhoto() {
+                document.getElementById("main-photo-preview").innerHTML = "<p>Main photo removed. Upload a new one if needed.</p>";
+                document.querySelector("input[name='keepMainPhoto']").value = "false";
+            }
+
+            function removeAdditionalPhoto(button) {
+                let photoUrl = button.getAttribute("data-url");
+                let container = button.parentElement;
+                container.style.display = "none";
+
+                let input = document.createElement("input");
+                input.type = "hidden";
+                input.name = "removeAdditionalPhotos";
+                input.value = photoUrl;
+                document.querySelector("form").appendChild(input);
+            }
+        </script>
+
         <button type="submit">Save Changes</button>
     </form>
 </div>

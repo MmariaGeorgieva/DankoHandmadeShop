@@ -37,6 +37,7 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
+    @ElementCollection
     @Enumerated(EnumType.STRING)
     private List<ProductSection> productSection = new ArrayList<>();
 

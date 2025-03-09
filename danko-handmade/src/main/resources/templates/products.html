@@ -73,12 +73,39 @@
             text-align: center;
             margin-top: 20px;
         }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between; /* Подравнява елементите на левия и десния край */
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* Стилове за бутон "Back" */
+        .btn-back {
+            background-color: #ffffff; /* Бял фон */
+            color: #333; /* Тъмен текст за контраст */
+            padding: 5px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd; /* Леко сиво очертание за бутона */
+        }
+
+        .btn-back:hover {
+            background-color: #f1f1f1; /* Сив фон при hover */
+            color: #333; /* Тъмен текст при hover */
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Products Management</h1>
+    <div class="header-content">
+        <h1>Products Management</h1>
+        <!-- Бутонът с клас 'btn-back' ще е на десния край с бял фон и тъмен текст -->
+        <a href="/admin" class="btn-back">Back</a>
+    </div>
 </header>
 
 <form th:action="@{/admin/products}" th:method="post" th:object="${editProductsPageRequest}">

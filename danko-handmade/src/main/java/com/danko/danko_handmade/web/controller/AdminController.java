@@ -5,7 +5,9 @@ import com.danko.danko_handmade.product.service.CloudinaryService;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
+import com.danko.danko_handmade.web.dto.EditProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
+import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -97,5 +100,38 @@ public class AdminController {
             productService.editProductsPage(editProductsPageRequest);
         }
         return viewProducts();
+    }
+
+    @GetMapping("/product/edit/{id}")
+    public ModelAndView editProductsPage(@PathVariable UUID id) {
+        Product product = productService.getProductById(id);
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("product-edit");
+        modelAndView.addObject("editProductRequest", DtoMapper.mapProductToProductEditRequest(product));
+        modelAndView.addObject("product", product);
+
+        return modelAndView;
+    }
+
+    @PutMapping("/product/edit/{id}")
+    public ModelAndView updateProduct(@PathVariable UUID id,
+                                      @Valid EditProductRequest editProductRequest,
+                                      BindingResult bindingResult,
+                                      @RequestParam(value = "newMainPhoto", required = false) MultipartFile newMainPhoto,
+                                      @RequestParam(value = "additionalPhotos", required = false) List<MultipartFile> additionalPhotos,
+                                      @RequestParam(value = "removeAdditionalPhotos", required = false) List<String> removeAdditionalPhotos,
+                                      @RequestParam(value = "keepMainPhoto", defaultValue = "true") boolean keepMainPhoto) throws IOException {
+        if (bindingResult.hasErrors()) {
+            Product product = productService.getProductById(id);
+            ModelAndView modelAndView = new ModelAndView();
+            modelAndView.setViewName("product-edit");
+            modelAndView.addObject("product", product);
+            modelAndView.addObject("editProductRequest", editProductRequest);
+            return modelAndView;
+        }
+
+        productService.editProductDetails(id, editProductRequest);
+        return new ModelAndView("redirect:/products");
     }
 }
