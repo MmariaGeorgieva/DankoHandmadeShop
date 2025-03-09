@@ -71,11 +71,14 @@ public class AdminController {
         List<Product> products = productService.getAllProducts();
 
         EditProductsPageRequest editProductsPageRequest = new EditProductsPageRequest();
+
         editProductsPageRequest.setProducts(products.stream().map(product -> {
             EditProductsPageRequest.ProductEditRequest dto = new EditProductsPageRequest.ProductEditRequest();
             dto.setId(product.getId());
             dto.setStockQuantity(product.getStockQuantity());
             dto.setPrice(product.getPrice());
+            dto.setMainImageUrl(product.getMainPhotoUrl());
+            dto.setListingTitle(product.getListingTitle());
             return dto;
         }).toList());
 

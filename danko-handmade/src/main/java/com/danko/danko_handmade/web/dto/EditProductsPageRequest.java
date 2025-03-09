@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 public class EditProductsPageRequest {
@@ -16,7 +17,7 @@ public class EditProductsPageRequest {
 
     @Data
     public static class ProductEditRequest {
-        private Long id;
+        private UUID id;
 
         @Min(value = 0, message = "Stock quantity must be 0 or greater")
         private int stockQuantity;
