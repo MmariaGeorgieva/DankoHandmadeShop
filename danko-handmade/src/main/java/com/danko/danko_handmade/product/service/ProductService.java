@@ -9,6 +9,7 @@ import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -105,6 +106,7 @@ public class ProductService {
     }
 
     public void editProductDetails(UUID id, EditProductRequest editProductRequest) {
+
         Product product = getProductById(id);
 
         product.setListingTitle(editProductRequest.getListingTitle());
@@ -117,5 +119,9 @@ public class ProductService {
         product.setAdditionalPhotos(editProductRequest.getAdditionalPhotos());
 
         productRepository.save(product);
+    }
+
+    public Page<Product> getProducts(int page, int pageSize) {
+        return null;
     }
 }

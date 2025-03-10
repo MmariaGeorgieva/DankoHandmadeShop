@@ -79,4 +79,34 @@ public class IndexController {
         }
         return "home";
     }
+
+    @GetMapping("/shop")
+    public String getShopPage() {
+        return "shop";
+    }
+
+    @GetMapping("/about")
+    public String getAboutPage() {
+        return "about";
+    }
+
+    @GetMapping("/policies")
+    public String getPoliciesPage() {
+        return "policies";
+    }
+
+    @GetMapping("/contact")
+    public String getContactPage() {
+        return "contact"; // contact.html
+    }
+
+    @GetMapping("/faq")
+    public String getFAQPage() {
+        return "faq"; // faq.html
+    }
+
+    @GetMapping("/delivery")
+    public String getDeliveryPage() {
+        return "delivery"; // delivery.html
+    }
 }

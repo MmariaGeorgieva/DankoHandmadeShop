@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div class="announcement">
+  <h2>Announcement</h2>
+  <p th:text="${announcement}">Welcome to our shop!</p>
+</div>
+
+<div class="products">
+  <div th:each="product : ${productPage.content}" class="product">
+    <img th:src="${product.mainPhotoUrl}" alt="Product Image">
+    <h3 th:text="${product.listingTitle}"></h3>
+    <p th:text="'$' + ${product.price}"></p>
+  </div>
+</div>
+
+<div class="pagination">
+  <a th:if="${productPage.hasPrevious()}" th:href="@{/home(page=${productPage.number})}">Previous</a>
+  <a th:if="${productPage.hasNext()}" th:href="@{/home(page=${productPage.number + 2})}">Next</a>
+  <span th:text="'Page ' + (${productPage.number + 1}) + ' of ' + ${productPage.totalPages}"></span>
+  <a th:if="${productPage.hasNext()}" th:href="@{/shop(page=${productPage.number + 1})}">Next</a>
+</div>
+</body>
+</html>

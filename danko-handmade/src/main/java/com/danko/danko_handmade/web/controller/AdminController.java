@@ -117,15 +117,12 @@ public class AdminController {
     @PutMapping("/product/edit/{id}")
     public ModelAndView updateProduct(@PathVariable UUID id,
                                       @Valid EditProductRequest editProductRequest,
-                                      BindingResult bindingResult,
-                                      @RequestParam(value = "newMainPhoto", required = false) MultipartFile newMainPhoto,
-                                      @RequestParam(value = "additionalPhotos", required = false) List<MultipartFile> additionalPhotos,
-                                      @RequestParam(value = "removeAdditionalPhotos", required = false) List<String> removeAdditionalPhotos,
-                                      @RequestParam(value = "keepMainPhoto", defaultValue = "true") boolean keepMainPhoto) throws IOException {
+                                      BindingResult bindingResult) {
+
         if (bindingResult.hasErrors()) {
+            System.out.println("Validation errors: " + bindingResult.getAllErrors());
             Product product = productService.getProductById(id);
-            ModelAndView modelAndView = new ModelAndView();
-            modelAndView.setViewName("product-edit");
+            ModelAndView modelAndView = new ModelAndView("product-edit");
             modelAndView.addObject("product", product);
             modelAndView.addObject("editProductRequest", editProductRequest);
             return modelAndView;
@@ -134,4 +131,5 @@ public class AdminController {
         productService.editProductDetails(id, editProductRequest);
         return new ModelAndView("redirect:/products");
     }
+
 }

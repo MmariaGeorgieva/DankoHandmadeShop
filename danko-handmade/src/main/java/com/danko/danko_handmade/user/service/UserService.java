@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -65,5 +66,13 @@ public class UserService implements UserDetailsService {
                 "found"));
 
         return new AuthenticationMetadata(user.getId(), username, user.getPassword(), user.getRole());
+    }
+
+    public User getById(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public User getByUsername(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 }

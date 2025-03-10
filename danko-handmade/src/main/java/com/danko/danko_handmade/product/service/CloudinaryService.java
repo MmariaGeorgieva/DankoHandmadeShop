@@ -22,7 +22,15 @@ public class CloudinaryService {
         Map uploadResult = cloudinary
                 .uploader()
                 .upload(file.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
-        return (String) uploadResult.get("secure_url");  // връща публичния URL на снимката
+        return (String) uploadResult.get("secure_url");
     }
 
+    public void deletePhoto(String mainPhotoUrl) {
+        try {
+            Map result = cloudinary.uploader().destroy(mainPhotoUrl, ObjectUtils.emptyMap());
+            System.out.println("Cloudinary response: " + result);
+        } catch (IOException e) {
+            System.err.println("Error while deleting photo from Cloudinary: " + e.getMessage());
+        }
+    }
 }

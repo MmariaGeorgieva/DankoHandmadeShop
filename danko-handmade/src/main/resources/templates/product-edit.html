@@ -59,17 +59,42 @@
             padding: 10px 0;
             text-align: center;
         }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between; /* Подравнява елементите на левия и десния край */
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        /* Стилове за бутон "Back" */
+        .btn-back {
+            background-color: #ffffff; /* Бял фон */
+            color: #333; /* Тъмен текст за контраст */
+            padding: 5px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd; /* Леко сиво очертание за бутона */
+        }
+
+        .btn-back:hover {
+            background-color: #f1f1f1; /* Сив фон при hover */
+            color: #333; /* Тъмен текст при hover */
+        }
     </style>
 </head>
 <body>
 
-<header>
+<header class="header-content">
     <h1>Edit Product</h1>
+    <a href="/admin/products" class="btn-back">Back</a>
+    <a href="/logout" class="btn-back">Logout</a>
 </header>
 
 <div class="container">
     <!-- Форма за редактиране на продукта -->
-    <form th:action="@{/admin/product/edit/{id}(id=${product.id})}"
+    <form th:action="@{'/admin/product/edit/' + ${product.id}}"
           th:object="${editProductRequest}"
           th:method="PUT">
 
@@ -103,9 +128,14 @@
         </div>
 
         <div class="form-group">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" th:field="*{weight}" placeholder="Enter product weight in kg" step="0.01">
+        </div>
+
+        <div class="form-group">
             <label>Current Main Photo</label>
             <div id="main-photo-preview">
-                <img th:src="${product.mainPhotoUrl}" alt="Main Photo" width="150" height="120"
+                <img th:src="@{${product.mainPhotoUrl}}" alt="Main Photo" width="150" height="120"
                      style="border: 1px solid #ccc; border-radius: 5px; display: block; margin-bottom: 10px;">
                 <input type="hidden" name="keepMainPhoto" value="true">
                 <button type="button" onclick="removeMainPhoto()">Remove Main Photo</button>
@@ -121,8 +151,7 @@
             <label>Current Additional Photos</label>
             <div id="additional-photos-preview">
                 <div th:each="photoUrl : ${product.additionalPhotos}" style="display: inline-block; margin-right: 10px; position: relative;">
-                    <img th:src="${photoUrl}" alt="Additional Photo" width="100" height="80"
-                         style="border: 1px solid #ccc; border-radius: 5px;">
+                    <img th:src="${photoUrl}" alt="Additional Photo" width="100" height="80" style="border: 1px solid #ccc; border-radius: 5px;">
                     <button type="button" th:data-url="${photoUrl}" onclick="removeAdditionalPhoto(this)">X</button>
                 </div>
             </div>
