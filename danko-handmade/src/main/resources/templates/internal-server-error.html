@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml"><head>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
   <meta charset="UTF-8">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -14,10 +15,138 @@
   <link rel="stylesheet" type="text/css" href="/css/error-page.css">
   <title>Home</title>
   <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      height: 100vh;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .left-bar {
+      background-color: #60c6a0;
+      width: 20px;
+      height: 100vh;
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding: 20px;
+      background-color: white;
+      text-align: center;
+    }
+
+    header {
+      background-color: #60c6a0;
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    footer {
+      background-color: #60c6a0;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .home-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .single-section-box {
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 900px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .payment-box {
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+    }
+
+    .payment-header {
+      margin-bottom: 20px;
+    }
+
+    .payment-header h2 {
+      color: #333;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    .payment-header p {
+      color: #666;
+      font-size: 1.1em;
+      text-align: center;
+    }
+
+    .details-section {
+      margin-top: 20px;
+    }
+
+    .details-section-container {
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    .details-section-container strong {
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .profile-actions-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      background-color: #60c6a0;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      margin: 20px 0;
+    }
+
+    .profile-actions-button:hover {
+      background-color: #45b38e;
+    }
+
+    .footer {
+      background-color: #60c6a0;
+      color: white;
+      text-align: center;
+      padding: 10px 0;
+    }
   </style>
 </head>
 <body>
+<div class="left-bar"></div>
+
 <main>
+  <header>
+    <h1>Error Page</h1>
+  </header>
+
   <div class="home-section">
     <div class="single-section-box payment-result-container">
       <div class="payment-box internal-server-error">
@@ -51,7 +180,8 @@
       </a>
     </div>
   </div>
+
+  <div th:replace="~{fragments/footer}"></div>
 </main>
-<div class="footer"><p>© 2025 Smart Wallet. All rights reserved.</p></div>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.cloudinary.Cloudinary;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.service.CloudinaryService;
 import com.danko.danko_handmade.product.service.ProductService;
@@ -8,6 +9,7 @@ import com.danko.danko_handmade.web.dto.AddProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,6 +31,7 @@ public class AdminController {
 
     private final ProductService productService;
     private final CloudinaryService cloudinaryService;
+
 
     public AdminController(ProductService productService, CloudinaryService cloudinaryService) {
         this.productService = productService;
@@ -43,9 +47,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getAdminPanel(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {
 
-        ModelAndView mav = new ModelAndView("admin");
-
-        return mav;
+        return new ModelAndView("admin");
     }
 
     @GetMapping("/add-product")
@@ -133,19 +135,17 @@ public class AdminController {
     @PutMapping("/product/edit/{id}")
     public ModelAndView updateProduct(@PathVariable UUID id,
                                       @Valid EditProductRequest editProductRequest,
-                                      BindingResult bindingResult) throws IOException {
+                                      BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            System.out.println("Validation errors: " + bindingResult.getAllErrors());
             Product product = productService.getProductById(id);
             ModelAndView modelAndView = new ModelAndView("product-edit");
             modelAndView.addObject("product", product);
             modelAndView.addObject("editProductRequest", editProductRequest);
             return modelAndView;
         }
-
         productService.editProductDetails(id, editProductRequest);
-        return new ModelAndView("redirect:/products");
+        return new ModelAndView("redirect:/admin/products");
     }
 
     @DeleteMapping("/product/delete/{id}")
@@ -156,17 +156,26 @@ public class AdminController {
     }
 
     @DeleteMapping("/product/deleteMainPhoto/{productId}")
-    public String deleteMainPhoto(@PathVariable UUID productId) {
+    public String deleteMainPhoto(@PathVariable UUID productId) throws URISyntaxException {
 
-        productService.deleteMainPhotoOfProductById(productId);
-        return "redirect:/admin/product-edit";
+        productService.deleteMainPhotoOfProductWithId(productId);
+        return "redirect:/admin/product-edit/" + productId;
     }
-    @DeleteMapping("/product/deletePhoto/{productId}")
-    public String deleteAdditionalPhoto(@PathVariable UUID productId) {
 
-        productService.deleteAdditionalPhotoOfProductById(productId);
-        return "redirect:/admin/product-edit";
+    @PostMapping("product/uploadMainPhoto/{productId}")
+    public String uploadMainPhoto(@PathVariable UUID productId, @RequestParam("mainPhoto") MultipartFile file) throws IOException {
+        Product product = productService.getProductById(productId);
+        productService.uploadNewMainPhoto(productId, file);
+        return "redirect:/admin/product/edit/" + product.getId();
     }
+
+
+//    @DeleteMapping("/product/deletePhoto/{productId}")
+//    public String deleteAdditionalPhoto(@PathVariable UUID productId) {
+//
+//        productService.deleteAdditionalPhotoOfProductById(productId);
+//        return "redirect:/admin/product-edit/" + productId;
+//    }
 
 
 }

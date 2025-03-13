@@ -5,98 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Product</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-bar {
+            background-color: #60c6a0;
+            width: 20px;
+            height: 100vh;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        header {
+            background-color: #60c6a0;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .header-buttons a {
+            background-color: #60c6a0;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header-buttons a:hover {
+            background-color: #45b38e;
+        }
+
+        footer {
+            background-color: #60c6a0;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .container {
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px auto;
+            max-width: 1200px;
+            flex: 1;
+        }
+
+        .form-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+
+        .form-control:focus {
+            border-color: #60c6a0;
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: #60c6a0;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #45b38e;
+        }
+
+        .text-danger {
+            color: red;
+            font-size: 0.875em;
+        }
+
+        small.form-text {
+            color: #888;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <div class="d-flex justify-content-between align-items-center mt-5">
+
+<div class="left-bar"></div>
+
+<div class="main-content">
+    <header>
         <h1>Add New Product</h1>
-        <a href="/admin" class="btn btn-secondary">Back</a>
-        <a href="/logout" class="btn btn-secondary">Logout</a>
+        <div class="header-buttons">
+            <a href="/admin" class="btn btn-secondary">Back</a>
+            <a href="/logout" class="btn btn-secondary">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <form th:action="@{/admin/add-product}" th:method="POST" th:object="${addProductRequest}" enctype="multipart/form-data">
+            <input type="hidden" name="_csrf" value="${_csrf.token}" />
+
+            <div class="mb-3">
+                <label for="productCode" class="form-label">Product Code</label>
+                <input type="text" class="form-control" id="productCode" name="productCode" th:field="*{productCode}" disabled>
+            </div>
+
+            <div class="mb-3">
+                <label for="listingTitle" class="form-label">Product Title</label>
+                <input type="text" class="form-control" id="listingTitle" name="listingTitle" th:field="*{listingTitle}" required>
+                <div th:if="${#fields.hasErrors('listingTitle')}" class="text-danger">
+                    <p th:errors="*{listingTitle}"></p>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Product Description</label>
+                <textarea class="form-control" id="description" name="description" rows="4" th:field="*{description}" required></textarea>
+                <div th:if="${#fields.hasErrors('description')}" class="text-danger">
+                    <p th:errors="*{description}"></p>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" name="price" th:field="*{price}" step="0.01" required>
+                <div th:if="${#fields.hasErrors('price')}" class="text-danger">
+                    <p th:errors="*{price}"></p>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="productSection" class="form-label">Section</label>
+                <select class="form-control" id="productSection" name="productSection" th:field="*{productSection}" required>
+                    <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
+                            th:value="${section}" th:text="${#strings.capitalize(#strings.toLowerCase(section.name))}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="stockQuantity" class="form-label">Stock Quantity</label>
+                <input type="number" class="form-control" id="stockQuantity" name="stockQuantity" th:field="*{stockQuantity}" min="0" required>
+                <div th:if="${#fields.hasErrors('stockQuantity')}" class="text-danger">
+                    <p th:errors="*{stockQuantity}"></p>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="mainPhoto" class="form-label">Main Photo</label>
+                <input type="file" class="form-control" id="mainPhoto" name="mainPhoto" accept="image/*" required>
+                <div th:if="${#fields.hasErrors('mainPhoto')}" class="text-danger">
+                    <p th:errors="*{mainPhoto}"></p>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="additionalPhotos" class="form-label">Additional Photos (optional)</label>
+                <input type="file" class="form-control" id="additionalPhotos" name="additionalPhotos" accept="image/*" multiple>
+                <small class="form-text text-muted">You can select multiple images.</small>
+            </div>
+
+            <div class="mb-3">
+                <label for="weight" class="form-label">Weight (kg)</label>
+                <input type="number" class="form-control" id="weight" name="weight" th:field="*{weight}" step="0.01" required>
+                <div th:if="${#fields.hasErrors('weight')}" class="text-danger">
+                    <p th:errors="*{weight}"></p>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Add Product</button>
+        </form>
     </div>
 
-    <form th:action="@{/admin/add-product}" th:method="POST" th:object="${addProductRequest}" enctype="multipart/form-data">
-        <input type="hidden" name="_csrf" value="${_csrf.token}" />
-        <!-- Product Code: Auto-generated by backend -->
-        <div class="mb-3">
-            <label for="productCode" class="form-label">Product Code</label>
-            <input type="text" class="form-control" id="productCode" name="productCode" th:field="*{productCode}" disabled>
-        </div>
-
-        <!-- Listing Title -->
-        <div class="mb-3">
-            <label for="listingTitle" class="form-label">Product Title</label>
-            <input type="text" class="form-control" id="listingTitle" name="listingTitle" th:field="*{listingTitle}" required>
-            <div th:if="${#fields.hasErrors('listingTitle')}" class="text-danger">
-                <p th:errors="*{listingTitle}"></p>
-            </div>
-        </div>
-
-        <!-- Description -->
-        <div class="mb-3">
-            <label for="description" class="form-label">Product Description</label>
-            <textarea class="form-control" id="description" name="description" rows="4" th:field="*{description}" required></textarea>
-            <div th:if="${#fields.hasErrors('description')}" class="text-danger">
-                <p th:errors="*{description}"></p>
-            </div>
-        </div>
-
-        <!-- Price -->
-        <div class="mb-3">
-            <label for="price" class="form-label">Price</label>
-            <input type="number" class="form-control" id="price" name="price" th:field="*{price}" step="0.01" required>
-            <div th:if="${#fields.hasErrors('price')}" class="text-danger">
-                <p th:errors="*{price}"></p>
-            </div>
-        </div>
-
-        <!-- Product Section -->
-        <div class="mb-3">
-            <label for="productSection" class="form-label">Section</label>
-            <select class="form-control" id="productSection" name="productSection" th:field="*{productSection}" required>
-                <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
-                        th:value="${section}" th:text="${#strings.capitalize(#strings.toLowerCase(section.name))}">
-                </option>
-            </select>
-        </div>
-
-        <!-- Stock Quantity -->
-        <div class="mb-3">
-            <label for="stockQuantity" class="form-label">Stock Quantity</label>
-            <input type="number" class="form-control" id="stockQuantity" name="stockQuantity" th:field="*{stockQuantity}" min="0" required>
-            <div th:if="${#fields.hasErrors('stockQuantity')}" class="text-danger">
-                <p th:errors="*{stockQuantity}"></p>
-            </div>
-        </div>
-
-        <!-- Main Photo URL -->
-        <div class="mb-3">
-            <label for="mainPhoto" class="form-label">Main Photo</label>
-            <input type="file" class="form-control" id="mainPhoto" name="mainPhoto" accept="image/*" required>
-            <div th:if="${#fields.hasErrors('mainPhoto')}" class="text-danger">
-                <p th:errors="*{mainPhoto}"></p>
-            </div>
-        </div>
-
-        <!-- Additional Photos Upload -->
-        <div class="mb-3">
-            <label for="additionalPhotos" class="form-label">Additional Photos (optional)</label>
-            <input type="file" class="form-control" id="additionalPhotos" name="additionalPhotos" accept="image/*" multiple>
-            <small class="form-text text-muted">You can select multiple images.</small>
-        </div>
-
-        <!-- Weight -->
-        <div class="mb-3">
-            <label for="weight" class="form-label">Weight (kg)</label>
-            <input type="number" class="form-control" id="weight" name="weight" th:field="*{weight}" step="0.01" required>
-            <div th:if="${#fields.hasErrors('weight')}" class="text-danger">
-                <p th:errors="*{weight}"></p>
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Add Product</button>
-    </form>
+    <div th:replace="~{fragments/footer}"></div>
 </div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

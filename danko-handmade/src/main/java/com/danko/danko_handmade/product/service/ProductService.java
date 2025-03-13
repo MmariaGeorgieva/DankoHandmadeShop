@@ -1,5 +1,7 @@
 package com.danko.danko_handmade.product.service;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.danko.danko_handmade.exception.ProductNotFoundException;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
@@ -11,8 +13,11 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +29,13 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CloudinaryService cloudinaryService;
+    private final Cloudinary cloudinary;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, CloudinaryService cloudinaryService) {
+    public ProductService(ProductRepository productRepository, CloudinaryService cloudinaryService, Cloudinary cloudinary) {
         this.productRepository = productRepository;
         this.cloudinaryService = cloudinaryService;
+        this.cloudinary = cloudinary;
     }
 
     @Transactional
@@ -53,14 +60,13 @@ public class ProductService {
                 .productCode(productCode)
                 .mainPhotoUrl(mainPhotoUrl)
                 .additionalPhotosUrls(additionalPhotosUrls)
-                .productSection(new ArrayList<>())
+                .productSection(addProductRequest.getProductSection())
                 .addedOn(LocalDateTime.now())
                 .weight(addProductRequest.getWeight())
                 .stockQuantity(addProductRequest.getStockQuantity())
                 .active(true)
                 .build();
 
-        product.setProductSection(List.of(ProductSection.ALL, addProductRequest.getProductSection()));
         productRepository.save(product);
     }
 
@@ -85,7 +91,6 @@ public class ProductService {
         return prefix + "-" + suffix;
     }
 
-    @Transactional
     public void editProductsPage(EditProductsPageRequest editProductsPageRequest) {
         for (EditProductsPageRequest.ProductEditRequest dto : editProductsPageRequest.getActiveProducts()) {
             Product product = productRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Product not found"));
@@ -101,44 +106,18 @@ public class ProductService {
         return productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
     }
 
-    @Transactional
-    public void editProductDetails(UUID id, EditProductRequest editProductRequest) throws IOException {
-
+    public void editProductDetails(UUID id, EditProductRequest editProductRequest) {
         Product product = getProductById(id);
 
         product.setListingTitle(editProductRequest.getListingTitle());
         product.setDescription(editProductRequest.getDescription());
         product.setPrice(editProductRequest.getPrice());
-        product.setProductSection(List.of(ProductSection.ALL, editProductRequest.getProductSection()));
+        product.setProductSection(editProductRequest.getProductSection());
         product.setWeight(editProductRequest.getWeight());
         product.setStockQuantity(editProductRequest.getStockQuantity());
+        product.setActive(editProductRequest.isActive());
+        product.setMainPhotoUrl(editProductRequest.getMainImageUrl());
 
-        if (editProductRequest.getNewMainPhoto() != null && !editProductRequest.getNewMainPhoto().isEmpty()) {
-            try {
-                String newMainPhotoUrl = cloudinaryService.uploadPhoto(editProductRequest.getNewMainPhoto(), "main");
-                product.setMainPhotoUrl(newMainPhotoUrl);
-            } catch (IOException e) {
-                System.err.println("Error uploading main photo: " + e.getMessage());
-            }
-        } else if (editProductRequest.getExistingMainPhotoUrl() != null && !editProductRequest.getExistingMainPhotoUrl().isEmpty()) {
-            product.setMainPhotoUrl(editProductRequest.getExistingMainPhotoUrl());
-        }
-
-        List<String> updatedPhotos = new ArrayList<>(editProductRequest.getExistingAdditionalPhotosUrls());
-        if (editProductRequest.getNewAdditionalPhotos() != null && !editProductRequest.getNewAdditionalPhotos().isEmpty()) {
-            for (MultipartFile file : editProductRequest.getNewAdditionalPhotos()) {
-                try {
-                    String photoUrl = cloudinaryService.uploadPhoto(file, "additional");
-                    updatedPhotos.add(photoUrl);
-                } catch (IOException e) {
-                    System.err.println("Error uploading additional photo: " + e.getMessage());
-                }
-            }
-        } else {
-            System.out.println("No additional photos uploaded.");
-        }
-
-        product.setAdditionalPhotosUrls(updatedPhotos);
         productRepository.save(product);
     }
 
@@ -163,12 +142,44 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void deleteMainPhotoOfProductById(UUID productId) {
+    @Transactional
+    public void deleteMainPhotoOfProductWithId(UUID productId) throws URISyntaxException {
         Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
-        product.setMainPhotoUrl(null);
 
+        if (product.getMainPhotoUrl() != null) {
+            String mainPhotoUrl = product.getMainPhotoUrl();
+            String publicId = extractPublicIdFromUrl(mainPhotoUrl);
+
+            try {
+                cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+                product.setMainPhotoUrl(null);
+                productRepository.save(product);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    public void deleteAdditionalPhotoOfProductById(UUID productId) {
+    private String extractPublicIdFromUrl(String mainPhotoUrl) throws URISyntaxException {
+        try {
+            URI uri = new URI(mainPhotoUrl);
+            String path = uri.getPath();
+            String[] segments = path.split("/");
+
+            String filenameWithExtension = segments[segments.length - 1];
+            return filenameWithExtension.substring(0, filenameWithExtension.lastIndexOf('.'));
+        } catch (URISyntaxException e) {
+            throw new RuntimeException("Invalid Cloudinary URL: " + mainPhotoUrl);
+        }
     }
+
+    public void uploadNewMainPhoto(UUID productId, MultipartFile file) throws IOException {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        product.setMainPhotoUrl(cloudinaryService.uploadPhoto(file, "products/main/"));
+        productRepository.save(product);
+    }
+//
+//    public void deleteAdditionalPhotoOfProductById(UUID productId) {
+//    }
 }

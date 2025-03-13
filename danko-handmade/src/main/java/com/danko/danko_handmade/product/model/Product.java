@@ -37,17 +37,11 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    private List<ProductSection> productSection = new ArrayList<>();
+    private ProductSection productSection;
 
     @Column(nullable = false)
     private int stockQuantity;
-
-    @Transient
-    public boolean isInStock() {
-        return stockQuantity > 0;
-    }
 
     private String mainPhotoUrl;
 

@@ -5,27 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Product - Admin Panel</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
         header {
-            background-color: #333;
+            background-color: #60c6a0;
             color: white;
-            padding: 15px 0;
-            text-align: center;
+            padding: 0;
+            height: 80px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .header-buttons {
+            display: flex;
+            justify-content: flex-start;
+            width: auto;
+        }
+
+        .btn-back, .btn-logout {
+            background-color: #ffffff;
+            color: #333;
+            padding: 5px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+
+        .btn-back:hover, .btn-logout:hover {
+            background-color: #f1f1f1;
+            color: #333;
         }
 
         .container {
-            width: 60%;
+            max-width: 1200px;
+            width: 100%;
             margin: 20px auto;
             padding: 30px;
             background-color: white;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            flex-grow: 1;
         }
 
         .form-group {
@@ -62,201 +100,177 @@
         }
 
         footer {
-            background-color: #333;
+            background-color: #60c6a0;
             color: white;
             padding: 10px 0;
             text-align: center;
+            height: 80px;
+            width: 100%;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between; /* Подравнява елементите на левия и десния край */
-            align-items: center;
-            padding: 0 20px;
+        .sidebar {
+            background-color: #60c6a0;
+            width: 20px;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
         }
 
-        /* Стилове за бутон "Back" */
-        .btn-back {
-            background-color: #ffffff; /* Бял фон */
-            color: #333; /* Тъмен текст за контраст */
-            padding: 5px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-            border: 1px solid #ddd; /* Леко сиво очертание за бутона */
+        .main-content {
+            margin-left: 60px;
+            width: calc(100% - 60px);
+            padding: 20px;
         }
 
-        .btn-back:hover {
-            background-color: #f1f1f1; /* Сив фон при hover */
-            color: #333; /* Тъмен текст при hover */
-        }
-
-        #main-photo-preview {
-            position: relative; /* За да можем да позиционираме бутона вътре в контейнера на снимката */
-            display: inline-block; /* Да е в същия ред, като самата снимка */
-        }
-
-        /* Стилове за бутон X за премахване на снимките */
-        .remove-photo-button {
-            background-color: transparent;
-            color: #dd2929;
-            border: 1px solid #dd2929;
-            border-radius: 50%; /* Кръгла форма */
-            width: 20px; /* Ширина на кръгчето */
-            height: 20px; /* Височина на кръгчето */
-            font-size: 15px; /* Размер на шрифта */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
+        .delete-icon {
             position: absolute;
-            top: -5px; /* Позиция на бутон "X" отгоре, така че да е върху снимката */
-            right: -5px; /* Позиция на бутон "X" отдясно, така че да не излиза извън снимката */
-            cursor: pointer; /* Курсор за ръка */
-            transition: background-color 0.3s, border-color 0.3s; /* Преходи за фон и бордър */
-            z-index: 1; /* За да е на преден план спрямо снимката */
+            top: 5px;
+            right: 5px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 5px;
+            border-radius: 50%;
+            cursor: pointer;
         }
 
-        .remove-photo-button:hover {
-            background-color: #f1f1f1; /* Лек сив фон при hover */
-            border-color: #999; /* Леко по-сив бордър при hover */
+        .delete-icon:hover {
+            background-color: rgba(255, 0, 0, 0.5);
         }
 
-        .remove-photo-button:focus {
-            outline: none; /* Премахване на очертания при фокусиране */
+        .product-image-container, .add-new-photo {
+            text-align: left;
+            font-size: 14px;
         }
 
+        .product-image-container img {
+            width: 150px;
+            height: 120px;
+        }
 
-        /* Стилизация на снимки */
-        .photo-wrapper {
-            display: inline-block;
-            margin-right: 10px;
-            position: relative;
+        .add-new-photo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .add-new-photo input[type="file"] {
+            width: auto;
+        }
+
+        .add-new-photo button {
+            background-color: #60c6a0;
+            color: white;
+            font-size: 14px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 150px;
+        }
+
+        .add-new-photo h3, .product-image-container div {
+            font-size: 14px;
+            color: #60c6a0;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-<header class="header-content">
+<div class="sidebar"></div>
+
+<header>
     <h1>Edit Product</h1>
-    <a href="/admin/products" class="btn-back">Back</a>
-    <a href="/logout" class="btn-back">Logout</a>
+    <div class="header-buttons">
+        <a th:href="@{/admin/products}" class="btn-back">Back</a>
+        <a th:href="@{/logout}" class="btn-logout">Logout</a>
+    </div>
 </header>
 
-<div class="container">
-    <form th:action="@{'/admin/product/edit/' + ${product.id}}"
-          th:object="${editProductRequest}"
-          th:method="PUT"
-          enctype="multipart/form-data">
+<div class="main-content">
+    <div class="container">
+        <form th:action="@{'/admin/product/edit/' + ${product.id}}"
+              th:method="PUT"
+              th:object="${editProductRequest}">
 
-        <!-- Listing Title -->
-        <div class="form-group">
-            <label for="name">Listing Title</label>
-            <input type="text" id="name" th:field="*{listingTitle}" placeholder="Enter product name"/>
-            <div th:if="${#fields.hasErrors('listingTitle')}" class="error">
-                <p th:errors="*{listingTitle}"></p>
+            <div class="form-group">
+                <label for="name">Listing Title</label>
+                <input type="text" id="name" placeholder="Enter product title" th:field="*{listingTitle}">
+                <p class="error" th:if="${#fields.hasErrors('listingTitle')}" th:text="${#fields.errors('listingTitle')}"></p>
             </div>
-        </div>
 
-        <!-- Description -->
-        <div class="form-group">
-            <label for="description">Description</label>
-            <textarea id="description" th:field="*{description}" placeholder="Enter product description"></textarea>
-            <div th:if="${#fields.hasErrors('description')}" class="error">
-                <p th:errors="*{description}"></p>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" th:field="*{description}"
+                          placeholder="Enter product description"
+                          class="form-control" rows="4"></textarea>
+                <p class="error" th:if="${#fields.hasErrors('description')}" th:text="${#fields.errors('description')}"></p>
             </div>
-        </div>
 
-        <!-- Price -->
-        <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" id="price" th:field="*{price}" placeholder="Enter product price"/>
-            <div th:if="${#fields.hasErrors('price')}" class="error">
-                <p th:errors="*{price}"></p>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" id="price" name="price" th:field="*{price}"
+                       placeholder="Enter product price" step="0.01" class="form-control" min="0"/>
+                <p class="error" th:if="${#fields.hasErrors('price')}" th:text="${#fields.errors('price')}"></p>
             </div>
-        </div>
 
-        <!-- Stock Quantity -->
-        <div class="form-group">
-            <label for="stock">Stock Quantity</label>
-            <input type="number" id="stock" th:field="*{stockQuantity}" placeholder="Enter stock quantity"/>
-            <div th:if="${#fields.hasErrors('stockQuantity')}" class="error">
-                <p th:errors="*{stockQuantity}"></p>
+            <div class="form-group">
+                <label for="stock">Stock Quantity</label>
+                <input type="number" id="stock" placeholder="Enter stock quantity" th:field="*{stockQuantity}">
+                <p class="error" th:if="${#fields.hasErrors('stockQuantity')}" th:text="${#fields.errors('stockQuantity')}"></p>
             </div>
-        </div>
 
-        <!-- Product Section -->
-        <div class="form-group">
-            <label for="productSection">Product Section</label>
-            <select id="productSection" th:field="*{productSection}">
-                <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
-                        th:value="${section}" th:text="${section}"></option>
-            </select>
-        </div>
-
-        <!-- Weight -->
-        <div class="form-group">
-            <label for="weight">Weight (kg)</label>
-            <input type="number" id="weight" th:field="*{weight}" placeholder="Enter product weight in kg" step="0.01">
-            <div th:if="${#fields.hasErrors('weight')}" class="error">
-                <p th:errors="*{weight}"></p>
+            <div class="form-group">
+                <label for="productSection">Product Section</label>
+                <select id="productSection" th:field="*{productSection}">
+                    <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
+                            th:value="${section}" th:text="${section}"></option>
+                </select>
             </div>
-        </div>
 
-        <!-- Current Main Photo -->
-        <div class="form-group">
-            <label>Current Main Photo</label>
-            <div id="main-photo-preview" style="position: relative;">
-                <!-- Покажи текущата главна снимка -->
-                <img th:src="@{${product.mainPhotoUrl}}" alt="Main Photo" width="150" height="120"
-                     style="border: 1px solid #ccc; border-radius: 5px; display: block; margin-bottom: 10px;">
+            <div class="form-group">
+                <label for="weight">Weight (kg)</label>
+                <input type="number" id="weight" name="weight" th:field="*{weight}"
+                       placeholder="Enter product weight in kg" step="0.01" class="form-control" min="0"/>
+                <p class="error" th:if="${#fields.hasErrors('weight')}" th:text="${#fields.errors('weight')}"></p>
+            </div>
 
-                <!-- Бутон за премахване на снимката (X) -->
-                <form th:action="@{'/admin/product/removeMainPhoto/' + ${product.id}}" th:method="DELETE"
-                      style="position: absolute; top: 0; right: 0;">
-                    <button type="submit" class="remove-photo-button">X</button>
+            <div class="form-group">
+                <label for="active">Active</label>
+                <input type="checkbox" id="active" th:field="*{active}"/>
+                <div th:if="${#fields.hasErrors('active')}" class="error">
+                    <p th:errors="*{active}"></p>
+                </div>
+            </div>
+
+            <div class="product-image-container" style="position: relative; display: inline-block; text-align: left;">
+                <h3 style="font-size: 14px; color: black;">Main Photo</h3>
+
+                <img th:src="${product.mainPhotoUrl}" alt="Main Product Image" width="150" height="120">
+
+                <form th:action="@{'/admin/product/deleteMainPhoto/' + ${product.id}}" th:method="DELETE"
+                      style="position: absolute; top: 5px; right: 5px;">
+                    <button type="submit" class="delete-icon" style="background-color: white; border: 2px solid rgba(255, 255, 255, 0.7);
+                border-radius: 50%; padding: 5px; cursor: pointer; font-size: 18px;">
+                        🗑️
+                    </button>
                 </form>
             </div>
-        </div>
 
-        <!-- New Main Photo -->
-        <div class="form-group">
-            <label for="newMainPhoto">Upload New Main Photo</label>
-            <input type="file" id="newMainPhoto" name="newMainPhoto" accept="image/*">
-        </div>
-
-        <!-- Current Additional Photos -->
-        <div class="form-group">
-            <label>Current Additional Photos</label>
-            <div th:each="additionalPhotoUrl : ${product.additionalPhotosUrls}"
-                 class="photo-wrapper" style="position: relative;">
-
-                <!-- Показване на снимката -->
-                <img th:src="@{${additionalPhotoUrl}}" alt="Additional Photo" width="100" height="80"
-                     style="border: 1px solid #ccc; border-radius: 5px;">
-
-                <!-- Бутон за премахване -->
-                <form th:action="@{'/admin/product/deletePhoto/' + ${product.id}}" th:method="DELETE" style="position:
-                absolute; top: 0; right: 0;">
-                    <button type="submit" class="remove-photo-button">X</button>
+            <div class="add-new-photo" style="margin-top: 20px; text-align: left;">
+                <h3 style="font-size: 14px; color: black;">Add New Main Photo</h3>
+                <form th:action="@{'/admin/product/uploadMainPhoto/' + ${product.id}}" th:method="POST" enctype="multipart/form-data">
+                    <input type="file" name="mainPhoto" accept="image/*" required>
+                    <button type="submit" class="upload-button">Upload Photo</button>
                 </form>
             </div>
-        </div>
 
-
-        <!-- New Additional Photos -->
-        <div class="form-group">
-            <label for="newAdditionalPhotos">Upload New Additional Photos</label>
-            <input type="file" id="newAdditionalPhotos" name="newAdditionalPhotos" multiple accept="image/*">
-        </div>
-
-        <button type="submit">Save Changes</button>
-    </form>
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
 </div>
 
-<footer>
-    <p>&copy; 2025 DankoHandmade</p>
-</footer>
+<div th:replace="~{fragments/footer}"></div>
 
 </body>
 </html>

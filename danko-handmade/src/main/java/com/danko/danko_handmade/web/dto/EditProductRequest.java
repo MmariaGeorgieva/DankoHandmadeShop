@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +39,13 @@ public class EditProductRequest {
     @NotNull
     private double weight;
 
+    @NotNull
     private boolean active;
 
-    private String existingMainPhotoUrl;
+    private String mainImageUrl;
 
-    private List<String> existingAdditionalPhotosUrls = new ArrayList<>();
 
-    private MultipartFile newMainPhoto;
-    private List<MultipartFile> newAdditionalPhotos = new ArrayList<>();
+
+
+
 }
