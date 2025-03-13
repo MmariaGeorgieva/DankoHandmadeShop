@@ -16,6 +16,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.List;
@@ -71,11 +72,11 @@ public class AdminController {
 
     @GetMapping("/products")
     public ModelAndView viewProducts() {
-        List<Product> products = productService.getAllProducts();
+        List<Product> activeProducts = productService.getAllActiveProducts();
 
         EditProductsPageRequest editProductsPageRequest = new EditProductsPageRequest();
 
-        editProductsPageRequest.setProducts(products.stream().map(product -> {
+        editProductsPageRequest.setActiveProducts(activeProducts.stream().map(product -> {
             EditProductsPageRequest.ProductEditRequest dto = new EditProductsPageRequest.ProductEditRequest();
             dto.setId(product.getId());
             dto.setStockQuantity(product.getStockQuantity());
@@ -86,11 +87,26 @@ public class AdminController {
         }).toList());
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("products", products);
+        modelAndView.addObject("activeProducts", activeProducts);
         modelAndView.addObject("editProductsPageRequest", editProductsPageRequest);
         modelAndView.setViewName("products");
 
         return modelAndView;
+    }
+
+    @GetMapping("/products/inactive")
+    public ModelAndView viewInactiveProducts() {
+        List<Product> inactiveProducts = productService.getAllInactiveProducts();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("inactive-products");
+        modelAndView.addObject("inactiveProducts", inactiveProducts);
+        return modelAndView;
+    }
+
+    @PutMapping("product/activate/{id}")
+    public String activateProduct(@PathVariable UUID id) {
+        productService.activateProduct(id);
+        return "redirect:/admin/products";
     }
 
     @PostMapping("/products")
@@ -103,7 +119,7 @@ public class AdminController {
     }
 
     @GetMapping("/product/edit/{id}")
-    public ModelAndView editProductsPage(@PathVariable UUID id) {
+    public ModelAndView viewEditProductsPage(@PathVariable UUID id) {
         Product product = productService.getProductById(id);
 
         ModelAndView modelAndView = new ModelAndView();
@@ -117,7 +133,7 @@ public class AdminController {
     @PutMapping("/product/edit/{id}")
     public ModelAndView updateProduct(@PathVariable UUID id,
                                       @Valid EditProductRequest editProductRequest,
-                                      BindingResult bindingResult) {
+                                      BindingResult bindingResult) throws IOException {
 
         if (bindingResult.hasErrors()) {
             System.out.println("Validation errors: " + bindingResult.getAllErrors());
@@ -131,5 +147,26 @@ public class AdminController {
         productService.editProductDetails(id, editProductRequest);
         return new ModelAndView("redirect:/products");
     }
+
+    @DeleteMapping("/product/delete/{id}")
+    public String deleteProduct(@PathVariable UUID id) {
+        System.out.println("Attempting to delete product with ID: " + id);
+        productService.deleteProductById(id);
+        return "redirect:/admin/products";
+    }
+
+    @DeleteMapping("/product/deleteMainPhoto/{productId}")
+    public String deleteMainPhoto(@PathVariable UUID productId) {
+
+        productService.deleteMainPhotoOfProductById(productId);
+        return "redirect:/admin/product-edit";
+    }
+    @DeleteMapping("/product/deletePhoto/{productId}")
+    public String deleteAdditionalPhoto(@PathVariable UUID productId) {
+
+        productService.deleteAdditionalPhotoOfProductById(productId);
+        return "redirect:/admin/product-edit";
+    }
+
 
 }

@@ -4,6 +4,9 @@ import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
 import lombok.experimental.UtilityClass;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @UtilityClass
 public class DtoMapper {
 
@@ -12,10 +15,9 @@ public class DtoMapper {
                 .listingTitle(product.getListingTitle())
                 .description(product.getDescription())
                 .price(product.getPrice())
-                .productSection(product.getProductSection())
                 .stockQuantity(product.getStockQuantity())
-                .mainPhotoUrl(product.getMainPhotoUrl())
-                .additionalPhotos(product.getAdditionalPhotos())
+                .existingMainPhotoUrl(product.getMainPhotoUrl())
+                .existingAdditionalPhotosUrls(product.getAdditionalPhotosUrls())
                 .weight(product.getWeight())
                 .build();
     }

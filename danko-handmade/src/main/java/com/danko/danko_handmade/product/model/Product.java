@@ -37,7 +37,7 @@ public class Product {
     @Column(nullable = false)
     private BigDecimal price;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<ProductSection> productSection = new ArrayList<>();
 
@@ -51,12 +51,15 @@ public class Product {
 
     private String mainPhotoUrl;
 
-    @ElementCollection
-    private List<String> additionalPhotos = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER)
+    private List<String> additionalPhotosUrls = new ArrayList<>();
 
     @Column(nullable = false)
     private LocalDateTime addedOn;
 
     @Column(nullable = false)
     private double weight;
+
+    @Column(nullable = false)
+    private boolean active;
 }

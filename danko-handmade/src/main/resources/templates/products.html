@@ -81,20 +81,36 @@
             padding: 0 20px;
         }
 
-        /* Стилове за бутон "Back" */
-        .btn-back {
+        /* Стилове за бутоните Back, Inactive Products и Logout */
+        .btn-back, .btn-inactive, .btn-logout {
             background-color: #ffffff;
             color: #60c6a0;
             padding: 5px 15px;
             text-decoration: none;
             border-radius: 5px;
             font-size: 14px;
-            border: 1px solid #ddd; /* Леко сиво очертание за бутона */
+            border: 1px solid #ddd; /* Леко сиво очертание за бутоните */
         }
 
-        .btn-back:hover {
+        .btn-back:hover, .btn-inactive:hover, .btn-logout:hover {
             background-color: #f1f1f1;
             color: #60c6a0;
+        }
+
+        .btn-delete {
+            background-color: #ff4d4d; /* Червен цвят за изтриване */
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease, transform 0.2s ease; /* Добавя плавен ефект */
+        }
+
+        .btn-delete:hover {
+            background-color: #cc0000; /* По-тъмен червен при hover */
+            transform: scale(1.05); /* Леко увеличаване */
         }
     </style>
 </head>
@@ -102,15 +118,20 @@
 
 <header>
     <div class="header-content">
-        <h1>Products Management</h1>
-        <a href="/admin" class="btn-back">Back</a>
-        <a href="/logout" class="btn-back">Logout</a>
+        <!-- Бутон за неактивни продукти най-вляво -->
+        <a href="/admin/products/inactive" class="btn-inactive">Inactive Products</a>
+
+        <!-- Бутоните Back и Logout вдясно -->
+        <div>
+            <a href="/admin" class="btn-back">Back</a>
+            <a href="/logout" class="btn-logout">Logout</a>
+        </div>
     </div>
 </header>
 
 <form th:action="@{/admin/products}" th:method="post" th:object="${editProductsPageRequest}">
     <div class="container">
-        <div th:each="product, iterStat : *{products}" class="product-row">
+        <div th:each="product, iterStat : *{activeProducts}" class="product-row">
             <a th:href="@{/admin/product/edit/{id}(id=${product.id})}">
                 <img th:src="@{${product.mainImageUrl}}" th:alt="${product.listingTitle}">
             </a>
@@ -118,13 +139,20 @@
                 <h3 th:text="${product.listingTitle}"></h3>
             </div>
 
-            <input type="hidden" th:field="*{products[__${iterStat.index}__].id}" />
+            <input type="hidden" th:field="*{activeProducts[__${iterStat.index}__].id}" />
 
             <label>Stock:</label>
-            <input type="number" th:field="*{products[__${iterStat.index}__].stockQuantity}" class="input-field" min="0" />
+            <input type="number" th:field="*{activeProducts[__${iterStat.index}__].stockQuantity}" class="input-field" min="0" />
 
             <label>Price:</label>
-            <input type="number" th:field="*{products[__${iterStat.index}__].price}" class="input-field" min="0" step="0.01" />
+            <input type="number" th:field="*{activeProducts[__${iterStat.index}__].price}" class="input-field" min="0" step="0.01" />
+
+            <!-- Бутон за изтриване -->
+            <form th:action="@{'/admin/product/delete/' + ${product.id}}" th:method="DELETE">
+                <button type="submit" class="btn-delete" title="Delete product with ID: [[${product.id}]]">
+                    Delete
+                </button>
+            </form>
         </div>
     </div>
 

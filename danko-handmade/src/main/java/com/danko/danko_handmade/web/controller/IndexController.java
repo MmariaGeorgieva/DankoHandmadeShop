@@ -92,7 +92,7 @@ public class IndexController {
 
     @GetMapping("/policies")
     public String getPoliciesPage() {
-        return "policies";
+        return "shop-policies";
     }
 
     @GetMapping("/contact")

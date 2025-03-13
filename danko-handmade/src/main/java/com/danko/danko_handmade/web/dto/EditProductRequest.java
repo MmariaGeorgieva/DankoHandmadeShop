@@ -1,39 +1,49 @@
 package com.danko.danko_handmade.web.dto;
 
 import com.danko.danko_handmade.product.model.ProductSection;
-import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class EditProductRequest {
 
-    @Column(nullable = false)
+    @NotNull
     private String listingTitle;
 
-    @Lob
-    @Column(nullable = false, columnDefinition = "TEXT")
+    @NotNull
     private String description;
 
-    @Column(nullable = false)
+    @NotNull
     private BigDecimal price;
 
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
-    private List<ProductSection> productSection;
+    @NotNull
+    private ProductSection productSection;
 
-    @Column(nullable = false)
+    @NotNull
+    @Min(0)
     private int stockQuantity;
 
-    private String mainPhotoUrl;
-
-    @ElementCollection
-    private List<String> additionalPhotos;
-
-    @Column(nullable = false)
+    @NotNull
     private double weight;
+
+    private boolean active;
+
+    private String existingMainPhotoUrl;
+
+    private List<String> existingAdditionalPhotosUrls = new ArrayList<>();
+
+    private MultipartFile newMainPhoto;
+    private List<MultipartFile> newAdditionalPhotos = new ArrayList<>();
 }

@@ -3,50 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Our Handmade Store</title>
+    <title>Welcome to DankoHandmade</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background: url('/images/IMG_1864.JPG') no-repeat center center/cover;
+            color: #2e4d25; /* Тъмно зелено за контраст */
         }
 
         header {
-            background-color: #333;
+            background-color: rgba(51, 51, 51, 0.8); /* Полупрозрачен фон */
             color: white;
-            padding: 20px 0;
+            padding: 20px 30px;
             display: flex;
-            justify-content: space-between;  /* Разпределяме елементите по краищата */
-            align-items: center;  /* Подравняваме вертикално елементите */
-            padding: 0 30px;  /* Добавяме малко отстояние от лявата и дясната страна */
-        }
-
-        header h1 {
-            margin: 0;  /* Премахваме маргин от заглавието */
+            justify-content: space-between;
+            align-items: center;
         }
 
         .container {
             padding: 30px;
             text-align: center;
-        }
-
-        .intro {
-            margin-bottom: 50px;
+            background-color: rgba(255, 255, 255, 0.6); /* Още по-прозрачен фон */
+            border-radius: 10px;
+            margin: 50px auto;
+            width: 80%;
         }
 
         .intro h1 {
             font-size: 36px;
-            margin-bottom: 10px;
+            color: #205c40; /* Наситено зелено */
         }
 
         .intro p {
             font-size: 18px;
-            color: #666;
-        }
-
-        .buttons {
-            margin-top: 30px;
+            color: #2e4d25;
         }
 
         .buttons a {
@@ -60,16 +52,21 @@
             font-size: 16px;
         }
 
-        .buttons a:hover {
-            background-color: #60c6a0;
+        .auth-buttons a {
+            padding: 10px 20px;
+            background-color: #cfe2da; /* Същият цвят като футъра */
+            color: #205C40FF; /* Текстът ще бъде в зелено */
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
         }
 
-        .logout-button {
-            background-color: #e74c3c;
+        .auth-buttons a:hover {
+            background-color: #b9cac3; /* Малко по-тъмно при hover */
         }
 
         footer {
-            background-color: #333;
+            background-color: rgba(51, 51, 51, 0.8);
             color: white;
             padding: 10px 0;
             text-align: center;
@@ -77,30 +74,9 @@
             bottom: 0;
             width: 100%;
         }
-
-        .highlight {
-            font-weight: bold;
-            color: #60c6a0;
-        }
-
-        /* Стилове за бутоните в горния десен ъгъл */
-        .auth-buttons a {
-            margin-left: 20px;  /* Добавяме малко разстояние между бутоните */
-            padding: 10px 20px;
-            background-color: #60c6a0;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-
-        .auth-buttons a:hover {
-            background-color: #60c6a0;
-        }
     </style>
 </head>
 <body>
-
 <header>
     <h1>Welcome to DankoHandmade</h1>
     <div class="auth-buttons">
@@ -112,39 +88,14 @@
 <div class="container">
     <div class="intro">
         <h1>About the Artist</h1>
-        <p>Greetings, I'm Danko, and I've devoted my life to crafting pottery that's not just beautiful but tells a story. I was born in Pleven, Bulgaria, and my journey with pottery began at a young age. My grandmother worked in a ceramics workshop, and I was entranced by the magic that unfolded before my eyes. I saw clay transform into plates, cups, and more. I witnessed the skillful hands of craftsmen shaping and painting each piece. The kiln's fireworks of colors mesmerized me, and I fell in love.</p>
+        <p>Greetings, I'm Danko, a storyteller in clay. Born in Pleven, Bulgaria, my pottery journey began at my
+            grandmother’s ceramics workshop, where I watched formless clay awaken into art. The kiln’s fiery alchemy,
+            the graceful dance of skilled hands, and the gentle crackling of cooling pottery wove their spell around
+            me.</p>
         <p>It was love at first sight, and it stayed for life.</p>
     </div>
-
-    <div class="intro">
-        <h1>About the Shop</h1>
-        <p>In a world filled with mass-produced items, we offer you something truly unique. Our pottery is a labor of love, a fusion of tradition and modern artistry, and a piece of Bulgaria's rich heritage brought to your home.</p>
-        <p>At Danko's Ceramics Workshop, we create pottery with character and style. Each piece is a work of art, shaped by hand, and painted with care. We draw inspiration from the enchanting beauty of the Bulgarian mountains, the endless blue skies, the warm hues of autumn, and the cozy fireside glow. Our pottery embodies the elements and love harnessed from the power of the earth.</p>
-        <p>Our pottery lines are more than just items; they carry the specific atmosphere and tradition of the Balkan Peninsula. Every piece we create is an expression of our passion for pottery and our commitment to preserving and sharing the cultural richness of Bulgaria.</p>
-        <p>By choosing Danko's Ceramics Workshop, you're not just buying pottery; you're bringing home a piece of history and a slice of our hearts. Thank you for being part of our journey, and we look forward to creating more beautiful memories with you.</p>
-    </div>
-
 </div>
 
-<footer>
-    <p>&copy; 2025 DankoHandmade</p>
-</footer>
-
-<script>
-    // Placeholder script to toggle login/logout buttons
-    // In a real-world app, this could be handled by checking session or authentication status
-
-    // Example: Check if the user is logged in (use a server-side check or session variable in real implementation)
-    const userLoggedIn = false; // Set this dynamically based on the user's session or authentication status
-
-    if (userLoggedIn) {
-        document.getElementById('auth-buttons').style.display = 'none';
-        document.getElementById('logout-button').style.display = 'block';
-    } else {
-        document.getElementById('auth-buttons').style.display = 'block';
-        document.getElementById('logout-button').style.display = 'none';
-    }
-</script>
-
+<div th:replace="~{fragments/footer}"></div>
 </body>
 </html>

@@ -13,7 +13,7 @@ import java.util.UUID;
 @Data
 public class EditProductsPageRequest {
 
-    private List<ProductEditRequest> products;
+    private List<ProductEditRequest> activeProducts;
 
     @Data
     public static class ProductEditRequest {

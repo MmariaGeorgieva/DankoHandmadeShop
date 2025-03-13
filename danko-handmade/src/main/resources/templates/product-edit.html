@@ -11,12 +11,14 @@
             margin: 0;
             padding: 0;
         }
+
         header {
             background-color: #333;
             color: white;
             padding: 15px 0;
             text-align: center;
         }
+
         .container {
             width: 60%;
             margin: 20px auto;
@@ -25,22 +27,26 @@
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             font-size: 14px;
             font-weight: bold;
             display: block;
             margin-bottom: 5px;
         }
-        input[type="text"], input[type="number"], input[type="url"], textarea, select {
+
+        input[type="text"], input[type="number"], input[type="url"], textarea, select, input[type="file"] {
             width: 100%;
             padding: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 14px;
         }
+
         button {
             background-color: #60c6a0;
             color: white;
@@ -50,9 +56,11 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         button:hover {
             background-color: #2ecc71;
         }
+
         footer {
             background-color: #333;
             color: white;
@@ -82,6 +90,49 @@
             background-color: #f1f1f1; /* Сив фон при hover */
             color: #333; /* Тъмен текст при hover */
         }
+
+        #main-photo-preview {
+            position: relative; /* За да можем да позиционираме бутона вътре в контейнера на снимката */
+            display: inline-block; /* Да е в същия ред, като самата снимка */
+        }
+
+        /* Стилове за бутон X за премахване на снимките */
+        .remove-photo-button {
+            background-color: transparent;
+            color: #dd2929;
+            border: 1px solid #dd2929;
+            border-radius: 50%; /* Кръгла форма */
+            width: 20px; /* Ширина на кръгчето */
+            height: 20px; /* Височина на кръгчето */
+            font-size: 15px; /* Размер на шрифта */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: absolute;
+            top: -5px; /* Позиция на бутон "X" отгоре, така че да е върху снимката */
+            right: -5px; /* Позиция на бутон "X" отдясно, така че да не излиза извън снимката */
+            cursor: pointer; /* Курсор за ръка */
+            transition: background-color 0.3s, border-color 0.3s; /* Преходи за фон и бордър */
+            z-index: 1; /* За да е на преден план спрямо снимката */
+        }
+
+        .remove-photo-button:hover {
+            background-color: #f1f1f1; /* Лек сив фон при hover */
+            border-color: #999; /* Леко по-сив бордър при hover */
+        }
+
+        .remove-photo-button:focus {
+            outline: none; /* Премахване на очертания при фокусиране */
+        }
+
+
+        /* Стилизация на снимки */
+        .photo-wrapper {
+            display: inline-block;
+            margin-right: 10px;
+            position: relative;
+        }
     </style>
 </head>
 <body>
@@ -93,93 +144,111 @@
 </header>
 
 <div class="container">
-    <!-- Форма за редактиране на продукта -->
     <form th:action="@{'/admin/product/edit/' + ${product.id}}"
           th:object="${editProductRequest}"
-          th:method="PUT">
+          th:method="PUT"
+          enctype="multipart/form-data">
 
+        <!-- Listing Title -->
         <div class="form-group">
             <label for="name">Listing Title</label>
-            <input type="text" id="name" th:field="*{listingTitle}" placeholder="Enter product name" />
+            <input type="text" id="name" th:field="*{listingTitle}" placeholder="Enter product name"/>
+            <div th:if="${#fields.hasErrors('listingTitle')}" class="error">
+                <p th:errors="*{listingTitle}"></p>
+            </div>
         </div>
 
+        <!-- Description -->
         <div class="form-group">
             <label for="description">Description</label>
             <textarea id="description" th:field="*{description}" placeholder="Enter product description"></textarea>
+            <div th:if="${#fields.hasErrors('description')}" class="error">
+                <p th:errors="*{description}"></p>
+            </div>
         </div>
 
+        <!-- Price -->
         <div class="form-group">
             <label for="price">Price</label>
-            <input type="number" id="price" th:field="*{price}" placeholder="Enter product price" />
+            <input type="number" id="price" th:field="*{price}" placeholder="Enter product price"/>
+            <div th:if="${#fields.hasErrors('price')}" class="error">
+                <p th:errors="*{price}"></p>
+            </div>
         </div>
 
+        <!-- Stock Quantity -->
         <div class="form-group">
             <label for="stock">Stock Quantity</label>
-            <input type="number" id="stock" th:field="*{stockQuantity}" placeholder="Enter stock quantity" />
+            <input type="number" id="stock" th:field="*{stockQuantity}" placeholder="Enter stock quantity"/>
+            <div th:if="${#fields.hasErrors('stockQuantity')}" class="error">
+                <p th:errors="*{stockQuantity}"></p>
+            </div>
         </div>
 
+        <!-- Product Section -->
         <div class="form-group">
             <label for="productSection">Product Section</label>
             <select id="productSection" th:field="*{productSection}">
                 <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
-                        th:value="${section}"
-                        th:text="${section}"></option>
+                        th:value="${section}" th:text="${section}"></option>
             </select>
         </div>
 
+        <!-- Weight -->
         <div class="form-group">
             <label for="weight">Weight (kg)</label>
             <input type="number" id="weight" th:field="*{weight}" placeholder="Enter product weight in kg" step="0.01">
-        </div>
-
-        <div class="form-group">
-            <label>Current Main Photo</label>
-            <div id="main-photo-preview">
-                <img th:src="@{${product.mainPhotoUrl}}" alt="Main Photo" width="150" height="120"
-                     style="border: 1px solid #ccc; border-radius: 5px; display: block; margin-bottom: 10px;">
-                <input type="hidden" name="keepMainPhoto" value="true">
-                <button type="button" onclick="removeMainPhoto()">Remove Main Photo</button>
+            <div th:if="${#fields.hasErrors('weight')}" class="error">
+                <p th:errors="*{weight}"></p>
             </div>
         </div>
 
+        <!-- Current Main Photo -->
+        <div class="form-group">
+            <label>Current Main Photo</label>
+            <div id="main-photo-preview" style="position: relative;">
+                <!-- Покажи текущата главна снимка -->
+                <img th:src="@{${product.mainPhotoUrl}}" alt="Main Photo" width="150" height="120"
+                     style="border: 1px solid #ccc; border-radius: 5px; display: block; margin-bottom: 10px;">
+
+                <!-- Бутон за премахване на снимката (X) -->
+                <form th:action="@{'/admin/product/removeMainPhoto/' + ${product.id}}" th:method="DELETE"
+                      style="position: absolute; top: 0; right: 0;">
+                    <button type="submit" class="remove-photo-button">X</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- New Main Photo -->
         <div class="form-group">
             <label for="newMainPhoto">Upload New Main Photo</label>
             <input type="file" id="newMainPhoto" name="newMainPhoto" accept="image/*">
         </div>
 
+        <!-- Current Additional Photos -->
         <div class="form-group">
             <label>Current Additional Photos</label>
-            <div id="additional-photos-preview">
-                <div th:each="photoUrl : ${product.additionalPhotos}" style="display: inline-block; margin-right: 10px; position: relative;">
-                    <img th:src="${photoUrl}" alt="Additional Photo" width="100" height="80" style="border: 1px solid #ccc; border-radius: 5px;">
-                    <button type="button" th:data-url="${photoUrl}" onclick="removeAdditionalPhoto(this)">X</button>
-                </div>
+            <div th:each="additionalPhotoUrl : ${product.additionalPhotosUrls}"
+                 class="photo-wrapper" style="position: relative;">
+
+                <!-- Показване на снимката -->
+                <img th:src="@{${additionalPhotoUrl}}" alt="Additional Photo" width="100" height="80"
+                     style="border: 1px solid #ccc; border-radius: 5px;">
+
+                <!-- Бутон за премахване -->
+                <form th:action="@{'/admin/product/deletePhoto/' + ${product.id}}" th:method="DELETE" style="position:
+                absolute; top: 0; right: 0;">
+                    <button type="submit" class="remove-photo-button">X</button>
+                </form>
             </div>
         </div>
 
+
+        <!-- New Additional Photos -->
         <div class="form-group">
-            <label for="additionalPhotos">Upload New Additional Photos</label>
-            <input type="file" id="additionalPhotos" name="additionalPhotos" multiple accept="image/*">
+            <label for="newAdditionalPhotos">Upload New Additional Photos</label>
+            <input type="file" id="newAdditionalPhotos" name="newAdditionalPhotos" multiple accept="image/*">
         </div>
-
-        <script>
-            function removeMainPhoto() {
-                document.getElementById("main-photo-preview").innerHTML = "<p>Main photo removed. Upload a new one if needed.</p>";
-                document.querySelector("input[name='keepMainPhoto']").value = "false";
-            }
-
-            function removeAdditionalPhoto(button) {
-                let photoUrl = button.getAttribute("data-url");
-                let container = button.parentElement;
-                container.style.display = "none";
-
-                let input = document.createElement("input");
-                input.type = "hidden";
-                input.name = "removeAdditionalPhotos";
-                input.value = photoUrl;
-                document.querySelector("form").appendChild(input);
-            }
-        </script>
 
         <button type="submit">Save Changes</button>
     </form>
