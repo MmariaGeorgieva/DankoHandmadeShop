@@ -1,5 +1,9 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.product.model.Product;
+import com.danko.danko_handmade.product.model.ProductSection;
+import com.danko.danko_handmade.product.service.ProductService;
+import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.LoginRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
@@ -14,15 +18,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class IndexController {
 
     private final UserService userService;
+    private final ProductService productService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, ProductService productService) {
         this.userService = userService;
+        this.productService = productService;
     }
 
 //    @GetMapping("/")
@@ -32,12 +39,12 @@ public class IndexController {
 //    }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam ) {
+    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
 
-        if(errorParam != null) {
+        if (errorParam != null) {
             modelAndView.addObject("errorMessage", "Incorrect username or password.");
         }
 
@@ -66,25 +73,31 @@ public class IndexController {
     }
 
     @GetMapping("/home")
-    public String GetHomePage(Authentication authentication) {
-        if (authentication != null && authentication.isAuthenticated()) {
+    public ModelAndView GetHomePage(Authentication user) {
 
-            authentication.getAuthorities().forEach(grantedAuthority ->
+        List<Product> activeProducts = productService.getAllActiveProducts();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("activeProducts", activeProducts);
+        if (user != null && user.isAuthenticated()) {
+            modelAndView.addObject("user", user);
+            user.getAuthorities().forEach(grantedAuthority ->
                     System.out.println("Authority: " + grantedAuthority.getAuthority()));
 
-            boolean isAdmin = authentication.getAuthorities().stream()
+            boolean isAdmin = user.getAuthorities().stream()
                     .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-
             if (isAdmin) {
-                return "redirect:/admin";
+                modelAndView.setViewName("admin");
+            } else {
+                modelAndView.setViewName("home");
             }
         }
-        return "home";
+        return modelAndView;
     }
 
-    @GetMapping("/shop")
-    public String getShopPage() {
-        return "shop";
+    @PostMapping("/home")
+    public ModelAndView viewHomePage() {
+        return null;
     }
 
     @GetMapping("/about")
@@ -97,23 +110,34 @@ public class IndexController {
         return modelAndView;
     }
 
-    @GetMapping("/policies")
-    public String getPoliciesPage() {
-        return "shop-policies";
+    @GetMapping("/shop-policies")
+    public ModelAndView getPoliciesPage(Authentication user) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("shop-policies");
+        if (user != null) {
+            modelAndView.addObject("user", user);
+        }
+        return modelAndView;
     }
 
     @GetMapping("/contact")
-    public String getContactPage() {
-        return "contact"; // contact.html
+    public ModelAndView getContactPage(Authentication user) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("contact");
+        if (user != null) {
+            modelAndView.addObject("user", user);
+        }
+        return modelAndView;
     }
 
     @GetMapping("/faq")
-    public String getFAQPage() {
-        return "faq"; // faq.html
+    public ModelAndView getFaqsPage(Authentication user) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("faq");
+        if (user != null) {
+            modelAndView.addObject("user", user);
+        }
+        return modelAndView;
     }
 
-    @GetMapping("/delivery")
-    public String getDeliveryPage() {
-        return "delivery"; // delivery.html
-    }
 }

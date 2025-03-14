@@ -1,135 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register Panel</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
-      background-color: #f4f4f4;
-      color: #375b2d;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: url('/images/IMG_2171.jpg') no-repeat center center/cover;
+            color: #375b2d;
+        }
 
-    .background-image-left {
-      background-image: url('/images/IMG_1963.JPG');
-      background-size: cover;
-      background-position: bottom left;
-      position: fixed;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 50%;
-      height: 100%;
-      opacity: 0.7;
-      z-index: -1;
-      transform: scaleX(-1);
-    }
+        .container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            height: 90%;
+            padding: 20px;
+        }
 
-    .background-image-right {
-      background-image: url('/images/IMG_1963.JPG');
-      background-size: cover;
-      background-position: top right;
-      position: fixed;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 50%;
-      height: 100%;
-      opacity: 0.6;
-      z-index: -1;
-    }
+        .form-container {
+            background-color: rgba(194, 196, 190, 0.3);
+            padding: 30px;
+            border-radius: 0;
+            width: 270px;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            left: 58%;
+            transform: translateX(-50%);
+            box-shadow: none;
+        }
 
-    .background-image-left, .background-image-right {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
+        .form-container h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #375b2d;
+        }
 
-    .container {
-      display: flex;
-      justify-content: flex-start;
-      align-items: flex-start;
-      height: 90%;
-      padding: 20px;
-    }
+        .form-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
 
-    .form-container {
-      background-color: rgba(223, 237, 200, 0.3);
-      padding: 30px;
-      border-radius: 0;
-      width: 270px;
-      text-align: center;
-      position: absolute;
-      top: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      box-shadow: none;
-    }
+        .form-container input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
 
-    .form-container h2 {
-      margin-top: 0;
-      font-size: 24px;
-      color: #375b2d;
-    }
+        .form-container button {
+            background-color: white;
+            color: #375b2d;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-    .form-container label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
+        .form-container button:hover {
+            background-color: #f1f1f1;
+        }
 
-    .form-container input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-      border: 1px solid #ddd;
-    }
+        .error-message {
+            color: #eb3e3e;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
 
-    .form-container button {
-      background-color: white;
-      color: #375b2d;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
+        footer {
+            background-color: rgba(223, 237, 200, 0.3);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1;
+        }
 
-    .form-container button:hover {
-      background-color: #f1f1f1;
-    }
+        .form-already {
+            font-size: 14px;
+        }
 
-    .error-message {
-      color: #eb3e3e;
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    footer {
-      background-color: rgba(223, 237, 200, 0.3);
-      color: white;
-      padding: 10px 0;
-      text-align: center;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-      z-index: 1;
-    }
-
-    .form-already {
-      font-size: 14px;
-    }
-
-    .form-already a {
-      color: #375b2d;
-    }
-  </style>
+        .form-already a {
+            color: #375b2d;
+        }
+    </style>
 </head>
 <body>
 
@@ -137,28 +102,30 @@
 <div class="background-image-right"></div>
 
 <div class="container">
-  <div class="form-container">
-    <h2>Create a New Account</h2>
-    <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
+    <div class="form-container">
+        <h2>Create a New Account</h2>
+        <form th:action="@{/register}" th:method="POST" th:object="${registerRequest}">
 
-      <label for="username">Username</label>
-      <input type="text" id="username" name="username" th:field="*{username}" required>
-      <p class="error-message" id="usernameError" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></p>
-      <p class="error-message" th:text="${usernameAlreadyExistsMessage}"></p>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" th:field="*{username}" required>
+            <p class="error-message" id="usernameError" th:if="${#fields.hasErrors('username')}"
+               th:errors="*{username}"></p>
+            <p class="error-message" th:text="${usernameAlreadyExistsMessage}"></p>
 
-      <label for="password">Password</label>
-      <input type="password" id="password" name="password" th:field="*{password}" required>
-      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message" id="passwordError"></div>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" th:field="*{password}" required>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error-message"
+                 id="passwordError"></div>
 
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" th:field="*{email}" required>
-      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message" id="emailError"></div>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" th:field="*{email}" required>
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error-message" id="emailError"></div>
 
-      <button type="submit">Register</button>
+            <button type="submit">Register</button>
 
-      <p class="form-already">Already have an account? <a href="/login">Login here</a></p>
-    </form>
-  </div>
+            <p class="form-already">Already have an account? <a href="/login">Login here</a></p>
+        </form>
+    </div>
 </div>
 
 <div th:replace="~{fragments/footer}"></div>

@@ -10,6 +10,9 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
 
         .banner {
@@ -17,159 +20,150 @@
             height: 250px;
             background: url('/images/banner.jpg') no-repeat center center;
             background-size: cover;
-        }
-
-        .container {
-            width: 90%;
-            margin: 20px auto;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             text-align: center;
         }
 
-        h1 {
+        .auth-buttons {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .contact-button {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .auth-buttons a, .contact-button a {
+            text-decoration: none;
+            background-color: rgba(249, 249, 249, 0.4);
+            color: #800020;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            border: 1px solid rgba(221, 221, 221, 0.4);
+        }
+
+        .auth-buttons a:hover, .contact-button a:hover {
+            background-color: rgba(224, 224, 224, 0.4);
+        }
+
+        .banner-content {
+            color: #fff;
+            text-shadow: -1px -1px 1px #800020, 1px -1px 1px #800020, -1px 1px 1px #800020, 1px 1px 1px #800020;
+        }
+
+        .banner-content h1 {
             font-size: 32px;
             margin-bottom: 5px;
         }
 
-        .subtitle {
+        .banner-content .subtitle {
             font-size: 20px;
-            color: #777;
+            color: #ddd;
         }
 
-        .shop-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            margin: 20px 0;
-        }
-
-        .shop-stats {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-        }
-
-        .rating {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .stars {
-            color: gold;
-            font-size: 20px;
-        }
-
-        .contact {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .contact a {
-            text-decoration: none;
-            background-color: #27ae60;
+        footer {
+            background-color: rgba(129, 17, 41, 0.6);
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-        }
-
-        .announcement {
-            background: #fff;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 5px;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-            text-align: left;
-        }
-
-        .products {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .product {
-            background: white;
-            padding: 10px;
-            border-radius: 5px;
+            padding: 10px 0;
             text-align: center;
-            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .product img {
+            position: fixed;
+            bottom: 0;
             width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 5px;
         }
 
-        .pagination {
-            margin: 20px 0;
+        .product-listing {
             display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
             justify-content: center;
-            gap: 10px;
+            padding: 20px;
         }
 
-        .pagination a {
-            text-decoration: none;
-            background: #333;
+        .product-item {
+            width: 22%; /* Променено за да поберат точно 4 продукта на ред */
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product-item h3 {
+            font-size: 18px;
+            color: rgba(129, 17, 41, 0.6);
+            margin: 10px 0;
+        }
+
+        .product-item p {
+            font-size: 16px;
+            color: #333;
+        }
+
+        .add-to-cart-button {
+            background-color: rgba(129, 17, 41, 0.6);
             color: white;
             padding: 10px;
+            border: none;
             border-radius: 5px;
-            transition: background 0.3s;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 16px;
         }
 
-        .pagination a:hover {
-            background: #555;
+        .add-to-cart-button:hover {
+            background-color: rgba(129, 17, 41, 0.8);
         }
-
-        nav ul {
-            list-style: none;
-            display: flex;
-            gap: 15px;
-        }
-
-        nav ul li {
-            display: inline;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            padding: 10px 15px;
-            background-color: #60c6a0;
-            color: white;
-            border-radius: 5px;
-        }
-
-        nav ul li a:hover {
-            background-color: #0056b3;
-        }
-
     </style>
 </head>
 <body>
 
-<div class="banner" style="background-image: url('/images/banner.jpg');"></div>
-
-<div class="container">
-    <h1>DankoHandmade</h1>
-    <p class="subtitle">Artisan Pottery: Handmade Elegance, Distinctive Style<br>Pleven, Bulgaria</p>
-
-    <nav>
-        <ul>
-            <li><a th:href="@{/shop}">Shop</a></li>
-            <li><a th:href="@{/about}">About Us</a></li>
-            <li><a th:href="@{/policies}">Shop Policies</a></li>
-            <li><a th:href="@{/faq}">FAQ</a></li>
-            <li><a th:href="@{/delivery}">Delivery Info</a></li>
-            <li><a th:href="@{/contact}">Contact Shop</a></li>
-            <li><a th:href="@{/logout}">Logout</a></li>
-        </ul>
-    </nav>
-
+<div class="banner">
+    <div class="contact-button">
+        <a th:href="@{/contact}">Contact Shop</a>
+    </div>
+    <div class="auth-buttons">
+        <a th:unless="${user}" th:href="@{/login}">Login</a>
+        <a th:unless="${user}" th:href="@{/register}">Register</a>
+        <a th:if="${user}" th:href="@{/logout}">Logout</a>
+    </div>
+    <div class="banner-content">
+        <h1>DankoHandmade</h1>
+        <p class="subtitle">Artisan Pottery: Handmade Elegance, Distinctive Style</p>
+    </div>
 </div>
-<div th:replace="~{fragments/footer}"></div>
+
+<div class="available-products">
+    <h2 style="text-align: center; font-size: 24px; color: #800020;">Available Products - Ready to Ship</h2>
+    <div class="product-listing">
+        <div th:each="product : ${activeProducts}" class="product-item">
+            <a th:href="@{'/active-product/' + ${product.id}}">
+                <img th:src="@{${product.mainPhotoUrl}}" alt="Product Image">
+            </a>
+            <h3 th:text="${product.listingTitle}"></h3>
+            <p th:text="${product.price} + ' EUR'"></p>
+            <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer}" class="footer"></div>
+
 </body>
 </html>

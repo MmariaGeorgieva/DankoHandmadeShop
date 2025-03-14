@@ -1,7 +1,6 @@
 package com.danko.danko_handmade.user.model;
 
 import com.danko.danko_handmade.address.model.UserAddress;
-import com.danko.danko_handmade.order.model.Order;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -53,7 +52,5 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserAddress> userAddressList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private List<Order> userOrders = new ArrayList<>();
 
 }

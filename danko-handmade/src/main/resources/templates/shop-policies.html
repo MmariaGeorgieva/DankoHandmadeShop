@@ -2,9 +2,185 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to DankoHandmade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('/images/IMG_1963.JPG') no-repeat center center/cover;
+            color: #2e4d25;
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+
+        header h1 {
+            color: white;
+            font-size: 36px;
+            margin-right: 30px;
+            flex-grow: 1;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: flex-end;
+        }
+
+        .auth-buttons a {
+            padding: 12px 25px;
+            background-color: white;
+            color: #205c40;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .auth-buttons a:hover {
+            background-color: #f0f0f0;
+            color: #205c40;
+        }
+
+        .container {
+            padding: 30px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.7);
+            border-radius: 10px;
+            margin: 100px auto;
+            width: 85%;
+            max-width: 1200px;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #205c40;
+        }
+
+        p {
+            font-size: 18px;
+            color: #2e4d25;
+            line-height: 1.6;
+        }
+
+        footer {
+            background-color: rgba(51, 51, 51, 0.6);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
+
+<header>
+    <h1>Learn About our Shop's Policies</h1>
+    <div class="auth-buttons">
+        <a th:if="${user}" th:href="@{/home}" class="auth-buttons">To The Shop</a>
+        <a th:unless="${user}" th:href="@{/login}" class="auth-buttons">Login</a>
+        <a th:unless="${user}" th:href="@{/register}" class="auth-buttons">Register</a>
+        <a th:if="${user}" th:href="@{/logout}" class="auth-buttons">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+    <h1>Shipping</h1>
+    <p>Ships from: Bulgaria.</p>
+    <p>International Shipping: We proudly offer FREE international shipping via the reliable worldwide postal system.
+        Rest assured, we provide tracking for your peace of mind. Delivery times typically range from 1 to 4 weeks,
+        depending on your location.</p>
+    <p>You'll receive a shipping notification with a tracking number as soon as your item is on its way.</p>
+    <p>If your purchase is a gift, please let us know. We can include a personalized note from you, and we always make
+        sure to leave out any pricing details.</p>
+</div>
+
+<div class="container">
+    <h1>Customs and Import Taxes</h1>
+    <p>Buyers are responsible for any customs and import taxes that may apply.
+        We are not responsible for delays due to customs processing.</p>
+</div>
+
+<div class="container">
+    <h1>Returns & Exchanges</h1>
+    <p>Returns accepted within 30 days of item delivery. Buyer is responsible for return shipping costs
+        and any loss in value if an item isn't returned in original condition. In case you would like to return an
+        item, please contact us through our contact form.</p>
+</div>
+
+<div class="container">
+    <h1>Cancellations</h1>
+    <p>Cancellations: accepted. Request a cancellation: within 12 hours of purchase.
+        In case you would like to cancel an order, please contact us through our contact form.</p>
+</div>
+
+<div class="container">
+    <h1>Payments</h1>
+    <p>Payments: Stripe accepted.</p>
+    <p>We keep your payment information secure. We never receive your credit card information.</p>
+</div>
+
+<div class="container">
+    <h1>Privacy policy</h1>
+    <p>
+        This Privacy Policy describes how and when I collect, use, and share information when you purchase an item from me, contact me, or otherwise use my services through Etsy.com or its related sites and services.<br><br>
+
+        INFORMATION I COLLECT<br>
+        To fulfil your order, you must provide me with certain information (which you authorised Etsy to provide to me), such as your name, email address, postal address, payment information, and the details of the product that you’re ordering. You may also choose to provide me with additional personal information (for a custom order, for example), if you contact me directly.<br><br>
+
+        WHY I NEED YOU INFORMATION AND HOW I USE IT<br>
+        I rely on a number of legal bases to collect, use, and share your information, including:<br>
+        • as needed to provide my services, such as when I use your information to fulfil your order, to settle disputes, or to provide customer support;<br>
+        • when you have provided your affirmative consent, which you may revoke at any time, such as by signing up for my mailing list;<br>
+        • if necessary to comply with a legal obligation or court order or in connection with a legal claim, such as retaining information about your purchases if required by tax law; and<br>
+        • as necessary for the purpose of my legitimate interests, if those legitimate interests are not overridden by your rights or interests, such as 1) providing and improving my services. I use your information to provide the services you requested and in my legitimate interest to improve my services; and 2) Compliance with the Etsy Seller Policy and Terms of Use. I use your information as necessary to comply with my obligations under the Etsy Seller Policy and Terms of Use.<br><br>
+
+        INFORMATION SHARING AND DISCLOSURE<br>
+        Information about my customers is important to my business. I share your personal information for very limited reasons and in limited circumstances, as follows:<br>
+        • Etsy. I share information with Etsy as necessary to provide you my services and comply with my obligations under both the Etsy Seller Policy and Etsy Terms of Use.<br>
+        • Service providers. I engage certain trusted third parties to perform functions and provide services to my shop, such as delivery companies. I will share your personal information with these third parties, but only to the extent necessary to perform these services.<br>
+        • Business transfers. If I sell or merge my business, I may disclose your information as part of that transaction, only to the extent permitted by law.<br>
+        • Compliance with laws. I may collect, use, retain, and share your information if I have a good faith belief that it is reasonably necessary to: (a) respond to legal process or to government requests; (b) enforce my agreements, terms and policies; (c) prevent, investigate, and address fraud and other illegal activity, security, or technical issues; or (d) protect the rights, property, and safety of my customers, or others.<br><br>
+
+        DATA RETENTION<br>
+        I retain your personal information only for as long as necessary to provide you with my services and as described in my Privacy Policy. However, I may also be required to retain this information to comply with my legal and regulatory obligations, to resolve disputes, and to enforce my agreements. I generally keep your data for up to four years.<br><br>
+
+        TRANSFERS OF PERSONAL INFORMATION OUTSIDE THE EU<br>
+        I may store and process your information through third-party hosting services in the US and other jurisdictions. As a result, I may transfer your personal information to a jurisdiction with different data protection and government surveillance laws than your jurisdiction. If I am deemed to transfer information about you outside of the EU, I rely on Privacy Shield as the legal basis for the transfer, as Google Cloud is Privacy Shield certified.<br><br>
+
+        YOUR RIGHTS<br>
+        If you reside in certain territories, including the EU, you have a number of rights in relation to your personal information. While some of these rights apply generally, certain rights apply only in certain limited cases. I describe these rights below:<br>
+        • Access. You may have the right to access and receive a copy of the personal information I hold about you by contacting me using the contact information below.<br>
+        • Change, restrict, delete. You may also have rights to change, restrict my use of, or delete your personal information. Absent exceptional circumstances (like where I am required to store data for legal reasons) I will generally delete your personal information upon request.<br>
+        • Object. You can object to (i) my processing of some of your information based on my legitimate interests and (ii) receiving marketing messages from me after providing your express consent to receive them. In such cases, I will delete your personal information unless I have compelling and legitimate grounds to continue using that information or if it is needed for legal reasons.<br>
+        • Complain. If you reside in the EU and wish to raise a concern about my use of your information (and without prejudice to any other rights you may have), you have the right to do so with your local data protection authority.<br><br>
+
+        HOW TO CONTACT ME<br>
+        For purposes of EU data protection law, I, Daniel Nikolov, am the data controller of your personal information. If you have any questions or concerns, you may contact me at danko.pottery@gmail.com. Alternately, you may send a letter to me at:<br>
+        Daniel Nikolov<br>
+        10 HRISTO BOTEV STR.<br>
+        5884 BRESTOVETS<br>
+        Bulgaria
+    </p>
+
+
+</div>
+
+<div th:replace="~{fragments/footer}"></div>
 
 </body>
 </html>
