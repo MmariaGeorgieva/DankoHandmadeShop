@@ -42,7 +42,6 @@ public class EditProductRequest {
     @NotNull
     private boolean active;
 
-    private String mainImageUrl;
 
 
 

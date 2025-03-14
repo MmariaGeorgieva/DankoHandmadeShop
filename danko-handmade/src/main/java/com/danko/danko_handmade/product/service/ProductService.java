@@ -116,7 +116,6 @@ public class ProductService {
         product.setWeight(editProductRequest.getWeight());
         product.setStockQuantity(editProductRequest.getStockQuantity());
         product.setActive(editProductRequest.isActive());
-        product.setMainPhotoUrl(editProductRequest.getMainImageUrl());
 
         productRepository.save(product);
     }
@@ -179,7 +178,40 @@ public class ProductService {
         product.setMainPhotoUrl(cloudinaryService.uploadPhoto(file, "products/main/"));
         productRepository.save(product);
     }
-//
-//    public void deleteAdditionalPhotoOfProductById(UUID productId) {
-//    }
+
+    @Transactional
+    public void deleteAdditionalPhoto(UUID productId, int photoIndex) throws URISyntaxException {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        List<String> additionalPhotos = product.getAdditionalPhotosUrls();
+
+        if (additionalPhotos == null || photoIndex < 0 || photoIndex >= additionalPhotos.size()) {
+            throw new IllegalArgumentException("Invalid photo index");
+        }
+
+        String additionalPhotoUrl = additionalPhotos.get(photoIndex);
+        if (additionalPhotoUrl != null && !additionalPhotoUrl.isEmpty()) {
+            String publicId = extractPublicIdFromUrl(additionalPhotoUrl);
+
+            try {
+                cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to delete photo from Cloudinary", e);
+            }
+        }
+        additionalPhotos.remove(photoIndex);
+        productRepository.save(product);
+    }
+
+    public void uploadAdditionalPhoto(UUID productId, MultipartFile file) throws IOException {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Uploaded file cannot be empty");
+        }
+
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        String newAdditionalPhotoUrl = cloudinaryService.uploadPhoto(file, "products/additional/");
+        product.getAdditionalPhotosUrls().add(newAdditionalPhotoUrl);
+        productRepository.save(product);
+    }
 }

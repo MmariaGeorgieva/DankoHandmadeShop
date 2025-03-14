@@ -91,7 +91,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            width: 100%;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
     </style>
@@ -100,12 +107,12 @@
 
 <header>
     <div class="header-content">
-        <!-- Бутон за Active Products най-вляво -->
         <a href="/admin/products" class="btn-active">Active Products</a>
 
-        <!-- Бутоните Back и Logout вдясно -->
+        <h1 class="header-title">Inactive Products</h1>
+
         <div>
-            <a href="/admin" class="btn-back">Back</a>
+            <a href="/admin" class="btn-back">Go To Admin Panel</a>
             <a href="/logout" class="btn-logout">Logout</a>
         </div>
     </div>
@@ -129,9 +136,7 @@
     </div>
 </div>
 
-<footer>
-    <p>&copy; 2025 DankoHandmade</p>
-</footer>
+<div th:replace="~{fragments/footer}"></div>
 
 </body>
 </html>

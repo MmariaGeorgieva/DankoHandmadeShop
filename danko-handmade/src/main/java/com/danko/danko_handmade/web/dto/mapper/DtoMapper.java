@@ -21,7 +21,6 @@ public class DtoMapper {
                 .weight(product.getWeight())
                 .active(product.isActive())
                 .productSection(product.getProductSection())
-                .mainImageUrl(product.getMainPhotoUrl())
                 .build();
     }
 }

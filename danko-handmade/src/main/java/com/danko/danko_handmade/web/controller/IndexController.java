@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
+
 @Controller
 public class IndexController {
 
@@ -86,8 +88,13 @@ public class IndexController {
     }
 
     @GetMapping("/about")
-    public String getAboutPage() {
-        return "about";
+    public ModelAndView getAboutPage(Authentication user) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("about");
+        if (user != null) {
+            modelAndView.addObject("user", user);
+        }
+        return modelAndView;
     }
 
     @GetMapping("/policies")

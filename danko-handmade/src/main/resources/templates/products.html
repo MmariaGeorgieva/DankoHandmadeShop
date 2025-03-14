@@ -76,9 +76,16 @@
 
         .header-content {
             display: flex;
-            justify-content: space-between; /* Подравнява елементите на левия и десния край */
+            justify-content: space-between;
             align-items: center;
-            padding: 0 20px;
+            width: 100%;
+        }
+
+        .header-title {
+            flex-grow: 1;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
 
         /* Стилове за бутоните Back, Inactive Products и Logout */
@@ -118,12 +125,13 @@
 
 <header>
     <div class="header-content">
-        <!-- Бутон за неактивни продукти най-вляво -->
+
         <a href="/admin/products/inactive" class="btn-inactive">Inactive Products</a>
 
-        <!-- Бутоните Back и Logout вдясно -->
+        <h1 class="header-title">Active Products</h1>
+
         <div>
-            <a href="/admin" class="btn-back">Back</a>
+            <a href="/admin" class="btn-back">Go To Admin Panel</a>
             <a href="/logout" class="btn-logout">Logout</a>
         </div>
     </div>

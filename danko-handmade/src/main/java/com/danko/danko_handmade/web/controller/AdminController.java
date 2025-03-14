@@ -145,7 +145,7 @@ public class AdminController {
             return modelAndView;
         }
         productService.editProductDetails(id, editProductRequest);
-        return new ModelAndView("redirect:/admin/products");
+        return new ModelAndView("redirect:/admin/product/edit/" + id);
     }
 
     @DeleteMapping("/product/delete/{id}")
@@ -159,23 +159,29 @@ public class AdminController {
     public String deleteMainPhoto(@PathVariable UUID productId) throws URISyntaxException {
 
         productService.deleteMainPhotoOfProductWithId(productId);
-        return "redirect:/admin/product-edit/" + productId;
+        return "redirect:/admin/product/edit/" + productId;
     }
 
     @PostMapping("product/uploadMainPhoto/{productId}")
     public String uploadMainPhoto(@PathVariable UUID productId, @RequestParam("mainPhoto") MultipartFile file) throws IOException {
-        Product product = productService.getProductById(productId);
         productService.uploadNewMainPhoto(productId, file);
-        return "redirect:/admin/product/edit/" + product.getId();
+        return "redirect:/admin/product/edit/" + productId;
+    }
+
+    @DeleteMapping("/product/deleteAdditionalPhoto/{productId}/{photoIndex}")
+    public String deleteAdditionalPhoto(@PathVariable UUID productId, @PathVariable int photoIndex) throws URISyntaxException {
+        productService.deleteAdditionalPhoto(productId, photoIndex);
+        return "redirect:/admin/product/edit/" + productId;
     }
 
 
-//    @DeleteMapping("/product/deletePhoto/{productId}")
-//    public String deleteAdditionalPhoto(@PathVariable UUID productId) {
-//
-//        productService.deleteAdditionalPhotoOfProductById(productId);
-//        return "redirect:/admin/product-edit/" + productId;
-//    }
+    @PostMapping("product/uploadAdditionalPhoto/{productId}")
+    public String uploadAdditionalPhoto(@PathVariable UUID productId,
+                                    @RequestParam("additionalPhoto") MultipartFile file) throws IOException {
+        productService.uploadAdditionalPhoto(productId, file);
+        return "redirect:/admin/product/edit/" + productId;
+    }
+
 
 
 }

@@ -1,29 +1,25 @@
 <head>
   <style>
-    /* Стил за футъра */
     .footer-container {
       text-align: center;
       padding: 10px;
-      background-color: transparent; /* Прозрачен фон */
-      border-top: none; /* Без бордър */
+      background-color: transparent;
+      border-top: none;
       height: auto;
     }
 
-    /* Стил за параграфите в футъра */
     .footer-container p {
       margin: 5px 0;
-      color: white; /* Всички параграфи да са бели */
+      color: white;
     }
 
-    /* Стил за линковете в футъра */
     .footer-link {
-      color: white; /* Линковете да са бели */
-      text-decoration: none; /* Без подчертаване */
+      color: white;
+      text-decoration: none;
     }
 
-    /* Стил за линковете при hover ефект */
     .footer-link:hover {
-      text-decoration: underline; /* Подчертаване при hover */
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -32,7 +28,7 @@
   <div class="footer-container">
     <p>&copy; 2025 DankoHandmade. All rights reserved.</p>
     <p>
-      <a href="/about" class="footer-link">About</a> |
+      <a th:href="@{/about}" class="footer-link">About</a> |
       <a href="/contact" class="footer-link">Contact</a> |
       <a href="/shop-policies" class="footer-link">Shop Policies</a>
     </p>

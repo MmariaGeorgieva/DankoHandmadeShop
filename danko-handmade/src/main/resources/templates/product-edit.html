@@ -173,6 +173,13 @@
             color: #60c6a0;
             font-weight: bold;
         }
+
+        .form-actions {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-start;
+            gap: 15px;
+        }
     </style>
 </head>
 <body>
@@ -189,6 +196,7 @@
 
 <div class="main-content">
     <div class="container">
+        <!-- Product Details Form -->
         <form th:action="@{'/admin/product/edit/' + ${product.id}}"
               th:method="PUT"
               th:object="${editProductRequest}">
@@ -243,12 +251,45 @@
                 </div>
             </div>
 
-            <div class="product-image-container" style="position: relative; display: inline-block; text-align: left;">
-                <h3 style="font-size: 14px; color: black;">Main Photo</h3>
+            <div class="form-actions">
+                <button type="submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
 
-                <img th:src="${product.mainPhotoUrl}" alt="Main Product Image" width="150" height="120">
+    <div class="container" style="margin-top: 30px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <div class="product-image-container" style="position: relative; display: inline-block; text-align: left;">
+            <h3 style="font-size: 14px; color: black;">Main Photo</h3>
+            <img th:src="${product.mainPhotoUrl != null and product.mainPhotoUrl != '' ? product.mainPhotoUrl : '/images/Logo.jpg'}"
+                 alt="Main Product Image" width="150" height="120">
+            <form th:action="@{'/admin/product/deleteMainPhoto/' + ${product.id}}" th:method="DELETE"
+                  style="position: absolute; top: 5px; right: 5px;">
+                <button type="submit" class="delete-icon" style="background-color: white; border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%; padding: 5px; cursor: pointer; font-size: 18px;">
+                    🗑️
+                </button>
+            </form>
+        </div>
 
-                <form th:action="@{'/admin/product/deleteMainPhoto/' + ${product.id}}" th:method="DELETE"
+        <div class="add-new-photo" style="margin-top: 20px; text-align: left;">
+            <h3 style="font-size: 14px; color: black;">Add New Main Photo</h3>
+            <form th:action="@{'/admin/product/uploadMainPhoto/' + ${product.id}}" th:method="POST" enctype="multipart/form-data">
+                <input type="file" name="mainPhoto" accept="image/*" required>
+                <button type="submit" class="upload-button">Upload Photo</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container" style="margin-top: 30px; background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+        <h3 style="font-size: 14px; color: black;">Additional Photos</h3>
+
+        <div class="additional-photos-container" style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <div th:each="photo, iterStat : ${product.additionalPhotosUrls}" class="product-image-container"
+                 style="position: relative; display: inline-block;">
+                <img th:src="${photo != null and photo != '' ? photo : '/images/Logo.jpg'}"
+                     alt="Product Image" width="150" height="120">
+                <form th:action="@{'/admin/product/deleteAdditionalPhoto/' + ${product.id} + '/' + ${iterStat.index}}"
+                      th:method="DELETE"
                       style="position: absolute; top: 5px; right: 5px;">
                     <button type="submit" class="delete-icon" style="background-color: white; border: 2px solid rgba(255, 255, 255, 0.7);
                 border-radius: 50%; padding: 5px; cursor: pointer; font-size: 18px;">
@@ -256,18 +297,17 @@
                     </button>
                 </form>
             </div>
+        </div>
 
-            <div class="add-new-photo" style="margin-top: 20px; text-align: left;">
-                <h3 style="font-size: 14px; color: black;">Add New Main Photo</h3>
-                <form th:action="@{'/admin/product/uploadMainPhoto/' + ${product.id}}" th:method="POST" enctype="multipart/form-data">
-                    <input type="file" name="mainPhoto" accept="image/*" required>
-                    <button type="submit" class="upload-button">Upload Photo</button>
-                </form>
-            </div>
-
-            <button type="submit">Save Changes</button>
-        </form>
+        <div class="add-new-photo" style="margin-top: 20px; text-align: left;">
+            <h3 style="font-size: 14px; color: black;">Add New Additional Photo</h3>
+            <form th:action="@{'/admin/product/uploadAdditionalPhoto/' + ${product.id}}" th:method="POST" enctype="multipart/form-data">
+                <input type="file" name="additionalPhoto" accept="image/*" required>
+                <button type="submit" class="upload-button">Upload Photo</button>
+            </form>
+        </div>
     </div>
+
 </div>
 
 <div th:replace="~{fragments/footer}"></div>
