@@ -27,9 +27,14 @@ public class SecurityConfiguration {
         http
                 .authorizeHttpRequests(matchers -> matchers
                         .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/register", "/about", "/contact", "/shop-policies", "/faq", "/home").permitAll()
+                        .requestMatchers("/",
+                                "/register",
+                                "/about",
+                                "/contact",
+                                "/shop-policies",
+                                "/faq",
+                                "/home/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/home/**").hasAnyRole("USER", "ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

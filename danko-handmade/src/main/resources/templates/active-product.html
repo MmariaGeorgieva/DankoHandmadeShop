@@ -153,7 +153,7 @@
     <h2 style="text-align: center; font-size: 24px; color: #800020;">Available Products - Ready to Ship</h2>
     <div class="product-listing">
         <div th:each="product : ${activeProducts}" class="product-item">
-            <a th:href="@{'/home/active-product/' + ${product.id}}">
+            <a th:href="@{'/active-product/' + ${product.id}}">
                 <img th:src="@{${product.mainPhotoUrl}}" alt="Product Image">
             </a>
             <h3 th:text="${product.listingTitle}"></h3>
