@@ -11,6 +11,8 @@ import com.danko.danko_handmade.web.dto.EditProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -213,5 +215,14 @@ public class ProductService {
         String newAdditionalPhotoUrl = cloudinaryService.uploadPhoto(file, "products/additional/");
         product.getAdditionalPhotosUrls().add(newAdditionalPhotoUrl);
         productRepository.save(product);
+    }
+
+    public List<Product> getSixRandomProductsFromTheSameSection(Product activeProduct) {
+        Pageable pageable = PageRequest.of(0, 6);
+        return productRepository.findSixRandomProductsFromTheSameSection(
+                activeProduct.getProductSection(),
+                activeProduct.getId(),
+                pageable
+        );
     }
 }

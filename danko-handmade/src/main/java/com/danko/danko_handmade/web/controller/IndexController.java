@@ -24,12 +24,10 @@ import java.util.List;
 public class IndexController {
 
     private final UserService userService;
-    private final ProductService productService;
 
     @Autowired
-    public IndexController(UserService userService, ProductService productService) {
+    public IndexController(UserService userService) {
         this.userService = userService;
-        this.productService = productService;
     }
 
 //    @GetMapping("/")
@@ -70,34 +68,6 @@ public class IndexController {
         userService.register(registerRequest);
 
         return "redirect:/login";
-    }
-
-    @GetMapping("/home")
-    public ModelAndView GetHomePage(Authentication user) {
-
-        List<Product> activeProducts = productService.getAllActiveProducts();
-
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("activeProducts", activeProducts);
-        if (user != null && user.isAuthenticated()) {
-            modelAndView.addObject("user", user);
-            user.getAuthorities().forEach(grantedAuthority ->
-                    System.out.println("Authority: " + grantedAuthority.getAuthority()));
-
-            boolean isAdmin = user.getAuthorities().stream()
-                    .anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-            if (isAdmin) {
-                modelAndView.setViewName("admin");
-            } else {
-                modelAndView.setViewName("home");
-            }
-        }
-        return modelAndView;
-    }
-
-    @PostMapping("/home")
-    public ModelAndView viewHomePage() {
-        return null;
     }
 
     @GetMapping("/about")

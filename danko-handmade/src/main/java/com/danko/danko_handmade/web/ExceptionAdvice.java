@@ -1,5 +1,6 @@
 package com.danko.danko_handmade.web;
 
+import com.danko.danko_handmade.exception.ProductNotActiveException;
 import com.danko.danko_handmade.exception.ProductNotFoundException;
 import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,13 +39,17 @@ public class ExceptionAdvice {
         return "redirect:/products";
     }
 
+    @ExceptionHandler(ProductNotActiveException.class)
+    public String handleUserNotActiveException(RedirectAttributes redirectAttributes) {
+        return "redirect:/home";
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({
             AccessDeniedException.class,
             NoResourceFoundException.class,
             MethodArgumentTypeMismatchException.class,
-            MissingRequestValueException.class,
-
+            MissingRequestValueException.class
     })
     public ModelAndView handleNotFoundException(RedirectAttributes redirectAttributes) {
         return new ModelAndView("not-found");

@@ -17,7 +17,7 @@
 
         .banner {
             width: 100%;
-            height: 250px;
+            height: 200px;
             background: url('/images/banner.jpg') no-repeat center center;
             background-size: cover;
             position: relative;
@@ -74,11 +74,16 @@
         footer {
             background-color: rgba(129, 17, 41, 0.6);
             color: white;
-            padding: 10px 0;
+            height: 50px;
             text-align: center;
             position: fixed;
             bottom: 0;
             width: 100%;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px;
         }
 
         .product-listing {
@@ -90,13 +95,15 @@
         }
 
         .product-item {
-            width: 22%; /* Променено за да поберат точно 4 продукта на ред */
+            width: 22%;
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 10px;
             text-align: center;
             padding: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
         }
 
         .product-item img {
@@ -111,24 +118,54 @@
             margin: 10px 0;
         }
 
-        .product-item p {
+        .product-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+            padding: 10px;
+        }
+
+        .product-info p {
             font-size: 16px;
             color: #333;
+            margin: 0;
         }
 
         .add-to-cart-button {
             background-color: rgba(129, 17, 41, 0.6);
             color: white;
-            padding: 10px;
+            padding: 8px 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 10px;
             font-size: 16px;
         }
 
         .add-to-cart-button:hover {
             background-color: rgba(129, 17, 41, 0.8);
+        }
+
+        .product-item h3 {
+            font-size: 16px;
+            color: black;
+            margin: 10px 0;
+            font-weight: normal;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2; /* Ограничаване на два реда */
+            overflow: hidden;
+            text-overflow: ellipsis; /* Многоточие за скрития текст */
+        }
+
+        .gradient-separator {
+            background-color: rgba(129, 17, 41, 0.8); /* Използваме само желания цвят с прозрачност */
+            height: 2px; /* Много тънък разделител */
+            width: 100%; /* Заема цялата ширина на страницата */
+        }
+
+        .available-products {
+            padding-bottom: 50px; /* Добавяне на отстояние отдолу */
         }
     </style>
 </head>
@@ -141,6 +178,8 @@
     <div class="auth-buttons">
         <a th:unless="${user}" th:href="@{/login}">Login</a>
         <a th:unless="${user}" th:href="@{/register}">Register</a>
+        <a th:if="${user != null and #strings.contains(user.getAuthorities(), 'ROLE_ADMIN')}"
+           th:href="@{/admin}">Go to Admin Panel</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">
@@ -148,6 +187,8 @@
         <p class="subtitle">Artisan Pottery: Handmade Elegance, Distinctive Style</p>
     </div>
 </div>
+
+<div class="gradient-separator"></div>
 
 <div class="available-products">
     <h2 style="text-align: center; font-size: 24px; color: #800020;">Available Products - Ready to Ship</h2>
@@ -157,8 +198,10 @@
                 <img th:src="@{${product.mainPhotoUrl}}" alt="Product Image">
             </a>
             <h3 th:text="${product.listingTitle}"></h3>
-            <p th:text="${product.price} + ' EUR'"></p>
-            <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
+            <div class="product-info">
+                <p th:text="${product.price} + ' EUR'"></p>
+                <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
+            </div>
         </div>
     </div>
 </div>
