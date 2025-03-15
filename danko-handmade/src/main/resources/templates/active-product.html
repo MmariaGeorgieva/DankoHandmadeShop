@@ -89,24 +89,25 @@
         .product-page {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between;  /* Това ще осигури разстояние между галерията и информацията */
+            justify-content: space-between; /* Това ще осигури разстояние между галерията и информацията */
             gap: 20px;
             padding: 20px;
         }
 
         .product-gallery {
             display: flex;
-            flex-direction: row;  /* Хоризонтално разположение на миниатюрите и главната снимка */
-            gap: 20px;  /* Разстояние между миниатюрите и главната снимка */
+            flex-direction: row; /* Хоризонтално разположение на миниатюрите и главната снимка */
+            gap: 20px; /* Разстояние между миниатюрите и главната снимка */
         }
 
 
         .thumbnail-list {
             display: flex;
-            flex-direction: column;  /* Миниатюрите да са една под друга */
-            gap: 10px; /* Луфт между снимките */
-            align-items: flex-start;  /* Подравняване на миниатюрите по ляво */
+            flex-direction: column; /* Миниатюрите да са една под друга */
+            gap: 0; /* Луфт между снимките */
+            align-items: flex-start; /* Подравняване на миниатюрите по ляво */
             height: 500px; /* Височина на блока с миниатюрите */
+            overflow: auto; /* Скролиране, ако съдържанието е по-голямо от контейнера */
         }
 
         .thumbnail-list img {
@@ -292,8 +293,8 @@
         }
 
         .product-item h4 {
-            white-space: nowrap;   /* Забранява пренасянето на нов ред */
-            overflow: hidden;      /* Скрива излизащия извън границите текст */
+            white-space: nowrap; /* Забранява пренасянето на нов ред */
+            overflow: hidden; /* Скрива излизащия извън границите текст */
             text-overflow: ellipsis; /* Добавя многоточие, ако текстът е твърде дълъг */
             width: 100%; /* Уверява се, че заглавието заема цялото пространство */
             display: block; /* За да работи коректно с text-overflow */
@@ -304,6 +305,7 @@
             height: 2px; /* Много тънък разделител */
             width: 100%; /* Заема цялата ширина на страницата */
         }
+
     </style>
 </head>
 <body>
@@ -329,12 +331,19 @@
 
 <div class="product-page">
     <div class="product-gallery">
-        <div class="thumbnail-list">
-            <img th:each="additionalPhoto : ${activeProduct.additionalPhotosUrls}"
-                 th:src="@{${additionalPhoto}}" alt="Thumbnail">
+        <div class="product-gallery">
+            <div class="thumbnail-list">
+                <a th:each="additionalPhoto : ${activeProduct.additionalPhotosUrls}"
+                   th:href="@{${additionalPhoto}}"
+                   target="_blank">
+                    <img th:src="@{${additionalPhoto}}" alt="Thumbnail">
+                </a>
+            </div>
         </div>
         <div class="main-image">
-            <img th:src="@{${activeProduct.mainPhotoUrl}}" alt="Main Product Image">
+            <a th:href="@{${activeProduct.mainPhotoUrl}}" target="_blank">
+            <img th:src="@{${activeProduct.mainPhotoUrl}}" alt="Thumbnail">
+            </a>
         </div>
     </div>
     <div class="product-info">
@@ -368,6 +377,12 @@
             <p th:text="${product.price} + ' EUR'"></p>
         </div>
     </div>
+</div>
+
+<input type="checkbox" id="imageModalToggle" style="display: none;">
+<div id="imageModal" class="modal">
+    <label for="imageModalToggle" class="close">&times;</label>
+    <img class="modal-content" id="modalImage" src="">
 </div>
 
 <div th:replace="~{fragments/footer}"></div>
