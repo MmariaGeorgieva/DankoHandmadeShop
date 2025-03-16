@@ -6,6 +6,8 @@ import com.danko.danko_handmade.user.model.Role;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.repository.UserRepository;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
+import com.danko.danko_handmade.web.dto.UserEditRequest;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -84,6 +86,17 @@ public class UserService implements UserDetailsService {
         } else {
             user.setRole(Role.USER);
         }
+        userRepository.save(user);
+    }
+
+    public void editUserDetails(UUID id, @Valid UserEditRequest userEditRequest) {
+        User user = getById(id);
+
+        user.setFirstName(userEditRequest.getFirstName());
+        user.setLastName(userEditRequest.getLastName());
+        user.setPhone(userEditRequest.getPhone());
+        user.setProfilePicture(userEditRequest.getProfilePicture());
+
         userRepository.save(user);
     }
 }

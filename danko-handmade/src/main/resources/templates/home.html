@@ -172,15 +172,14 @@
 <body>
 
 <div class="banner">
-    <div class="contact-button">
-        <a th:href="@{/contact}">Contact Shop</a>
-    </div>
     <div class="auth-buttons">
         <a th:unless="${userAuthentication}" th:href="@{/login}">Login</a>
         <a th:unless="${userAuthentication}" th:href="@{/register}">Register</a>
         <a th:if="${userAuthentication != null and #strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
            th:href="@{/admin}">Admin Page</a>
-        <a th:if="${userAuthentication}" th:href="@{'/home/user/' + userId}">Edit My Profile</a>
+        <a th:unless="${userAuthentication != null and #strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
+           th:href="@{/contact}">Contact</a>
+        <a th:if="${userAuthentication}" th:href="@{'/user/' + ${userId}}">Edit My Profile</a>
         <a th:if="${userAuthentication}" th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">

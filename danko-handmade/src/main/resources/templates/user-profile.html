@@ -1,10 +1,293 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile - DankoHandmade</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .banner {
+            width: 100%;
+            height: 200px;
+            background: url('/images/banner.jpg') no-repeat center center;
+            background-size: cover;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .auth-buttons {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            display: flex;
+            flex-direction: row; /* Подрежда бутоните хоризонтално */
+            align-items: center; /* Центрира ги вертикално */
+            gap: 10px; /* Разстояние между бутоните */
+        }
+
+        .contact-button {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .auth-buttons a {
+            text-decoration: none;
+            background-color: rgba(249, 249, 249, 0.4);
+            color: #800020;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            border: 1px solid rgba(221, 221, 221, 0.4);
+            display: inline-block; /* Гарантира, че бутоните не се сливат */
+        }
+
+        .auth-buttons a:hover {
+            background-color: rgba(224, 224, 224, 0.4);
+        }
+
+        .banner-content {
+            color: #fff;
+            text-shadow: -1px -1px 1px #800020, 1px -1px 1px #800020, -1px 1px 1px #800020, 1px 1px 1px #800020;
+        }
+
+        .banner-content h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .banner-content .subtitle {
+            font-size: 20px;
+            color: #ddd;
+        }
+
+        footer {
+            background-color: rgba(129, 17, 41, 0.6);
+            color: white;
+            height: 50px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3px;
+        }
+
+        .container {
+            width: 50%;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #800020;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .submit-button {
+            background-color: rgba(129, 17, 41, 0.6);
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .submit-button:hover {
+            background-color: rgba(129, 17, 41, 0.8);
+        }
+
+        .address-section {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
 
+<div class="banner">
+    <div class="auth-buttons">
+        <a th:if="${#strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
+           th:href="@{/admin}">Admin Page</a>
+        <a th:unless="${userAuthentication != null and #strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
+           th:href="@{/contact}">Contact</a>
+        <a th:href="@{/home}">Shop</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+    <div class="banner-content">
+        <h1>Edit Profile</h1>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Edit Your Profile</h2>
+
+    <!-- Показване на профилната снимка или снимка по подразбиране -->
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div>
+            <h2>Edit Your Profile</h2>
+        </div>
+        <div>
+            <img th:src="${user.profilePicture != null ? user.profilePicture : '/images/user.png'}"
+                 alt="Profile Picture" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover;">
+        </div>
+    </div>
+
+    <form th:action="@{'/user/' + ${user.id}}" th:method="POST" th:object="${userEditRequest}">
+        <label for="firstName">First Name:</label>
+        <input type="text" id="firstName" th:field="*{firstName}">
+
+        <label for="lastName">Last Name:</label>
+        <input type="text" id="lastName" th:field="*{lastName}">
+
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone" th:field="*{phone}">
+
+        <label for="profilePicture">Profile Picture URL:</label>
+        <input type="text" id="profilePicture" th:field="*{profilePicture}"
+               placeholder="Enter an image URL (e.g., https://example.com/picture.jpg)">
+
+        <button type="submit" class="submit-button">Save Changes</button>
+    </form>
+</div>
+
+
+<!--<div>-->
+<!--    <div th:if="${#lists.isEmpty(${user.userAddressList})}">-->
+<!--        <p>No addresses found. Please add an address.</p>-->
+
+<!--        <form th:action="@{'/user/' + ${user.id} + '/addAddress'}"-->
+<!--              th:method="POST"-->
+<!--              th:object="${addAddressRequest}">-->
+
+<!--            <label for="recipientName">Recipient Name:</label>-->
+<!--            <input type="text" name="recipientName" th:field="*{recipientName}" required>-->
+
+<!--            <label for="country">Country:</label>-->
+<!--            <select name="country" required>-->
+<!--                <option th:each="c : ${T(com.danko.danko_handmade.address.model.Country).values()}"-->
+<!--                        th:value="${c}" th:text="${c}"></option>-->
+<!--            </select>-->
+
+<!--            <label for="city">City:</label>-->
+<!--            <input type="text" name="city" required>-->
+
+<!--            <label for="postalCode">Postal Code:</label>-->
+<!--            <input type="text" name="postalCode" required>-->
+
+<!--            <label for="street">Street:</label>-->
+<!--            <input type="text" name="street" required>-->
+
+<!--            <label for="streetNumber">Street Number:</label>-->
+<!--            <input type="text" name="streetNumber" required>-->
+
+<!--            <label for="phoneNumber">Phone Number:</label>-->
+<!--            <input type="text" name="phoneNumber">-->
+
+<!--            <button type="submit">Добави адрес</button>-->
+<!--        </form>-->
+<!--    </div>-->
+
+<!--    &lt;!&ndash; Вашият код за рендиране на адреси &ndash;&gt;-->
+<!--    <div class="address-section" th:each="address, iterStat : ${user.userAddressList}">-->
+<!--        <h3>Address <span th:text="${iterStat.index + 1}"></span></h3>-->
+
+<!--        <label for="recipientName">Recipient Name:</label>-->
+<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].recipientName}" required>-->
+
+<!--        <label for="country">Country:</label>-->
+<!--        <select th:field="*{userAddressList[__${iterStat.index}__].country}" required>-->
+<!--            <option th:each="c : ${T(com.danko.danko_handmade.address.model.Country).values()}"-->
+<!--                    th:value="${c}" th:text="${c}"></option>-->
+<!--        </select>-->
+
+<!--        <label for="city">City:</label>-->
+<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].city}" required>-->
+
+<!--        <label for="postalCode">Postal Code:</label>-->
+<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].postalCode}" required>-->
+
+<!--        <label for="street">Street:</label>-->
+<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].street}" required>-->
+
+<!--        <label for="streetNumber">Street Number:</label>-->
+<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].streetNumber}" required>-->
+
+<!--        <label for="phoneNumber">Phone Number:</label>-->
+<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].phoneNumber}">-->
+<!--    </div>-->
+
+
+<!--    &lt;!&ndash; Section to Add a New Address &ndash;&gt;-->
+<!--    <div class="address-section">-->
+<!--        <h3>New Address</h3>-->
+
+<!--        <label for="newRecipientName">Recipient Name:</label>-->
+<!--        <input type="text" id="newRecipientName" name="userAddressList[].recipientName" required>-->
+
+<!--        <label for="newCountry">Country:</label>-->
+<!--        <select id="newCountry" name="userAddressList[].country" required>-->
+<!--            <option th:each="c : ${T(com.danko.danko_handmade.address.model.Country).values()}"-->
+<!--                    th:value="${c}" th:text="${c}"></option>-->
+<!--        </select>-->
+
+<!--        <label for="newCity">City:</label>-->
+<!--        <input type="text" id="newCity" name="userAddressList[].city" required>-->
+
+<!--        <label for="newPostalCode">Postal Code:</label>-->
+<!--        <input type="text" id="newPostalCode" name="userAddressList[].postalCode" required>-->
+
+<!--        <label for="newStreet">Street:</label>-->
+<!--        <input type="text" id="newStreet" name="userAddressList[].street" required>-->
+
+<!--        <label for="newStreetNumber">Street Number:</label>-->
+<!--        <input type="text" id="newStreetNumber" name="userAddressList[].streetNumber" required>-->
+
+<!--        <label for="newPhoneNumber">Phone Number:</label>-->
+<!--        <input type="text" id="newPhoneNumber" name="userAddressList[].phoneNumber">-->
+<!--    </div>-->
+<!--</div>-->
+
+<div class="gradient-separator"></div>
+
+<div th:replace="~{fragments/footer}"></div>
 </body>
 </html>

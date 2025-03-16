@@ -1,24 +1,26 @@
 package com.danko.danko_handmade.web.controller;
 
-import com.danko.danko_handmade.exception.ProductNotActiveException;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
+import com.danko.danko_handmade.web.dto.UserEditRequest;
+import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
 import com.danko.danko_handmade.web.util.DateUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -76,15 +78,6 @@ public class HomeController {
         modelAndView.addObject("activeProduct", activeProduct);
         modelAndView.addObject("arrivalPeriod", arrivalPeriod);
         modelAndView.addObject("relatedProducts", relatedProducts);
-        return modelAndView;
-    }
-
-    @GetMapping("/user/{id}")
-    public ModelAndView showUserDetails(@PathVariable UUID id, Authentication userAuth) {
-        User user = userService.getById(id);
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("user", user);
-        modelAndView.setViewName("user-profile");
         return modelAndView;
     }
 }
