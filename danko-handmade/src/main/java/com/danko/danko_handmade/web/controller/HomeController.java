@@ -3,6 +3,9 @@ package com.danko.danko_handmade.web.controller;
 import com.danko.danko_handmade.exception.ProductNotActiveException;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.service.ProductService;
+import com.danko.danko_handmade.security.AuthenticationMetadata;
+import com.danko.danko_handmade.user.model.User;
+import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,20 +26,28 @@ import java.util.UUID;
 public class HomeController {
 
     private final ProductService productService;
+    private final UserService userService;
 
     @Autowired
-    public HomeController(ProductService productService) {
+    public HomeController(ProductService productService, UserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping()
-    public ModelAndView GetHomePage(Authentication user) {
+    public ModelAndView GetHomePage(Authentication userAuthentication) {
 
         List<Product> activeProducts = productService.getAllActiveProducts();
-
+        UUID userId = null;
         ModelAndView modelAndView = new ModelAndView();
+
+        if (userAuthentication != null) {
+            AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
+            userId = userData.getUserId();
+            modelAndView.addObject("userId", userId);
+        }
         modelAndView.addObject("activeProducts", activeProducts);
-        modelAndView.addObject("user", user);
+        modelAndView.addObject("userAuthentication", userAuthentication);
         modelAndView.setViewName("home");
         return modelAndView;
     }
@@ -60,10 +71,20 @@ public class HomeController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("active-product");
         if (user != null) {
-            modelAndView.addObject("user", user);        }
+            modelAndView.addObject("user", user);
+        }
         modelAndView.addObject("activeProduct", activeProduct);
         modelAndView.addObject("arrivalPeriod", arrivalPeriod);
         modelAndView.addObject("relatedProducts", relatedProducts);
+        return modelAndView;
+    }
+
+    @GetMapping("/user/{id}")
+    public ModelAndView showUserDetails(@PathVariable UUID id, Authentication userAuth) {
+        User user = userService.getById(id);
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("user", user);
+        modelAndView.setViewName("user-profile");
         return modelAndView;
     }
 }
