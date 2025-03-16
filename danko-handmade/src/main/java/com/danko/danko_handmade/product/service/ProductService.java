@@ -2,6 +2,7 @@ package com.danko.danko_handmade.product.service;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.danko.danko_handmade.exception.ProductNotActiveException;
 import com.danko.danko_handmade.exception.ProductNotFoundException;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
@@ -64,7 +65,6 @@ public class ProductService {
                 .additionalPhotosUrls(additionalPhotosUrls)
                 .productSection(addProductRequest.getProductSection())
                 .addedOn(LocalDateTime.now())
-                .weight(addProductRequest.getWeight())
                 .stockQuantity(addProductRequest.getStockQuantity())
                 .active(true)
                 .build();
@@ -115,7 +115,6 @@ public class ProductService {
         product.setDescription(editProductRequest.getDescription());
         product.setPrice(editProductRequest.getPrice());
         product.setProductSection(editProductRequest.getProductSection());
-        product.setWeight(editProductRequest.getWeight());
         product.setStockQuantity(editProductRequest.getStockQuantity());
         product.setActive(editProductRequest.isActive());
 
@@ -224,5 +223,17 @@ public class ProductService {
                 activeProduct.getId(),
                 pageable
         );
+    }
+
+    public Product getActiveProductById(UUID productId) {
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+
+        Product activeProduct = null;
+        if (product.isActive()) {
+            activeProduct = product;
+        } else {
+            throw new ProductNotActiveException("Product not active");
+        }
+        return activeProduct;
     }
 }

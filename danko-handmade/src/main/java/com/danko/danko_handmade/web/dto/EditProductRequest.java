@@ -37,9 +37,6 @@ public class EditProductRequest {
     private int stockQuantity;
 
     @NotNull
-    private double weight;
-
-    @NotNull
     private boolean active;
 
 

@@ -1,6 +1,6 @@
 package com.danko.danko_handmade.user.model;
 
-import com.danko.danko_handmade.address.model.UserAddress;
+import com.danko.danko_handmade.address.model.Address;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,7 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@EqualsAndHashCode(of = "id")
 public class User {
 
     @Id
@@ -49,8 +48,8 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime registeredOn;
 
-    @OneToMany(mappedBy = "user")
-    private List<UserAddress> userAddressList = new ArrayList<>();
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Address> userAddressList = new ArrayList<>();
 
 
 }

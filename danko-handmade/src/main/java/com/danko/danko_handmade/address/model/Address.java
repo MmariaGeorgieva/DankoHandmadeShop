@@ -1,15 +1,22 @@
 package com.danko.danko_handmade.address.model;
 
+import com.danko.danko_handmade.user.model.User;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.UUID;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Embeddable
 public class Address {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
     @Column(nullable = false)
     private String recipientName;
 
@@ -29,4 +36,7 @@ public class Address {
     private String streetNumber;
 
     private String phoneNumber;
+
+    @ManyToOne
+    private User user;
 }

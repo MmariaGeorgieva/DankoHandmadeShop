@@ -18,7 +18,6 @@ public class DtoMapper {
                 .description(product.getDescription())
                 .price(product.getPrice())
                 .stockQuantity(product.getStockQuantity())
-                .weight(product.getWeight())
                 .active(product.isActive())
                 .productSection(product.getProductSection())
                 .build();

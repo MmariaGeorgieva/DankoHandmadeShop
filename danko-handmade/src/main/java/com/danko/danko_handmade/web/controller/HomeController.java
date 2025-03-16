@@ -44,17 +44,11 @@ public class HomeController {
     @GetMapping("/active-product/{productId}")
     public ModelAndView showActiveProduct(@PathVariable UUID productId, Authentication user) {
 
-        Product product = productService.getProductById(productId);
-        Product activeProduct = null;
-        if (product.isActive()) {
-            activeProduct = product;
-        } else {
-            throw new ProductNotActiveException("Product not active");
-        }
+        Product activeProduct = productService.getActiveProductById(productId);
 
         LocalDate today = LocalDate.now();
-        LocalDate arrivalStartDate = today.plusDays(8);
-        LocalDate arrivalEndDate = today.plusDays(15);
+        LocalDate arrivalStartDate = today.plusDays(10);
+        LocalDate arrivalEndDate = today.plusDays(16);
 
         String arrivalStart = DateUtil.getFormattedDateWithSuffix(arrivalStartDate);
         String arrivalEnd = DateUtil.getFormattedDateWithSuffix(arrivalEndDate);

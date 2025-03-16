@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users - Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #60c6a0;
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .header-buttons a {
+            background-color: #60c6a0;
+            color: white;
+            padding: 12px 25px; /* Малко по-голямо разстояние в бутоните */
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #60c6a0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-weight: 600; /* Увеличаваме плътността на текста */
+            font-size: 1.1rem; /* Увеличаваме размера на шрифта */
+        }
+
+        .header-buttons a:hover {
+            background-color: #45b38e;
+            border-color: #45b38e;
+        }
+
+        .container {
+            width: 95%;
+            margin: auto;
+            padding: 5px;
+        }
+
+        .product-row {
+            display: flex; /* Използваме flexbox за подравняване на данните */
+            justify-content: space-between; /* Разположим основните данни и адреса вляво и вдясно */
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-row img {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 15px; /* Разстояние между снимката и информацията */
+        }
+
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            width: 35%; /* Основните данни заемат 60% от ширината */
+        }
+
+        .column {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 5px; /* Разстояние между елементите в колоната */
+            width: 100%;
+        }
+
+        .user-info-row {
+            display: flex;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        .user-info-row p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        footer {
+            background-color: #60c6a0;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .profile-actions-button {
+            display: flex;
+            align-items: center; /* Центрира елементите вертикално */
+            gap: 8px; /* Разстояние между текста и иконата */
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        /* Стилове за адресния лист */
+        .address-list {
+            width: 75%;
+            padding: 10px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-list h4 {
+            font-weight: normal;
+            text-align: left;
+            margin: 0;
+            padding: 10px 0;
+            font-size: 0.8rem;
+        }
+
+        .address-card {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            margin-bottom: 10px;
+        }
+
+        .address-card p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Users</h1>
+    <div class="header-buttons">
+        <a href="/admin" class="btn btn-secondary">Back</a>
+        <a href="/home" class="btn btn-secondary">Shop</a>
+        <a href="/orders" class="btn btn-secondary">Orders</a>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+    <div th:each="user : ${allUsers}" class="product-row">
+        <img th:src="${#strings.isEmpty(user.profilePicture) ? '/images/user.png' : user.profilePicture}"/>
+        <div class="product-info">
+            <div class="column">
+                <h3 th:text="${user.username}"></h3>
+                <div class="user-info-row">
+                    <p>Id: <span th:text="${user.id}"></span></p>
+                </div>
+                <div class="user-info-row">
+                    <p>First name: <span th:text="${user.firstName}"></span></p>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="user-info-row">
+                    <p>Last name: <span th:text="${user.lastName}"></span></p>
+                </div>
+                <div class="user-info-row">
+                    <p>Role: <span th:text="${user.role}"></span></p>
+                </div>
+            </div>
+
+            <div class="column">
+                <div class="user-info-row">
+                    <form th:action="@{'/admin/users/' + ${user.id} + '/role'}" th:method="PUT">
+                        <button class="profile-actions-button">
+                            <p>Role</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                                 class="bi bi-toggle-on" viewBox="0 0 16 16">
+                                <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+                <div class="user-info-row">
+                    <p>Registered on: <span
+                            th:text="${#temporals.format(user.registeredOn, 'dd MMM yyyy HH:mm')}"></span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Под-контейнер за адресния лист, разположен вдясно от основните данни -->
+        <div class="address-list">
+            <h4>Address List:</h4>
+            <div th:each="address : ${user.userAddressList}">
+                <div class="address-card">
+                    <p><strong>Id:</strong> <span th:text="${address.id}"></span></p>
+                    <p><strong>Recipient name:</strong> <span th:text="${address.recipientName}"></span></p>
+                    <p><strong>Street:</strong> <span th:text="${address.street}"></span></p>
+                    <p><strong>Street number:</strong> <span th:text="${address.streetNumber}"></span></p>
+                    <p><strong>Postal code:</strong> <span th:text="${address.postalCode}"></span></p>
+                    <p><strong>City:</strong> <span th:text="${address.city}"></span></p>
+                    <p><strong>Country:</strong> <span th:text="${address.country.name()}"></span></p>
+                    <p><strong>Phone number:</strong> <span th:text="${address.phoneNumber}"></span></p>
+                </div>
+                <hr> <!-- Разделител между адресите -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer}"></div>
+
+</body>
+</html>

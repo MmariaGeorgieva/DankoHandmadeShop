@@ -33,10 +33,6 @@ public class AddProductRequest {
     @Min(value = 0, message = "Stock quantity cannot be negative")
     private int stockQuantity;
 
-    @NotNull(message = "Weight is required")
-    @Positive(message = "Weight must be greater than 0")
-    private double weight;
-
     private MultipartFile mainPhoto;
 
     private List<MultipartFile> additionalPhotos;

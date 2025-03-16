@@ -1,15 +1,14 @@
 package com.danko.danko_handmade.web.controller;
 
-import com.cloudinary.Cloudinary;
 import com.danko.danko_handmade.product.model.Product;
-import com.danko.danko_handmade.product.service.CloudinaryService;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
+import com.danko.danko_handmade.user.model.User;
+import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,7 +17,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -30,12 +28,12 @@ import java.util.UUID;
 public class AdminController {
 
     private final ProductService productService;
-    private final CloudinaryService cloudinaryService;
+    private final UserService userService;
 
 
-    public AdminController(ProductService productService, CloudinaryService cloudinaryService) {
+    public AdminController(ProductService productService, UserService userService) {
         this.productService = productService;
-        this.cloudinaryService = cloudinaryService;
+        this.userService = userService;
     }
 
     //hasAnyRole - checking for one of the roles that follow
@@ -94,6 +92,24 @@ public class AdminController {
         modelAndView.setViewName("products");
 
         return modelAndView;
+    }
+
+    @GetMapping("/users")
+    public ModelAndView viewUsers() {
+        List<User> allUsers = userService.getAllUsers();
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("allUsers", allUsers);
+        modelAndView.setViewName("users");
+
+        return modelAndView;
+    }
+
+    @PutMapping("/users/{id}/role")
+    public String updateUserRole(@PathVariable UUID id) {
+
+        userService.switchRole(id);
+        return "redirect:/admin/users";
     }
 
     @GetMapping("/products/inactive")

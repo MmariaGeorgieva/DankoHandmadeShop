@@ -21,8 +21,8 @@
 
         .container {
             display: flex;
-            height: auto; /* Премахнахме фиксираната височина */
-            flex-wrap: wrap; /* Позволяваме картите да се подреждат на нов ред при необходимост */
+            height: auto;
+            flex-wrap: wrap;
         }
 
         nav {
@@ -44,14 +44,14 @@
         }
 
         nav a:hover {
-            background-color: #45b38e; /* Промених цвета при hover */
+            background-color: #45b38e;
         }
 
         main {
             flex: 1;
             padding: 30px;
             display: flex;
-            flex-wrap: wrap; /* Позволяваме картите да се разпределят на нови редове */
+            flex-wrap: wrap;
             justify-content: space-between;
         }
 
@@ -61,8 +61,8 @@
             margin: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            flex: 1 0 45%; /* Оставяме картите да се подреждат в 2 колони */
-            box-sizing: border-box; /* Съобразяваме картите с контейнера */
+            flex: 1 0 45%;
+            box-sizing: border-box;
         }
 
         .card h2 {
@@ -87,7 +87,7 @@
         }
 
         .btn:hover {
-            background-color: #45b38e; /* Промених цвета при hover */
+            background-color: #45b38e;
         }
     </style>
 </head>
@@ -99,17 +99,16 @@
 
 <div class="container">
 
-    <!-- Left Navigation Menu -->
     <nav>
         <a href="/admin/add-product">Add Product</a>
-        <a href="/admin/products">Active Products</a> <!-- Връзка за активни продукти -->
-        <a href="/admin/products/inactive">Inactive Products</a> <!-- Връзка за неактивни продукти -->
+        <a href="/admin/products">Active Products</a>
+        <a href="/admin/products/inactive">Inactive Products</a>
         <a href="/admin/orders">Orders</a>
         <a href="/admin/users">Users</a>
+        <a href="/home">Go To Shop</a>
         <a href="/logout">Logout</a>
     </nav>
 
-    <!-- Main Content -->
     <main>
         <div class="card">
             <h2>Add New Product</h2>
@@ -132,7 +131,7 @@
         <div class="card">
             <h2>Active Products</h2>
             <p>Manage your active products.</p>
-            <a href="/admin/products" class="btn">View Active Products</a> <!-- Връзка към активни продукти -->
+            <a href="/admin/products" class="btn">View Active Products</a>
         </div>
 
         <div class="card">

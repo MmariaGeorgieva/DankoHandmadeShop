@@ -15,9 +15,34 @@
         header {
             background-color: #60c6a0;
             color: white;
-            padding: 15px 0;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
         }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .header-buttons a {
+            background-color: #60c6a0;
+            color: white;
+            padding: 12px 25px; /* Малко по-голямо разстояние в бутоните */
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #60c6a0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-weight: 600; /* Увеличаваме плътността на текста */
+            font-size: 1.1rem; /* Увеличаваме размера на шрифта */
+        }
+
+        .header-buttons a:hover {
+            background-color: #45b38e;
+            border-color: #45b38e;
+        }
+
 
         .container {
             width: 80%;
@@ -47,21 +72,6 @@
             padding-left: 15px;
         }
 
-        .btn-back, .btn-active, .btn-logout {
-            background-color: #ffffff;
-            color: #60c6a0;
-            padding: 5px 15px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-size: 14px;
-            border: 1px solid #ddd;
-        }
-
-        .btn-back:hover, .btn-active:hover, .btn-logout:hover {
-            background-color: #f1f1f1;
-            color: #60c6a0;
-        }
-
         /* Стилове за бутон Activate */
         .btn-activate {
             background-color: #4caf50; /* Зелен за активиране */
@@ -87,34 +97,17 @@
             margin-top: 20px;
         }
 
-        .header-content {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
-
-        .header-title {
-            flex-grow: 1;
-            text-align: center;
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
-
     </style>
 </head>
 <body>
 
 <header>
-    <div class="header-content">
-        <a href="/admin/products" class="btn-active">Active Products</a>
-
-        <h1 class="header-title">Inactive Products</h1>
-
-        <div>
-            <a href="/admin" class="btn-back">Go To Admin Panel</a>
-            <a href="/logout" class="btn-logout">Logout</a>
-        </div>
+    <h1>Inactive Products</h1>
+    <div class="header-buttons">
+        <a href="/admin/products" class="btn btn-secondary">Active Products</a>
+        <a href="/admin" class="btn btn-secondary">Admin Page</a>
+        <a href="/home" class="btn btn-secondary">Shop</a>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
     </div>
 </header>
 

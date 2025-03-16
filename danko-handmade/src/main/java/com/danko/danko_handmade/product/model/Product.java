@@ -52,8 +52,5 @@ public class Product {
     private LocalDateTime addedOn;
 
     @Column(nullable = false)
-    private double weight;
-
-    @Column(nullable = false)
     private boolean active;
 }

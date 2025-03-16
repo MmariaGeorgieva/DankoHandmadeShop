@@ -89,7 +89,6 @@
         .product-page {
             display: flex;
             align-items: flex-start;
-            justify-content: space-between; /* Това ще осигури разстояние между галерията и информацията */
             gap: 20px;
             padding: 20px;
         }
@@ -111,14 +110,14 @@
         }
 
         .thumbnail-list img {
-            width: 100px; /* Размери на миниатюрите */
+            width: 133px; /* Размери на миниатюрите */
             height: 100px; /* Квадратни миниатюри */
             margin-left: 10px; /* Малко отстояние от левия ръб */
             cursor: pointer;
         }
 
         .main-image {
-            width: 500px; /* Размер на главната снимка */
+            width: 667px; /* Размер на главната снимка */
             height: 500px; /* Височина на главната снимка */
         }
 
@@ -259,13 +258,12 @@
         .you-may {
             text-align: center;
             color: #555;
-            font-style: italic;
             font-weight: bold;
             font-size: 24px;
         }
 
         .related-products-container {
-            width: 90%; /* Контейнерът да заема 80% от ширината на страницата */
+            width: 90%;
             margin: 50px auto; /* Центриране в средата на страницата с отстояние */
             padding: 20px;
             background-color: #fff;
@@ -278,6 +276,8 @@
             justify-content: space-between;
             gap: 10px;
             padding: 10px;
+            width: 100%;
+            height: auto;
         }
 
         .product-item {
@@ -293,6 +293,7 @@
         }
 
         .product-item h4 {
+            font-weight: normal;
             white-space: nowrap; /* Забранява пренасянето на нов ред */
             overflow: hidden; /* Скрива излизащия извън границите текст */
             text-overflow: ellipsis; /* Добавя многоточие, ако текстът е твърде дълъг */
@@ -367,6 +368,7 @@
 </div>
 
 <div class="related-products-container">
+
     <p class="you-may">You may also like:</p>
     <div class="related-products">
         <div th:each="product : ${relatedProducts}" class="product-item">

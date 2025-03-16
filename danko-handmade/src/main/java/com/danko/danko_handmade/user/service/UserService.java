@@ -76,4 +76,14 @@ public class UserService implements UserDetailsService {
     public User getByUsername(String username) {
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
+    public void switchRole(UUID id) {
+        User user = getById(id);
+        if (user.getRole() == Role.USER) {
+            user.setRole(Role.ADMIN);
+        } else {
+            user.setRole(Role.USER);
+        }
+        userRepository.save(user);
+    }
 }
