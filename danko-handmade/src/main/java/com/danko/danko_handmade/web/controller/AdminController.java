@@ -1,13 +1,13 @@
 package com.danko.danko_handmade.web.controller;
 
 import com.danko.danko_handmade.product.model.Product;
+import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
-import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
 import jakarta.validation.Valid;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,28 +71,27 @@ public class AdminController {
 
 
     @GetMapping("/products")
-    public ModelAndView viewProducts() {
-        List<Product> activeProducts = productService.getAllActiveProducts();
-
-        EditProductsPageRequest editProductsPageRequest = new EditProductsPageRequest();
-
-        editProductsPageRequest.setActiveProducts(activeProducts.stream().map(product -> {
-            EditProductsPageRequest.ProductEditRequest dto = new EditProductsPageRequest.ProductEditRequest();
-            dto.setId(product.getId());
-            dto.setStockQuantity(product.getStockQuantity());
-            dto.setPrice(product.getPrice());
-            dto.setMainImageUrl(product.getMainPhotoUrl());
-            dto.setListingTitle(product.getListingTitle());
-            return dto;
-        }).toList());
+    public ModelAndView viewProducts(@RequestParam(value = "section", required = false) String section) {
 
         ModelAndView modelAndView = new ModelAndView();
+        List<Product> activeProducts = productService.getAllActiveProducts();
+        modelAndView.addObject("selectedSection", section);
+
+        if (section != null && !section.isEmpty()) {
+            if (section.equals("ALL")) {
+                activeProducts = productService.getAllActiveProducts();
+            } else {
+                activeProducts = productService.getAllActiveProductsBySection(ProductSection.valueOf(section));
+            }
+        }
+
         modelAndView.addObject("activeProducts", activeProducts);
-        modelAndView.addObject("editProductsPageRequest", editProductsPageRequest);
+        modelAndView.addObject("productSections", ProductSection.values());
         modelAndView.setViewName("products");
 
         return modelAndView;
     }
+
 
     @GetMapping("/users")
     public ModelAndView viewUsers() {
@@ -125,15 +124,6 @@ public class AdminController {
     public String activateProduct(@PathVariable UUID id) {
         productService.activateProduct(id);
         return "redirect:/admin/products";
-    }
-
-    @PostMapping("/products")
-    public ModelAndView editProductsPage(@Valid @ModelAttribute("editProductsPageRequest") EditProductsPageRequest editProductsPageRequest,
-                                         BindingResult bindingResult) {
-        if (!bindingResult.hasErrors()) {
-            productService.editProductsPage(editProductsPageRequest);
-        }
-        return viewProducts();
     }
 
     @GetMapping("/product/edit/{id}")

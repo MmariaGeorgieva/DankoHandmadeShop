@@ -9,7 +9,6 @@ import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
-import com.danko.danko_handmade.web.dto.EditProductsPageRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -90,17 +89,6 @@ public class ProductService {
 
         int suffix = start++;
         return prefix + "-" + suffix;
-    }
-
-    public void editProductsPage(EditProductsPageRequest editProductsPageRequest) {
-        for (EditProductsPageRequest.ProductEditRequest dto : editProductsPageRequest.getActiveProducts()) {
-            Product product = productRepository.findById(dto.getId()).orElseThrow(() -> new RuntimeException("Product not found"));
-            if (product.getPrice().compareTo(dto.getPrice()) != 0 || product.getStockQuantity() != dto.getStockQuantity()) {
-                product.setPrice(dto.getPrice());
-                product.setStockQuantity(dto.getStockQuantity());
-                productRepository.save(product);
-            }
-        }
     }
 
     public Product getProductById(UUID id) {
@@ -237,6 +225,6 @@ public class ProductService {
     }
 
     public List<Product> getAllActiveProductsBySection(ProductSection productSection) {
-           return productRepository.findAllByActiveAndProductSection(true, productSection);
+        return productRepository.findAllByActiveAndProductSection(true, productSection);
     }
 }

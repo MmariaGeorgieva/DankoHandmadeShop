@@ -225,7 +225,6 @@
 <div class="available-products">
 
     <div class="content-wrapper">
-        <!-- Лявата част с категориите -->
         <div class="category-list">
             <h6 style="text-align: center; font-size: 16px; color: black;">Browse by Category</h6>
             <p style="text-align: center; font-size: 14px; color: black;">Click on Image to See Product Details</p>
@@ -235,7 +234,6 @@
                th:text="${section.displayName}"></a>
         </div>
 
-        <!-- Дясната част с продуктите -->
         <div class="product-listing">
             <div th:each="product : ${activeProducts}" class="product-item">
                 <a th:href="@{'/home/active-product/' + ${product.id}}">
