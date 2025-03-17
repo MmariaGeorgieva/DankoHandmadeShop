@@ -1,6 +1,7 @@
 package com.danko.danko_handmade.web.controller;
 
 import com.danko.danko_handmade.product.model.Product;
+import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
@@ -13,13 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,10 +36,10 @@ public class HomeController {
     }
 
     @GetMapping()
-    public ModelAndView GetHomePage(Authentication userAuthentication) {
+    public ModelAndView GetHomePage(@RequestParam(value = "section", required = false) String section,
+                                    Authentication userAuthentication) {
 
-        List<Product> activeProducts = productService.getAllActiveProducts();
-        UUID userId = null;
+        UUID userId;
         ModelAndView modelAndView = new ModelAndView();
 
         if (userAuthentication != null) {
@@ -48,8 +47,20 @@ public class HomeController {
             userId = userData.getUserId();
             modelAndView.addObject("userId", userId);
         }
+
+        List<Product> activeProducts = productService.getAllActiveProducts();
+        modelAndView.addObject("selectedSection", section);
+
+        if (section != null && !section.isEmpty()) {
+            if (section.equals("ALL")) {
+                activeProducts = productService.getAllActiveProducts();
+            } else {
+                activeProducts = productService.getAllActiveProductsBySection(ProductSection.valueOf(section));
+            }
+        }
         modelAndView.addObject("activeProducts", activeProducts);
         modelAndView.addObject("userAuthentication", userAuthentication);
+        modelAndView.addObject("productSections", ProductSection.values());
         modelAndView.setViewName("home");
         return modelAndView;
     }

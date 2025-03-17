@@ -1,6 +1,24 @@
 package com.danko.danko_handmade.product.model;
 
+import lombok.Getter;
+
+@Getter
 public enum ProductSection {
-    CUPS_AND_MUGS, ALL, HAPPY_HALLOWEEN, TEAPOTS, SUGAR_CREAMERS_CANISTERS, PITCHERS_JUGS_BOTTLES, SETS,
-    TRAYS_PLATES_WALL, HOME_DECOR, TILES, CHRISTMAS_GIFTS
+    ALL("All"),
+    CUPS_AND_MUGS("Cups and mugs"),
+    HALLOWEEN("Halloween"),
+    TEAPOTS("Teapots"),
+    SUGAR_BOWLS("Sugar bowls, creamers, canisters"),
+    PITCHERS("Pitchers, jugs, bottles"),
+    SETS("Sets"),
+    TRAYS("Trays, plates, wall art"),
+    HOME_DECOR("Home decor"),
+    TILES("Tiles");
+
+    private final String displayName;
+
+    ProductSection(String displayName) {
+        this.displayName = displayName;
+    }
+
 }

@@ -18,4 +18,5 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     @Query("SELECT p FROM Product p WHERE p.productSection = :section AND p.id != :productId ORDER BY RAND()")
     List<Product> findSixRandomProductsFromTheSameSection(@Param("section") ProductSection section, @Param("productId") UUID productId, Pageable pageable);
 
+    List<Product> findAllByActiveAndProductSection(boolean active, ProductSection section);
 }

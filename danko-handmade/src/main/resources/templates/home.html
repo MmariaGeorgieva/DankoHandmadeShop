@@ -86,16 +86,48 @@
             padding: 3px;
         }
 
-        .product-listing {
+        /* Container за категорията в ляво и продуктите в дясно */
+        .content-wrapper {
             display: flex;
-            flex-wrap: wrap;
+            margin: 20px;
+        }
+
+        .category-list {
+            width: 20%; /* Лявата част да заема 20% от ширината */
+            padding-right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .category-list a {
+            text-decoration: none;
+            color: black;
+            font-size: 16px;
+            padding: 10px;
+            background-color: rgba(129, 17, 41, 0.1);
+            border-radius: 5px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        .category-list a:hover {
+            background-color: rgba(129, 17, 41, 0.3);
+        }
+
+        .category-list h6,
+        .category-list p {
+            margin-bottom: 2px;
+        }
+
+        .product-listing {
+            width: 75%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
-            justify-content: center;
-            padding: 20px;
         }
 
         .product-item {
-            width: 22%;
             background-color: #fff;
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -191,16 +223,29 @@
 <div class="gradient-separator"></div>
 
 <div class="available-products">
-    <h2 style="text-align: center; font-size: 24px; color: #800020;">Available Products - Ready to Ship</h2>
-    <div class="product-listing">
-        <div th:each="product : ${activeProducts}" class="product-item">
-            <a th:href="@{'/home/active-product/' + ${product.id}}">
-                <img th:src="@{${product.mainPhotoUrl}}" alt="Product Image">
-            </a>
-            <h3 th:text="${product.listingTitle}"></h3>
-            <div class="product-info">
-                <p th:text="${product.price} + ' EUR'"></p>
-                <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
+
+    <div class="content-wrapper">
+        <!-- Лявата част с категориите -->
+        <div class="category-list">
+            <h6 style="text-align: center; font-size: 16px; color: black;">Browse by Category</h6>
+            <p style="text-align: center; font-size: 14px; color: black;">Click on Image to See Product Details</p>
+
+            <a th:each="section : ${productSections}"
+               th:href="@{'/home?section=' + ${section}}"
+               th:text="${section.displayName}"></a>
+        </div>
+
+        <!-- Дясната част с продуктите -->
+        <div class="product-listing">
+            <div th:each="product : ${activeProducts}" class="product-item">
+                <a th:href="@{'/home/active-product/' + ${product.id}}">
+                    <img th:src="@{${product.mainPhotoUrl}}" alt="Product Image">
+                </a>
+                <h3 th:text="${product.listingTitle}"></h3>
+                <div class="product-info">
+                    <p th:text="${product.price} + ' EUR'"></p>
+                    <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
+                </div>
             </div>
         </div>
     </div>

@@ -164,10 +164,9 @@ public class AdminController {
         return new ModelAndView("redirect:/admin/product/edit/" + id);
     }
 
-    @DeleteMapping("/product/delete/{id}")
+    @PutMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable UUID id) {
-        System.out.println("Attempting to delete product with ID: " + id);
-        productService.deleteProductById(id);
+        productService.deactivateProductById(id);
         return "redirect:/admin/products";
     }
 

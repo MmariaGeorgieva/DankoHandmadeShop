@@ -16,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.net.URI;
@@ -121,7 +120,7 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public void deleteProductById(UUID id) {
+    public void deactivateProductById(UUID id) {
         Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
         product.setActive(false);
@@ -235,5 +234,9 @@ public class ProductService {
             throw new ProductNotActiveException("Product not active");
         }
         return activeProduct;
+    }
+
+    public List<Product> getAllActiveProductsBySection(ProductSection productSection) {
+           return productRepository.findAllByActiveAndProductSection(true, productSection);
     }
 }

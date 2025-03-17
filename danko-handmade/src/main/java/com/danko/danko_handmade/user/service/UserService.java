@@ -1,10 +1,12 @@
 package com.danko.danko_handmade.user.service;
 
+import com.danko.danko_handmade.address.model.Address;
 import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.Role;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.repository.UserRepository;
+import com.danko.danko_handmade.web.dto.AddAddressRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
 import jakarta.validation.Valid;
@@ -97,6 +99,24 @@ public class UserService implements UserDetailsService {
         user.setPhone(userEditRequest.getPhone());
         user.setProfilePicture(userEditRequest.getProfilePicture());
 
+        userRepository.save(user);
+    }
+
+
+    public void addAddressToUserWithId(UUID userId, @Valid AddAddressRequest addAddressRequest) {
+        User user = getById(userId);
+        Address address = Address.builder()
+                .id(UUID.randomUUID())
+                .recipientName(addAddressRequest.getRecipientName())
+                .city(addAddressRequest.getCity())
+                .country(addAddressRequest.getCountry())
+                .street(addAddressRequest.getStreet())
+                .streetNumber(addAddressRequest.getStreetNumber())
+                .phoneNumber(addAddressRequest.getPhoneNumber())
+                .postalCode(addAddressRequest.getPostalCode())
+                .build();
+
+        user.getUserAddressList().add(address);
         userRepository.save(user);
     }
 }

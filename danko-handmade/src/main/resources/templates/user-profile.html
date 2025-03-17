@@ -160,7 +160,6 @@
 <div class="container">
     <h2>Edit Your Profile</h2>
 
-    <!-- Показване на профилната снимка или снимка по подразбиране -->
     <div style="display: flex; align-items: center; justify-content: space-between;">
         <div>
             <h2>Edit Your Profile</h2>
@@ -198,7 +197,10 @@
 <!--              th:method="POST"-->
 <!--              th:object="${addAddressRequest}">-->
 
-<!--            <label for="recipientName">Recipient Name:</label>-->
+<!--            <label for="id"> Address Id:</label>-->
+<!--            <input type="text" name="id" th:field="*{id}" required>-->
+
+<!--            <label for="recepientName">Recipient Name:</label>-->
 <!--            <input type="text" name="recipientName" th:field="*{recipientName}" required>-->
 
 <!--            <label for="country">Country:</label>-->
@@ -284,7 +286,7 @@
 <!--        <label for="newPhoneNumber">Phone Number:</label>-->
 <!--        <input type="text" id="newPhoneNumber" name="userAddressList[].phoneNumber">-->
 <!--    </div>-->
-<!--</div>-->
+</div>
 
 <div class="gradient-separator"></div>
 

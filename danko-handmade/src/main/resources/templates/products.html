@@ -122,6 +122,7 @@
 <header>
     <h1>Active Products</h1>
     <div class="header-buttons">
+        <a href="/admin/add-product" class="btn btn-secondary">Add Another</a>
         <a href="/admin/products/inactive" class="btn btn-secondary">Inactive Products</a>
         <a href="/admin" class="btn btn-secondary">Admin Page</a>
         <a href="/home" class="btn btn-secondary">Shop</a>
@@ -133,13 +134,11 @@
     <div class="container">
         <div th:each="product, iterStat : *{activeProducts}" class="product-row">
             <a th:href="@{/admin/product/edit/{id}(id=${product.id})}">
-                <img th:src="@{${product.mainImageUrl}}" th:alt="${product.listingTitle}">
+                <img th:src="@{${product.mainImageUrl}}" th:alt="@{images/Logo.jpg}">
             </a>
             <div class="product-info">
                 <h3 th:text="${product.listingTitle}"></h3>
             </div>
-
-            <input type="hidden" th:field="*{activeProducts[__${iterStat.index}__].id}" />
 
             <label>Stock:</label>
             <input type="number" th:field="*{activeProducts[__${iterStat.index}__].stockQuantity}" class="input-field" min="0" />
@@ -147,10 +146,9 @@
             <label>Price:</label>
             <input type="number" th:field="*{activeProducts[__${iterStat.index}__].price}" class="input-field" min="0" step="0.01" />
 
-            <!-- Бутон за изтриване -->
-            <form th:action="@{'/admin/product/delete/' + ${product.id}}" th:method="DELETE">
+            <form th:action="@{'/admin/product/delete/' + ${product.id}}" th:method="PUT">
                 <button type="submit" class="btn-delete" title="Delete product with ID: [[${product.id}]]">
-                    Delete
+                    Deactivate
                 </button>
             </form>
         </div>
