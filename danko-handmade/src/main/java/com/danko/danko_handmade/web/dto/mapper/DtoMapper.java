@@ -25,8 +25,15 @@ public class DtoMapper {
         return UserEditRequest.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
-                .phone(user.getPhone())
+                .email(user.getEmail())
                 .profilePicture(user.getProfilePicture())
+                .packageRecipientName(user.getPackageRecipientName())
+                .country(user.getCountry())
+                .city(user.getCity())
+                .postalCode(user.getPostalCode())
+                .street(user.getStreet())
+                .streetNumber(user.getStreetNumber())
+                .phoneNumber(user.getPhoneNumber())
                 .build();
     }
 

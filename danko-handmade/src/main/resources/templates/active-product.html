@@ -45,7 +45,7 @@
         .auth-buttons a, .contact-button a {
             text-decoration: none;
             background-color: rgba(249, 249, 249, 0.4);
-            color: #800020;
+            color: rgba(91, 168, 98);
             padding: 10px 15px;
             border-radius: 5px;
             font-weight: bold;
@@ -72,7 +72,7 @@
         }
 
         footer {
-            background-color: rgba(129, 17, 41, 0.6);
+            background-color: rgba(91, 168, 98, 0.6);
             color: white;
             height: 50px;
             text-align: center;
@@ -95,8 +95,8 @@
 
         .product-gallery {
             display: flex;
-            flex-direction: row; /* Хоризонтално разположение на миниатюрите и главната снимка */
-            gap: 20px; /* Разстояние между миниатюрите и главната снимка */
+            flex-direction: row;
+            gap: 20px;
         }
 
 
@@ -117,8 +117,8 @@
         }
 
         .main-image {
-            width: 667px; /* Размер на главната снимка */
-            height: 500px; /* Височина на главната снимка */
+            width: 667px;
+            height: 500px;
         }
 
         .main-image img {
@@ -140,7 +140,7 @@
         }
 
         .add-to-cart-button {
-            background-color: rgba(129, 17, 41, 0.6);
+            background-color: rgba(91, 168, 98, 0.6);
             color: white;
             padding: 8px 12px;
             border: none;
@@ -150,7 +150,7 @@
         }
 
         .add-to-cart-button:hover {
-            background-color: rgba(129, 17, 41, 0.8);
+            background-color: rgba(91, 168, 98, 0.4);
         }
 
         .product-description {
@@ -178,19 +178,19 @@
         }
 
         .product-item img {
-            width: 100%; /* Правим снимката да заема цялата ширина на продукта */
-            height: auto; /* Оставяме височината да се приспособява пропорционално */
+            width: 100%;
+            height: auto;
         }
 
         .product-item h3 {
             font-size: 18px;
-            color: rgba(129, 17, 41, 0.6);
+            color: rgba(91, 168, 98, 0.8);
             margin: 10px 0;
         }
 
         .product-info {
             display: flex;
-            align-items: flex-start; /* Подравнява елементите с горния ръб */
+            align-items: flex-start;
             flex-direction: column;
             justify-content: flex-start;
             margin-top: 20px;
@@ -204,8 +204,8 @@
         }
 
         .add-to-cart-button {
-            width: 100%; /* Задава ширината на бутона да е 100% от родителския контейнер */
-            background-color: rgba(129, 17, 41, 0.6);
+            width: 100%;
+            background-color: rgba(91, 168, 98, 0.8);
             color: white;
             padding: 8px 12px;
             border: none;
@@ -216,14 +216,14 @@
         }
 
         .product-info h3 {
-            width: 100%; /* Уверява се, че заглавието заема цялото пространство */
+            width: 100%;
         }
 
         .product-info .price {
             font-family: Arial, sans-serif;
             font-size: 32px;
             font-weight: bold;
-            color: #800020;
+            color: rgba(91, 168, 98);
             margin-top: 0;
             align-self: flex-start;
         }
@@ -239,25 +239,25 @@
         }
 
         .links {
-            color: #333; /* Основен цвят на текста */
-            text-decoration: none; /* Премахва подчертаването по подразбиране */
+            color: #333;
+            text-decoration: none;
         }
 
         .links:hover {
-            color: #800020; /* Цветът при ховър (можеш да промениш на желания от теб) */
-            text-decoration: underline; /* Добавя подчертаване при ховър (по избор) */
+            color: #800020;
+            text-decoration: underline;
         }
 
         .product-description pre {
-            white-space: pre-wrap; /* Позволява текстът да се разчупва */
-            word-wrap: break-word; /* Разчупва дългите думи, които не могат да се поберат на реда */
-            max-width: 100%; /* Уверява се, че елемента няма да излезе извън контейнера */
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 100%;
             margin-top: 10px;
         }
 
         .you-may {
             text-align: center;
-            color: #555;
+            color: rgba(91, 168, 98);
             font-weight: bold;
             font-size: 24px;
         }
@@ -302,9 +302,9 @@
         }
 
         .gradient-separator {
-            background-color: rgba(129, 17, 41, 0.8); /* Използваме само желания цвят с прозрачност */
-            height: 2px; /* Много тънък разделител */
-            width: 100%; /* Заема цялата ширина на страницата */
+            background-color: rgba(91, 168, 98, 0.8);
+            height: 2px;
+            width: 100%;
         }
 
     </style>
@@ -312,14 +312,14 @@
 <body>
 
 <div class="banner">
-    <div class="contact-button">
-        <a th:href="@{/contact}">Contact Shop</a>
-    </div>
     <div class="auth-buttons">
         <a th:unless="${user}" th:href="@{/login}">Login</a>
         <a th:unless="${user}" th:href="@{/register}">Register</a>
         <a th:if="${user != null and #strings.contains(user.getAuthorities(), 'ROLE_ADMIN')}"
            th:href="@{/admin}">Go to Admin Panel</a>
+        <a th:unless="${userAuthentication != null and #strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
+           th:href="@{/contact}">Contact</a>
+        <a th:if="${user}" th:href="@{'/user/' + ${userId}}">Edit My Profile</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">

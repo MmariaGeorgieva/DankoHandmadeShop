@@ -2,6 +2,7 @@ package com.danko.danko_handmade.web;
 
 import com.danko.danko_handmade.exception.ProductNotActiveException;
 import com.danko.danko_handmade.exception.ProductNotFoundException;
+import com.danko.danko_handmade.exception.UserNotFoundException;
 import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.TypeMismatchException;

@@ -2,7 +2,6 @@ package com.danko.danko_handmade.web.controller;
 
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
-import com.danko.danko_handmade.web.dto.AddAddressRequest;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
 import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
 import jakarta.validation.Valid;
@@ -51,27 +50,13 @@ public class UserController {
             return modelAndView;
         }
         userService.editUserDetails(id, userEditRequest);
-        return new ModelAndView("redirect:/home");
+        return new ModelAndView("redirect:/user/" + id);
+    }
+    @PutMapping("/{id}/subscription")
+    public String updateUserRole(@PathVariable UUID id) {
+
+        userService.switchSubscription(id);
+        return "redirect:/user/" + id;
     }
 
-    @GetMapping("/{userId}/addAddress'")
-    public ModelAndView getAddressForm(@PathVariable UUID userId) {
-        ModelAndView modelAndView = new ModelAndView();
-        User user = userService.getById(userId);
-        modelAndView.addObject("user", user);
-        modelAndView.addObject("addAddressRequest", new AddAddressRequest());
-        modelAndView.setViewName("user-profile");
-        return modelAndView;
-    }
-
-    @PostMapping("/{userId}/addAddress'")
-    public String addAddress(@PathVariable UUID userId,
-                             @Valid AddAddressRequest addAddressRequest,
-                             BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return "redirect:/add-address";
-        }
-        userService.addAddressToUserWithId(userId, addAddressRequest);
-        return "redirect:/user-profile";
-    }
 }

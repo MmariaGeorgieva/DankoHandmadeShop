@@ -1,12 +1,11 @@
 package com.danko.danko_handmade.user.service;
 
-import com.danko.danko_handmade.address.model.Address;
+import com.danko.danko_handmade.exception.UserNotFoundException;
 import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.Role;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.repository.UserRepository;
-import com.danko.danko_handmade.web.dto.AddAddressRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
 import jakarta.validation.Valid;
@@ -52,6 +51,7 @@ public class UserService implements UserDetailsService {
                 .role(Role.USER)
                 .email(registerRequest.getEmail())
                 .registeredOn(LocalDateTime.now())
+                .subscribedToBulletin(true)
                 .build();
 
         userRepository.save(user);
@@ -74,11 +74,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User getById(UUID id) {
-        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
     }
 
     public User getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not " +
+                "found"));
     }
 
     public void switchRole(UUID id) {
@@ -96,27 +97,23 @@ public class UserService implements UserDetailsService {
 
         user.setFirstName(userEditRequest.getFirstName());
         user.setLastName(userEditRequest.getLastName());
-        user.setPhone(userEditRequest.getPhone());
+        user.setEmail(userEditRequest.getEmail());
         user.setProfilePicture(userEditRequest.getProfilePicture());
+        user.setPackageRecipientName(userEditRequest.getPackageRecipientName());
+        user.setCountry(userEditRequest.getCountry());
+        user.setCity(userEditRequest.getCity());
+        user.setPostalCode(userEditRequest.getPostalCode());
+        user.setStreet(userEditRequest.getStreet());
+        user.setStreetNumber(userEditRequest.getStreetNumber());
+        user.setPhoneNumber(userEditRequest.getPhoneNumber());
+
 
         userRepository.save(user);
     }
 
-
-    public void addAddressToUserWithId(UUID userId, @Valid AddAddressRequest addAddressRequest) {
-        User user = getById(userId);
-        Address address = Address.builder()
-                .id(UUID.randomUUID())
-                .recipientName(addAddressRequest.getRecipientName())
-                .city(addAddressRequest.getCity())
-                .country(addAddressRequest.getCountry())
-                .street(addAddressRequest.getStreet())
-                .streetNumber(addAddressRequest.getStreetNumber())
-                .phoneNumber(addAddressRequest.getPhoneNumber())
-                .postalCode(addAddressRequest.getPostalCode())
-                .build();
-
-        user.getUserAddressList().add(address);
+    public void switchSubscription(UUID id) {
+        User user = getById(id);
+        user.setSubscribedToBulletin(!user.isSubscribedToBulletin());
         userRepository.save(user);
     }
 }

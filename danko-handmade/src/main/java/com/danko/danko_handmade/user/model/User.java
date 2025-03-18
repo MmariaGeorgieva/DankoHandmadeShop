@@ -1,12 +1,9 @@
 package com.danko.danko_handmade.user.model;
 
-import com.danko.danko_handmade.address.model.Address;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 @Builder
@@ -36,9 +33,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
-    private String phone;
-
     private String profilePicture;
 
     @Enumerated(EnumType.STRING)
@@ -48,8 +42,21 @@ public class User {
     @Column(nullable = false)
     private LocalDateTime registeredOn;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Address> userAddressList = new ArrayList<>();
+    private boolean subscribedToBulletin;
 
+    private String packageRecipientName;
+
+    @Enumerated(EnumType.STRING)
+    private Country country;
+
+    private String city;
+
+    private String postalCode;
+
+    private String street;
+
+    private String streetNumber;
+
+    private String phoneNumber;
 
 }

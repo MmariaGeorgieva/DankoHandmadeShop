@@ -38,16 +38,10 @@
             gap: 10px; /* Разстояние между бутоните */
         }
 
-        .contact-button {
-            position: absolute;
-            top: 10px;
-            left: 20px;
-        }
-
         .auth-buttons a {
             text-decoration: none;
             background-color: rgba(249, 249, 249, 0.4);
-            color: #800020;
+            color: rgba(91, 168, 98);
             padding: 10px 15px;
             border-radius: 5px;
             font-weight: bold;
@@ -75,7 +69,7 @@
         }
 
         footer {
-            background-color: rgba(129, 17, 41, 0.6);
+            background-color: rgba(91, 168, 98, 0.8);
             color: white;
             height: 50px;
             text-align: center;
@@ -100,7 +94,7 @@
 
         h2 {
             text-align: center;
-            color: #800020;
+            color: rgba(91, 168, 98);
         }
 
         label {
@@ -118,18 +112,19 @@
         }
 
         .submit-button {
-            background-color: rgba(129, 17, 41, 0.6);
+            background-color: rgba(91, 168, 98, 0.5);
             color: white;
-            padding: 10px 15px;
+            padding: 10px 20px; /* Стандартен padding за бутона за запазване на промени */
             border: none;
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
+            transition: background-color 0.3s ease; /* Плавен ховър ефект */
         }
 
         .submit-button:hover {
-            background-color: rgba(129, 17, 41, 0.8);
+            background-color: rgba(91, 168, 98, 0.8); /* Тъмно зелен при ховър */
         }
 
         .address-section {
@@ -138,6 +133,85 @@
             border: 1px solid #ddd;
             border-radius: 5px;
             background-color: #f9f9f9;
+        }
+
+        .gradient-separator {
+            background-color: rgba(91, 168, 98, 0.8);
+            height: 2px;
+            width: 100%;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 20px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.4s;
+            border-radius: 20px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 14px;
+            width: 14px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #60c6a0;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .subscription-actions-button {
+            background-color: rgba(91, 168, 98, 0.5);
+            color: white;
+            padding: 8px 20px; /* По-тесен бутон */
+            gap: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: auto;
+            height: 40px; /* Височина на бутона */
+            border-radius: 5px; /* Заоблени ръбове */
+            border: none; /* Премахване на очертанието */
+            transition: background-color 0.3s ease; /* За плавен ефект при ховър */
+        }
+
+        .subscription-actions-button:hover {
+            background-color: rgba(91, 168, 98, 0.8); /* Тъмно зелен при ховър */
+        }
+
+        /* Новите стилове за подреждане на елементите вертикално и центрирано */
+        .subscription-container {
+            display: flex;
+            flex-direction: column;  /* Разполага елементите вертикално */
+            align-items: center;     /* Центрира ги хоризонтално */
+            gap: 10px;               /* Разстояние между елементите */
+            margin-top: 10px;        /* Малко отстояние от предишния елемент */
         }
     </style>
 </head>
@@ -157,8 +231,9 @@
     </div>
 </div>
 
+<div class="gradient-separator"></div>
+
 <div class="container">
-    <h2>Edit Your Profile</h2>
 
     <div style="display: flex; align-items: center; justify-content: space-between;">
         <div>
@@ -170,122 +245,61 @@
         </div>
     </div>
 
-    <form th:action="@{'/user/' + ${user.id}}" th:method="POST" th:object="${userEditRequest}">
+    <form th:action="@{'/user/' + ${user.id}}" th:method="PUT" th:object="${userEditRequest}">
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" th:field="*{firstName}">
 
         <label for="lastName">Last Name:</label>
         <input type="text" id="lastName" th:field="*{lastName}">
 
-        <label for="phone">Phone:</label>
-        <input type="text" id="phone" th:field="*{phone}">
+        <label for="email">Email:</label>
+        <input type="text" id="email" th:field="*{email}">
 
         <label for="profilePicture">Profile Picture URL:</label>
         <input type="text" id="profilePicture" th:field="*{profilePicture}"
                placeholder="Enter an image URL (e.g., https://example.com/picture.jpg)">
 
+        <label for="country">Country:</label>
+        <select id="country" th:field="*{country}">
+            <option th:each="country : ${T(com.danko.danko_handmade.user.model.Country).values()}"
+                    th:value="${country.name()}"
+                    th:text="${country.displayName}">Select Country</option>
+        </select>
+
+        <label for="city">City:</label>
+        <input type="text" id="city" th:field="*{city}">
+
+        <label for="postalCode">Postal Code:</label>
+        <input type="text" id="postalCode" th:field="*{postalCode}">
+
+        <label for="street">Street:</label>
+        <input type="text" id="street" th:field="*{street}">
+
+        <label for="streetNumber">Street Number:</label>
+        <input type="text" id="streetNumber" th:field="*{streetNumber}">
+
+        <label for="phoneNumber">Phone Number:</label>
+        <input type="text" id="phoneNumber" th:field="*{phoneNumber}">
+
         <button type="submit" class="submit-button">Save Changes</button>
     </form>
-</div>
 
+    <form th:action="@{'/user/' + ${user.id} + '/subscription'}" th:method="PUT">
+        <div class="subscription-container">
+            <label for="subscriptionStatus">Bulletin Subscription:</label>
+            <span id="subscriptionStatus"
+                  th:text="*{user.subscribedToBulletin} ? 'Subscribed' : 'Not Subscribed'"></span>
 
-<!--<div>-->
-<!--    <div th:if="${#lists.isEmpty(${user.userAddressList})}">-->
-<!--        <p>No addresses found. Please add an address.</p>-->
+            <button class="subscription-actions-button">
+                <p><strong>Switch Subscription</strong></p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+                     class="bi bi-toggle-on" viewBox="0 0 16 16">
+                    <path d="M5 3a5 5 0 0 0 0 10h6a5 5 0 0 0 0-10zm6 9a4 4 0 1 1 0-8 4 4 0 0 1 0 8"></path>
+                </svg>
+            </button>
+        </div>
+    </form>
 
-<!--        <form th:action="@{'/user/' + ${user.id} + '/addAddress'}"-->
-<!--              th:method="POST"-->
-<!--              th:object="${addAddressRequest}">-->
-
-<!--            <label for="id"> Address Id:</label>-->
-<!--            <input type="text" name="id" th:field="*{id}" required>-->
-
-<!--            <label for="recepientName">Recipient Name:</label>-->
-<!--            <input type="text" name="recipientName" th:field="*{recipientName}" required>-->
-
-<!--            <label for="country">Country:</label>-->
-<!--            <select name="country" required>-->
-<!--                <option th:each="c : ${T(com.danko.danko_handmade.address.model.Country).values()}"-->
-<!--                        th:value="${c}" th:text="${c}"></option>-->
-<!--            </select>-->
-
-<!--            <label for="city">City:</label>-->
-<!--            <input type="text" name="city" required>-->
-
-<!--            <label for="postalCode">Postal Code:</label>-->
-<!--            <input type="text" name="postalCode" required>-->
-
-<!--            <label for="street">Street:</label>-->
-<!--            <input type="text" name="street" required>-->
-
-<!--            <label for="streetNumber">Street Number:</label>-->
-<!--            <input type="text" name="streetNumber" required>-->
-
-<!--            <label for="phoneNumber">Phone Number:</label>-->
-<!--            <input type="text" name="phoneNumber">-->
-
-<!--            <button type="submit">Добави адрес</button>-->
-<!--        </form>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; Вашият код за рендиране на адреси &ndash;&gt;-->
-<!--    <div class="address-section" th:each="address, iterStat : ${user.userAddressList}">-->
-<!--        <h3>Address <span th:text="${iterStat.index + 1}"></span></h3>-->
-
-<!--        <label for="recipientName">Recipient Name:</label>-->
-<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].recipientName}" required>-->
-
-<!--        <label for="country">Country:</label>-->
-<!--        <select th:field="*{userAddressList[__${iterStat.index}__].country}" required>-->
-<!--            <option th:each="c : ${T(com.danko.danko_handmade.address.model.Country).values()}"-->
-<!--                    th:value="${c}" th:text="${c}"></option>-->
-<!--        </select>-->
-
-<!--        <label for="city">City:</label>-->
-<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].city}" required>-->
-
-<!--        <label for="postalCode">Postal Code:</label>-->
-<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].postalCode}" required>-->
-
-<!--        <label for="street">Street:</label>-->
-<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].street}" required>-->
-
-<!--        <label for="streetNumber">Street Number:</label>-->
-<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].streetNumber}" required>-->
-
-<!--        <label for="phoneNumber">Phone Number:</label>-->
-<!--        <input type="text" th:field="*{userAddressList[__${iterStat.index}__].phoneNumber}">-->
-<!--    </div>-->
-
-
-<!--    &lt;!&ndash; Section to Add a New Address &ndash;&gt;-->
-<!--    <div class="address-section">-->
-<!--        <h3>New Address</h3>-->
-
-<!--        <label for="newRecipientName">Recipient Name:</label>-->
-<!--        <input type="text" id="newRecipientName" name="userAddressList[].recipientName" required>-->
-
-<!--        <label for="newCountry">Country:</label>-->
-<!--        <select id="newCountry" name="userAddressList[].country" required>-->
-<!--            <option th:each="c : ${T(com.danko.danko_handmade.address.model.Country).values()}"-->
-<!--                    th:value="${c}" th:text="${c}"></option>-->
-<!--        </select>-->
-
-<!--        <label for="newCity">City:</label>-->
-<!--        <input type="text" id="newCity" name="userAddressList[].city" required>-->
-
-<!--        <label for="newPostalCode">Postal Code:</label>-->
-<!--        <input type="text" id="newPostalCode" name="userAddressList[].postalCode" required>-->
-
-<!--        <label for="newStreet">Street:</label>-->
-<!--        <input type="text" id="newStreet" name="userAddressList[].street" required>-->
-
-<!--        <label for="newStreetNumber">Street Number:</label>-->
-<!--        <input type="text" id="newStreetNumber" name="userAddressList[].streetNumber" required>-->
-
-<!--        <label for="newPhoneNumber">Phone Number:</label>-->
-<!--        <input type="text" id="newPhoneNumber" name="userAddressList[].phoneNumber">-->
-<!--    </div>-->
 </div>
 
 <div class="gradient-separator"></div>

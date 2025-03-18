@@ -1,15 +1,12 @@
 package com.danko.danko_handmade.user.service;
 
-import com.danko.danko_handmade.address.model.Country;
 import com.danko.danko_handmade.user.model.Role;
 import com.danko.danko_handmade.user.model.User;
-import com.danko.danko_handmade.web.dto.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.nio.file.LinkOption;
 import java.time.LocalDateTime;
 
 @Component
@@ -37,6 +34,7 @@ public class UserInit implements CommandLineRunner {
                 .email("shop@danko.com")
                 .role(Role.ADMIN)
                 .registeredOn(LocalDateTime.now())
+                .subscribedToBulletin(true)
                 .build();
 
         userService.saveInitialUser(initialUser);
