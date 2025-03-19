@@ -1,8 +1,12 @@
 package com.danko.danko_handmade.web.dto.mapper;
 
+import com.danko.danko_handmade.email.model.Email;
+import com.danko.danko_handmade.email.model.Newsletter;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
+import com.danko.danko_handmade.web.dto.EmailResponse;
+import com.danko.danko_handmade.web.dto.NewsletterResponse;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
 import lombok.experimental.UtilityClass;
 
@@ -34,6 +38,22 @@ public class DtoMapper {
                 .street(user.getStreet())
                 .streetNumber(user.getStreetNumber())
                 .phoneNumber(user.getPhoneNumber())
+                .build();
+    }
+
+    public static EmailResponse mapEmailToEmailResponse(Email email) {
+        return EmailResponse.builder()
+                .subject(email.getSubject())
+                .status(email.getStatus())
+                .createdOn(email.getCreatedOn())
+                .build();
+    }
+
+    public static NewsletterResponse mapNewsletterToNewsletterResponse(Newsletter newsletter) {
+        return NewsletterResponse.builder()
+                .subject(newsletter.getSubject())
+                .status(newsletter.getStatus())
+                .createdOn(newsletter.getCreatedOn())
                 .build();
     }
 

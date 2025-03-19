@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,4 +20,8 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findSixRandomProductsFromTheSameSection(@Param("section") ProductSection section, @Param("productId") UUID productId, Pageable pageable);
 
     List<Product> findAllByActiveAndProductSection(boolean active, ProductSection section);
+
+    List<Product> findAllByOrderByAddedOnDesc();
+
+    List<Product> findAllByOrderByItemsSoldDesc();
 }

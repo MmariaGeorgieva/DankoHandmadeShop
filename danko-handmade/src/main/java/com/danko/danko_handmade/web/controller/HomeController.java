@@ -39,13 +39,13 @@ public class HomeController {
     public ModelAndView GetHomePage(@RequestParam(value = "section", required = false) String section,
                                     Authentication userAuthentication) {
 
-        UUID userId;
         ModelAndView modelAndView = new ModelAndView();
 
         if (userAuthentication != null) {
             AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
-            userId = userData.getUserId();
-            modelAndView.addObject("userId", userId);
+            User user = userService.getById(userData.getUserId());
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("authorities", userData.getAuthorities());
         }
 
         List<Product> activeProducts = productService.getAllActiveProducts();
@@ -66,7 +66,7 @@ public class HomeController {
     }
 
     @GetMapping("/active-product/{productId}")
-    public ModelAndView showActiveProduct(@PathVariable UUID productId, Authentication user) {
+    public ModelAndView showActiveProduct(@PathVariable UUID productId, Authentication userAuthentication) {
 
         Product activeProduct = productService.getActiveProductById(productId);
 
@@ -76,19 +76,22 @@ public class HomeController {
 
         String arrivalStart = DateUtil.getFormattedDateWithSuffix(arrivalStartDate);
         String arrivalEnd = DateUtil.getFormattedDateWithSuffix(arrivalEndDate);
-
         String arrivalPeriod = arrivalStart + " - " + arrivalEnd;
 
         List<Product> relatedProducts = productService.getSixRandomProductsFromTheSameSection(activeProduct);
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("active-product");
-        if (user != null) {
+        if (userAuthentication != null) {
+            AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
+            User user = userService.getById(userData.getUserId());
             modelAndView.addObject("user", user);
+            modelAndView.addObject("authorities", userData.getAuthorities());
         }
         modelAndView.addObject("activeProduct", activeProduct);
         modelAndView.addObject("arrivalPeriod", arrivalPeriod);
         modelAndView.addObject("relatedProducts", relatedProducts);
+        modelAndView.addObject("userAuthentication", userAuthentication);
         return modelAndView;
     }
 }

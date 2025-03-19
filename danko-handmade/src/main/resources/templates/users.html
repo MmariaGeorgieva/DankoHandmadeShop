@@ -193,6 +193,14 @@
                     <p><strong>Registered on:</strong> <span
                             th:text="${#temporals.format(user.registeredOn, 'dd MMM yyyy HH:mm')}"></span></p>
                 </div>
+
+                <div class="column">
+                    <div class="user-info-row">
+                        <p><strong>Subscription Status:</strong></p>
+                        <span id="subscriptionStatus"
+                              th:text="*{user.subscribedToBulletin} ? 'Subscribed' : 'Not Subscribed'"></span>
+                    </div>
+                </div>
             </div>
         </div>
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -12,17 +13,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "emails")
-public class Email {
+public class Newsletter {
+
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(unique = true, nullable = false)
-    private UUID userId;
-
-    @Column(unique = true, nullable = false)
-    private String userEmail;
+    @ElementCollection
+    private List<String> newsletterContactList;
 
     @Column(nullable = false)
     private String subject;
@@ -32,7 +30,7 @@ public class Email {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private EmailStatus status;
+    private NewsletterStatus status;
 
     @Lob
     @Column(nullable = false)

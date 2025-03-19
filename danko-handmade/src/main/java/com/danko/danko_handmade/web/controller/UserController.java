@@ -29,8 +29,8 @@ public class UserController {
     public ModelAndView showUserDetails(@PathVariable UUID id, Authentication userAuthentication) {
         User user = userService.getById(id);
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("userAuthentication", userAuthentication);
         modelAndView.addObject("user", user);
+        modelAndView.addObject("userAuthentication", userAuthentication);
         modelAndView.addObject("userEditRequest", DtoMapper.mapUserToUserEditRequest(user));
         modelAndView.setViewName("user-profile");
         return modelAndView;
@@ -46,12 +46,12 @@ public class UserController {
             modelAndView.setViewName("user-profile");
             modelAndView.addObject("user", user);
             modelAndView.addObject("userEditRequest", userEditRequest);
-
             return modelAndView;
         }
         userService.editUserDetails(id, userEditRequest);
         return new ModelAndView("redirect:/user/" + id);
     }
+
     @PutMapping("/{id}/subscription")
     public String updateUserRole(@PathVariable UUID id) {
 

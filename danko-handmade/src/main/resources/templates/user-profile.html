@@ -213,6 +213,14 @@
             gap: 10px;               /* Разстояние между елементите */
             margin-top: 10px;        /* Малко отстояние от предишния елемент */
         }
+
+        .alert-warning {
+            color: #ff0900;
+            background-color: rgba(255, 30, 0, 0.2);
+            padding: 5px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
@@ -248,22 +256,34 @@
     <form th:action="@{'/user/' + ${user.id}}" th:method="PUT" th:object="${userEditRequest}">
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" th:field="*{firstName}">
+        <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}"
+           th:text="${#fields.errors('firstName')}"></p>
 
         <label for="lastName">Last Name:</label>
         <input type="text" id="lastName" th:field="*{lastName}">
+        <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
 
         <label for="email">Email:</label>
         <input type="text" id="email" th:field="*{email}">
+        <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 
         <label for="profilePicture">Profile Picture URL:</label>
         <input type="text" id="profilePicture" th:field="*{profilePicture}"
                placeholder="Enter an image URL (e.g., https://example.com/picture.jpg)">
+        <p class="alert-warning" th:if="${#fields.hasErrors('profilePicture')}" th:errors="*{profilePicture}"></p>
+
+        <label for="packageRecipientName">Package Recipient Name:</label>
+        <input type="text" id="packageRecipientName" th:field="*{packageRecipientName}">
+        <p class="alert-warning"
+           th:if="${#fields.hasErrors('packageRecipientName')}" th:errors="*{packageRecipientName}"></p>
 
         <label for="country">Country:</label>
         <select id="country" th:field="*{country}">
+            <option value="">Select Country</option>
             <option th:each="country : ${T(com.danko.danko_handmade.user.model.Country).values()}"
                     th:value="${country.name()}"
-                    th:text="${country.displayName}">Select Country</option>
+                    th:text="${country.displayName}">
+            </option>
         </select>
 
         <label for="city">City:</label>

@@ -315,11 +315,11 @@
     <div class="auth-buttons">
         <a th:unless="${user}" th:href="@{/login}">Login</a>
         <a th:unless="${user}" th:href="@{/register}">Register</a>
-        <a th:if="${user != null and #strings.contains(user.getAuthorities(), 'ROLE_ADMIN')}"
-           th:href="@{/admin}">Go to Admin Panel</a>
-        <a th:unless="${userAuthentication != null and #strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_ADMIN')}"
+           th:href="@{/admin}">Admin Page</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
            th:href="@{/contact}">Contact</a>
-        <a th:if="${user}" th:href="@{'/user/' + ${userId}}">Edit My Profile</a>
+        <a th:if="${user}" th:href="@{'/user/' + ${user.id}}">Edit My Profile</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">

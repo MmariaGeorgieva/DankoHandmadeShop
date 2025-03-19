@@ -31,7 +31,7 @@ public class UserInit implements CommandLineRunner {
         User initialUser = User.builder()
                 .username("DankoHandmade")
                 .password(passwordEncoder.encode("123123"))
-                .email("shop@danko.com")
+                .email("danko.pottery@gmail.com")
                 .role(Role.ADMIN)
                 .registeredOn(LocalDateTime.now())
                 .subscribedToBulletin(true)

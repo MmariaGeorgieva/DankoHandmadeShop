@@ -159,6 +159,7 @@
             <div class="mb-3">
                 <label for="productSection" class="form-label">Section</label>
                 <select class="form-control" id="productSection" name="productSection" th:field="*{productSection}" required>
+                    <option value="">Select Section</option>
                     <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
                             th:value="${section}" th:text="${#strings.capitalize(#strings.toLowerCase(section.name))}">
                     </option>

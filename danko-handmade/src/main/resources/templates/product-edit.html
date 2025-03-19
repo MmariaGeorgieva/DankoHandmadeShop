@@ -242,7 +242,7 @@
     <h1>Edit Product</h1>
     <div class="header-buttons">
         <a th:href="@{/admin/products}" class="btn-logout">Back</a>
-        <a href="/home" class="btn-logout">Go To Shop</a>
+        <a th:href="@{/home}" class="btn-logout">Go To Shop</a>
         <a th:href="@{/logout}" class="btn-logout">Logout</a>
     </div>
 </header>
@@ -284,6 +284,7 @@
             <div class="form-group">
                 <label for="productSection">Product Section</label>
                 <select id="productSection" th:field="*{productSection}">
+                    <option value="">Select Section</option>
                     <option th:each="section : ${T(com.danko.danko_handmade.product.model.ProductSection).values()}"
                             th:value="${section}" th:text="${section}"></option>
                 </select>

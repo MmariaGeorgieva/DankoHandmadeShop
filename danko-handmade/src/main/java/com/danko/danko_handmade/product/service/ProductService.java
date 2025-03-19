@@ -19,10 +19,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -226,5 +228,20 @@ public class ProductService {
 
     public List<Product> getAllActiveProductsBySection(ProductSection productSection) {
         return productRepository.findAllByActiveAndProductSection(true, productSection);
+    }
+
+    public List<String> getMainPhotosNewProducts() {
+         List<Product> newProducts =
+                 productRepository.findAllByOrderByAddedOnDesc();
+         return newProducts.stream()
+                 .map(Product::getMainPhotoUrl)
+                 .toList();
+    }
+
+    public List<String> getBestSellers() {
+        List<Product> bestsellers = productRepository.findAllByOrderByItemsSoldDesc();
+        return bestsellers.stream()
+                .map(Product::getMainPhotoUrl)
+                .toList();
     }
 }
