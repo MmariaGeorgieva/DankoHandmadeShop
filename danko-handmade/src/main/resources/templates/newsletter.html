@@ -17,20 +17,20 @@
         }
 
         .container {
-            width: 80%; /* Контейнерът ще заема 80% от ширината на екрана */
+            width: 100%;
             margin: 20px auto;
             padding: 0;
             background-color: #ffffff;
-            border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .banner {
-            width: 100%; /* Ще заема 100% от ширината на контейнера */
-            height: auto; /* Автоматична височина, за да се запази пропорцията на изображението */
-            max-height: 150px; /* Максимална височина, за да не стане прекалено високо изображението */
-            object-fit: cover; /* За да запълни пространството и да запази съотношението */
-            border-radius: 10px 10px 0 0; /* За заоблени ъгли */
+            width: 100%;
+            height: auto;
+            max-height: 150px;
+            object-fit: cover;
+            border-radius: 10px 10px 0 0;
+            pointer-events: none;
         }
 
         .content {
@@ -53,22 +53,29 @@
         .new-arrivals, .bestsellers {
             padding: 5px;
             border: 2px solid #c8e1ce;
-            margin: 20px 0;
+            margin: 10px 0;
         }
 
         .product-container {
-            display: flex;              /* Използваме Flexbox за подреждане на снимките */
-            flex-wrap: wrap;            /* Позволяваме снимките да преминават на нов ред */
-            justify-content: space-between; /* Равномерно разпределение на снимките по целия ред */
-            gap: 10px;                  /* Разстояние между снимките */
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            padding: 20px;
+            flex-wrap: wrap;
+        }
+
+        .product-box {
+            width: 133px;
+            height: 100px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .product-container img {
-            width: 18%;                 /* Ширината на всяка снимка е 18% от контейнера */
-            height: auto;               /* Автоматична височина, за да се запази пропорцията */
-            aspect-ratio: 4 / 3;        /* Пропорция на снимките */
-            object-fit: cover;          /* Запълване на снимката без изкривяване */
-            pointer-events: none;       /* Премахване на стрелката за сваляне */
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .button {
@@ -88,7 +95,7 @@
         }
 
         footer {
-            background-color: #f4f4f9;
+            background-color: #e6efe8;
             padding: 15px;
             margin-top: 20px;
             font-size: 14px;
@@ -115,10 +122,11 @@
             <div class="new-arrivals">
                 <p><strong>New Arrivals:</strong></p>
                 <div class="product-container">
-                    <!-- Извеждаме само първите 5 продукта -->
                     <div th:each="product, iterStat : ${newProducts}">
                         <div th:if="${iterStat.index < 5}">
-                            <img th:src="${product}" alt="New Product">
+                            <div class="product-box">
+                                <img th:src="${product}" alt="New Product">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -130,10 +138,11 @@
             <div class="bestsellers">
                 <p><strong>Bestsellers:</strong></p>
                 <div class="product-container">
-                    <!-- Извеждаме само първите 5 бестселъра -->
                     <div th:each="product, iterStat : ${bestSellers}">
                         <div th:if="${iterStat.index < 5}">
-                            <img th:src="${product}" alt="Best Seller">
+                            <div class="product-box">
+                                <img th:src="${product}" alt="Best Seller">
+                            </div>
                         </div>
                     </div>
                 </div>

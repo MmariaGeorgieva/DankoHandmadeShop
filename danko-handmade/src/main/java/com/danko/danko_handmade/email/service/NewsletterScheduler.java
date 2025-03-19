@@ -41,7 +41,8 @@ public class NewsletterScheduler {
         model.put("newProducts", mainPhotoUrlsNewProducts);
         model.put("bestSellers", bestSellingProductsUrls);
 
-        String emailBody = thymeleafTemplateEngine.process("newsletter", new Context(Locale.getDefault(), model));
+        String emailBody = thymeleafTemplateEngine
+                .process("newsletter", new Context(Locale.getDefault(), model));
 
         String[] newsletterContactList = userService
                 .getAllUsers()
