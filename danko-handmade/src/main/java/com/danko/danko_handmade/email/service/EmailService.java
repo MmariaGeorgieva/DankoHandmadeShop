@@ -33,21 +33,21 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final EmailRepository emailRepository;
     private final NewsletterRepository newsletterRepository;
-    private final UserService userService;
 
     @Autowired
-    public EmailService(MailSender mailSender, JavaMailSender javaMailSender, EmailRepository emailRepository, NewsletterRepository newsletterRepository, UserService userService) {
+    public EmailService(MailSender mailSender,
+                        JavaMailSender javaMailSender,
+                        EmailRepository emailRepository,
+                        NewsletterRepository newsletterRepository) {
         this.mailSender = mailSender;
         this.javaMailSender = javaMailSender;
         this.emailRepository = emailRepository;
         this.newsletterRepository = newsletterRepository;
-        this.userService = userService;
     }
 
     public Email sendEmail(EmailRequest emailRequest) {
 
-        UUID userId = emailRequest.getUserId();
-        User user = userService.getById(userId);
+        User user = emailRequest.getUser();
 
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
@@ -55,7 +55,7 @@ public class EmailService {
         message.setText(emailRequest.getBody());
 
         Email email = Email.builder()
-                .userId(userId)
+                .userId(user.getId())
                 .subject(emailRequest.getSubject())
                 .body(emailRequest.getBody())
                 .userEmail(user.getEmail())

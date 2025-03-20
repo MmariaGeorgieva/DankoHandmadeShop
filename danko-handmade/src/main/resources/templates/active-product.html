@@ -96,17 +96,17 @@
 
         .thumbnail-list {
             display: flex;
-            flex-direction: column; /* Миниатюрите да са една под друга */
-            gap: 0; /* Луфт между снимките */
-            align-items: flex-start; /* Подравняване на миниатюрите по ляво */
-            height: 500px; /* Височина на блока с миниатюрите */
-            overflow: auto; /* Скролиране, ако съдържанието е по-голямо от контейнера */
+            flex-direction: column;
+            gap: 0;
+            align-items: flex-start;
+            height: 500px;
+            overflow: auto;
         }
 
         .thumbnail-list img {
-            width: 133px; /* Размери на миниатюрите */
-            height: 100px; /* Квадратни миниатюри */
-            margin-left: 10px; /* Малко отстояние от левия ръб */
+            width: 133px;
+            height: 100px;
+            margin-left: 10px;
             cursor: pointer;
         }
 
@@ -159,14 +159,14 @@
 
         .related-products {
             display: flex;
-            justify-content: space-between; /* Добавя пространство между елементите */
-            gap: 10px; /* Разстояние между елементите */
+            justify-content: space-between;
+            gap: 10px;
             padding: 20px;
         }
 
         .product-item {
-            width: 16.66%; /* Това дава по 6 продукта на ред (100% / 6 = 16.66%) */
-            box-sizing: border-box; /* За да включим padding-а в ширината */
+            width: 16.66%;
+            box-sizing: border-box;
             text-align: center;
             margin-bottom: 20px;
         }
@@ -206,7 +206,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
-            margin-top: 10px; /* Малко разстояние от заглавието */
+            margin-top: 10px;
         }
 
         .product-info h3 {
@@ -258,7 +258,7 @@
 
         .related-products-container {
             width: 90%;
-            margin: 50px auto; /* Центриране в средата на страницата с отстояние */
+            margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -268,14 +268,14 @@
         .related-products {
             display: flex;
             justify-content: space-between;
-            gap: 10px;
+            gap: 5px;
             padding: 10px;
             width: 100%;
             height: auto;
         }
 
         .product-item {
-            width: 16.66%;
+            width: 16%;
             box-sizing: border-box;
             text-align: center;
         }
@@ -288,11 +288,11 @@
 
         .product-item h4 {
             font-weight: normal;
-            white-space: nowrap; /* Забранява пренасянето на нов ред */
-            overflow: hidden; /* Скрива излизащия извън границите текст */
-            text-overflow: ellipsis; /* Добавя многоточие, ако текстът е твърде дълъг */
-            width: 100%; /* Уверява се, че заглавието заема цялото пространство */
-            display: block; /* За да работи коректно с text-overflow */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            display: block;
         }
 
         .gradient-separator {

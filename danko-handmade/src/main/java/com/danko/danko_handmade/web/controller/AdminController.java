@@ -36,11 +36,6 @@ public class AdminController {
         this.userService = userService;
     }
 
-    //hasAnyRole - checking for one of the roles that follow
-    //hasRole - checking for exactly the one given role
-    //hasAuthority - works exactly the same way, but checks for a permission
-    //hasAnyAuthority - works exactly the same way, but checks for one of the following permissions
-
     @GetMapping
     @PreAuthorize("hasRole('ADMIN')")
     public ModelAndView getAdminPanel(@AuthenticationPrincipal AuthenticationMetadata authenticationMetadata) {

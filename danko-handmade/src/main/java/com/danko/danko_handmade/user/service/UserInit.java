@@ -28,7 +28,7 @@ public class UserInit implements CommandLineRunner {
             return;
         }
 
-        User initialUser = User.builder()
+        User initialUserAdmin = User.builder()
                 .username("DankoHandmade")
                 .password(passwordEncoder.encode("123123"))
                 .email("danko.pottery@gmail.com")
@@ -37,6 +37,17 @@ public class UserInit implements CommandLineRunner {
                 .subscribedToBulletin(true)
                 .build();
 
-        userService.saveInitialUser(initialUser);
+        userService.saveInitialUser(initialUserAdmin);
+
+        User initialUserUser = User.builder()
+                .username("Mimozi")
+                .password(passwordEncoder.encode("123123"))
+                .email("maria.mariageorgieva@gmail.com")
+                .role(Role.USER)
+                .registeredOn(LocalDateTime.now())
+                .subscribedToBulletin(true)
+                .build();
+
+        userService.saveInitialUser(initialUserUser);
     }
 }

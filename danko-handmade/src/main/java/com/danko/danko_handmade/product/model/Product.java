@@ -54,5 +54,5 @@ public class Product {
     @Column(nullable = false)
     private boolean active;
 
-    private Long itemsSold;
+    private int itemsSold;
 }

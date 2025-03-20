@@ -9,10 +9,6 @@
             color: #333;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             text-align: center;
         }
 
@@ -57,19 +53,18 @@
         }
 
         .product-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-            padding: 20px;
-            flex-wrap: wrap;
+            width: 100%;
+            text-align: center;
         }
 
         .product-box {
+            display: inline-block;
             width: 133px;
             height: 100px;
             overflow: hidden;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin: 5px;
         }
 
         .product-container img {
@@ -121,15 +116,15 @@
         <div th:if="${newProducts != null}">
             <div class="new-arrivals">
                 <p><strong>New Arrivals:</strong></p>
-                <div class="product-container">
-                    <div th:each="product, iterStat : ${newProducts}">
-                        <div th:if="${iterStat.index < 5}">
+                <table class="product-container" role="presentation" cellspacing="10" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td th:each="product, iterStat : ${newProducts}" th:if="${iterStat.index < 5}" align="center">
                             <div class="product-box">
                                 <img th:src="${product}" alt="New Product">
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                </table>
                 <a href="#" class="button">Go to Shop</a>
             </div>
         </div>
@@ -137,15 +132,15 @@
         <div th:if="${bestSellers != null}">
             <div class="bestsellers">
                 <p><strong>Bestsellers:</strong></p>
-                <div class="product-container">
-                    <div th:each="product, iterStat : ${bestSellers}">
-                        <div th:if="${iterStat.index < 5}">
+                <table class="product-container" role="presentation" cellspacing="10" cellpadding="0" border="0" width="100%">
+                    <tr>
+                        <td th:each="product, iterStat : ${bestSellers}" th:if="${iterStat.index < 5}" align="center">
                             <div class="product-box">
                                 <img th:src="${product}" alt="Best Seller">
                             </div>
-                        </div>
-                    </div>
-                </div>
+                        </td>
+                    </tr>
+                </table>
                 <a href="#" class="button">Go to Shop</a>
             </div>
         </div>

@@ -33,7 +33,7 @@ public class Newsletter {
     private NewsletterStatus status;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "body", columnDefinition = "TEXT")
     private String body;
 
 }

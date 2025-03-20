@@ -6,14 +6,10 @@ import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
-import com.danko.danko_handmade.web.dto.UserEditRequest;
-import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
 import com.danko.danko_handmade.web.util.DateUtil;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -78,7 +74,7 @@ public class HomeController {
         String arrivalEnd = DateUtil.getFormattedDateWithSuffix(arrivalEndDate);
         String arrivalPeriod = arrivalStart + " - " + arrivalEnd;
 
-        List<Product> relatedProducts = productService.getSixRandomProductsFromTheSameSection(activeProduct);
+        List<Product> relatedProducts = productService.findSixRandomProducts();
 
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("active-product");

@@ -16,8 +16,8 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findAllByActive(boolean active);
 
-    @Query("SELECT p FROM Product p WHERE p.productSection = :section AND p.id != :productId ORDER BY RAND()")
-    List<Product> findSixRandomProductsFromTheSameSection(@Param("section") ProductSection section, @Param("productId") UUID productId, Pageable pageable);
+    @Query("SELECT p FROM Product p ORDER BY RAND()")
+    List<Product> findSixRandomProducts(Pageable pageable);
 
     List<Product> findAllByActiveAndProductSection(boolean active, ProductSection section);
 

@@ -23,12 +23,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    private static int start = 1000;
+    private static int start = 1011;
 
     private final ProductRepository productRepository;
     private final CloudinaryService cloudinaryService;
@@ -77,15 +78,14 @@ public class ProductService {
         String prefix = switch (addProductRequest.getProductSection().toString()) {
             case "CUPS_AND_MUGS" -> "C&M";
             case "All" -> "ALL";
-            case "HAPPY_HALLOWEEN" -> "HAllO";
+            case "HALLOWEEN" -> "HAllO";
             case "TEAPOTS" -> "TEA";
-            case "SUGAR_CREAMERS_CANISTERS" -> "SCC";
-            case "PITCHERS_JUGS_BOTTLES" -> "PJB";
+            case "SUGAR_BOWLS" -> "SCC";
+            case "PITCHERS" -> "PJB";
             case "SETS" -> "SET";
-            case "TRAYS_PLATES_WALL" -> "TPW";
+            case "TRAYS" -> "TPW";
             case "HOME_DECOR" -> "HOME";
             case "TILES" -> "TILE";
-            case "CHRISTMAS_GIFTS" -> "XMAS";
             default -> "";
         };
 
@@ -205,13 +205,9 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    public List<Product> getSixRandomProductsFromTheSameSection(Product activeProduct) {
+    public List<Product> findSixRandomProducts() {
         Pageable pageable = PageRequest.of(0, 6);
-        return productRepository.findSixRandomProductsFromTheSameSection(
-                activeProduct.getProductSection(),
-                activeProduct.getId(),
-                pageable
-        );
+        return productRepository.findSixRandomProducts(pageable);
     }
 
     public Product getActiveProductById(UUID productId) {
@@ -243,5 +239,9 @@ public class ProductService {
         return bestsellers.stream()
                 .map(Product::getMainPhotoUrl)
                 .toList();
+    }
+
+    public List<Product> getAll() {
+        return productRepository.findAll();
     }
 }

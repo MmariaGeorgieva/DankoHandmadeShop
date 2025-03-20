@@ -1,9 +1,6 @@
 package com.danko.danko_handmade.web;
 
-import com.danko.danko_handmade.exception.ProductNotActiveException;
-import com.danko.danko_handmade.exception.ProductNotFoundException;
-import com.danko.danko_handmade.exception.UserNotFoundException;
-import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
+import com.danko.danko_handmade.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.hibernate.TypeMismatchException;
 import org.springframework.http.HttpRequest;
@@ -38,6 +35,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(ProductNotFoundException.class)
     public String handleUserAlreadyExistsException(RedirectAttributes redirectAttributes) {
         return "redirect:/products";
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public String handleMaxSizeException(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", "File size exceeds the maximum allowed limit!");
+        return "redirect:/add-product";
     }
 
     @ExceptionHandler(ProductNotActiveException.class)

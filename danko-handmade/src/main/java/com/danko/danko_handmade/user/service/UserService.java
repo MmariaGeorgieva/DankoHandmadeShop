@@ -1,11 +1,13 @@
 package com.danko.danko_handmade.user.service;
 
+import com.danko.danko_handmade.email.service.EmailService;
 import com.danko.danko_handmade.exception.UserNotFoundException;
 import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.Role;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.repository.UserRepository;
+import com.danko.danko_handmade.web.dto.EmailRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
 import jakarta.validation.Valid;
@@ -28,11 +30,13 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final EmailService emailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, EmailService emailService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.emailService = emailService;
     }
 
     public List<User> getAllUsers() {
@@ -53,10 +57,24 @@ public class UserService implements UserDetailsService {
                 .registeredOn(LocalDateTime.now())
                 .subscribedToBulletin(true)
                 .build();
-
         userRepository.save(user);
-
         log.info("User {%s} with id {%s} has been registered.".formatted(user.getUsername(), user.getId()));
+
+        EmailRequest emailRequest = new EmailRequest();
+        emailRequest.setUser(user);
+        emailRequest.setSubject("User Registration");
+        String body = String.format(
+                "Dear %s,%n" +
+                        "Welcome to DankoHandmade!%n" +
+                        "We’re thrilled to have you join our community. You now have access to browse our unique collection of handmade ceramic pieces. Explore our products and find something special for yourself or as a thoughtful gift for a loved one.%n" +
+                        "We strive to offer you only the best, with quality creations inspired by the craftsmanship of our artisans.%n" +
+                        "If you have any questions or need assistance, feel free to reach out to us. Enjoy shopping!%n" +
+                        "Best regards,%n" +
+                        "The DankoHandmade Team",
+                user.getUsername()
+        );
+        emailRequest.setBody(body);
+        emailService.sendEmail(emailRequest);
     }
 
     public void saveInitialUser(User initialUser) {

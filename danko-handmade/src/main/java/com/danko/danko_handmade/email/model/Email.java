@@ -35,7 +35,7 @@ public class Email {
     private EmailStatus status;
 
     @Lob
-    @Column(nullable = false)
+    @Column(name = "body", columnDefinition = "TEXT")
     private String body;
 
 }
