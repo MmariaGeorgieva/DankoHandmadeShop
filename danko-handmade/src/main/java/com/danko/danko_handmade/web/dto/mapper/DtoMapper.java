@@ -1,13 +1,11 @@
 package com.danko.danko_handmade.web.dto.mapper;
 
+import com.danko.danko_handmade.email.model.ContactFormEmail;
 import com.danko.danko_handmade.email.model.Email;
 import com.danko.danko_handmade.email.model.Newsletter;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.user.model.User;
-import com.danko.danko_handmade.web.dto.EditProductRequest;
-import com.danko.danko_handmade.web.dto.EmailResponse;
-import com.danko.danko_handmade.web.dto.NewsletterResponse;
-import com.danko.danko_handmade.web.dto.UserEditRequest;
+import com.danko.danko_handmade.web.dto.*;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

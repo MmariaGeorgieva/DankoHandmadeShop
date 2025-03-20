@@ -1,14 +1,21 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.email.model.ContactFormEmail;
+import com.danko.danko_handmade.email.service.EmailService;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.service.ProductService;
+import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
+import com.danko.danko_handmade.web.dto.ContactShopRequest;
+import com.danko.danko_handmade.web.dto.EmailResponse;
 import com.danko.danko_handmade.web.dto.LoginRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,15 +26,19 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 public class IndexController {
 
     private final UserService userService;
+    private  final EmailService emailService;
 
     @Autowired
-    public IndexController(UserService userService) {
+    public IndexController(UserService userService, EmailService emailService) {
         this.userService = userService;
+        this.emailService = emailService;
     }
 
 //    @GetMapping("/")
@@ -91,13 +102,35 @@ public class IndexController {
     }
 
     @GetMapping("/contact")
-    public ModelAndView getContactPage(Authentication user) {
+    public ModelAndView getContactPage(Authentication userAuthentication,
+                                       @RequestParam(value = "success", required = false) String success) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("contact");
-        if (user != null) {
-            modelAndView.addObject("user", user);
+
+        if ("true".equals(success)) {
+            modelAndView.addObject("successMessage", "Your message has been sent successfully. We will get back to you soon.");
         }
+
+        if (userAuthentication != null && userAuthentication.isAuthenticated()) {
+            AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
+            UUID userId = userData.getUserId();
+            User user = userService.getById(userId);
+            modelAndView.addObject("user", user);
+            modelAndView.addObject("userAuthentication", userAuthentication);
+        }
+        modelAndView.addObject("contactShopRequest", new ContactShopRequest());
         return modelAndView;
+    }
+
+    @PostMapping("/contact")
+    public String sendEmailThroughContactForm(@Valid ContactShopRequest contactShopRequest, BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "contact";
+        }
+
+        emailService.sendEmailThroughContactForm(contactShopRequest);
+        return "redirect:/contact?success=true";
     }
 
     @GetMapping("/faq")

@@ -1,18 +1,15 @@
 package com.danko.danko_handmade.email.service;
 
-import com.danko.danko_handmade.email.model.Email;
-import com.danko.danko_handmade.email.model.EmailStatus;
-import com.danko.danko_handmade.email.model.Newsletter;
-import com.danko.danko_handmade.email.model.NewsletterStatus;
+import com.danko.danko_handmade.email.model.*;
+import com.danko.danko_handmade.email.repository.ContactFormEmailRepository;
 import com.danko.danko_handmade.email.repository.EmailRepository;
 import com.danko.danko_handmade.email.repository.NewsletterRepository;
 import com.danko.danko_handmade.user.model.User;
-import com.danko.danko_handmade.user.service.UserService;
+import com.danko.danko_handmade.web.dto.ContactShopRequest;
 import com.danko.danko_handmade.web.dto.EmailRequest;
 import com.danko.danko_handmade.web.dto.NewsletterRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import lombok.extern.log4j.Log4j;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
@@ -23,7 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -33,16 +29,18 @@ public class EmailService {
     private final JavaMailSender javaMailSender;
     private final EmailRepository emailRepository;
     private final NewsletterRepository newsletterRepository;
+    private final ContactFormEmailRepository contactFormEmailRepository;
 
     @Autowired
     public EmailService(MailSender mailSender,
                         JavaMailSender javaMailSender,
                         EmailRepository emailRepository,
-                        NewsletterRepository newsletterRepository) {
+                        NewsletterRepository newsletterRepository, ContactFormEmailRepository contactFormEmailRepository) {
         this.mailSender = mailSender;
         this.javaMailSender = javaMailSender;
         this.emailRepository = emailRepository;
         this.newsletterRepository = newsletterRepository;
+        this.contactFormEmailRepository = contactFormEmailRepository;
     }
 
     public Email sendEmail(EmailRequest emailRequest) {
@@ -97,5 +95,25 @@ public class EmailService {
             log.warn("Failed to send newsletter due to %s".formatted(e.getMessage()));
             return newsletterRepository.save(newsletter);
         }
+    }
+
+    public void sendEmailThroughContactForm(ContactShopRequest contactShopRequest) {
+
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo("danko.pottery@gmail.com");
+        message.setSubject(contactShopRequest.getSubject());
+        message.setText(contactShopRequest.getBody());
+
+        ContactFormEmail contactFormEmail = ContactFormEmail.builder()
+                .name(contactShopRequest.getName())
+                .email(contactShopRequest.getEmail())
+                .subject(contactShopRequest.getSubject())
+                .body(contactShopRequest.getBody())
+                .createdOn(LocalDateTime.now())
+                .build();
+
+        mailSender.send(message);
+
+        contactFormEmailRepository.save(contactFormEmail);
     }
 }

@@ -3,15 +3,14 @@ package com.danko.danko_handmade.web.controller;
 import com.danko.danko_handmade.email.model.Email;
 import com.danko.danko_handmade.email.model.Newsletter;
 import com.danko.danko_handmade.email.service.EmailService;
-import com.danko.danko_handmade.web.dto.EmailRequest;
-import com.danko.danko_handmade.web.dto.EmailResponse;
-import com.danko.danko_handmade.web.dto.NewsletterRequest;
-import com.danko.danko_handmade.web.dto.NewsletterResponse;
+import com.danko.danko_handmade.web.dto.*;
 import com.danko.danko_handmade.web.dto.mapper.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/emails")
@@ -28,7 +27,6 @@ public class EmailController {
     public ResponseEntity<EmailResponse> sendEmail(@RequestBody EmailRequest emailRequest) {
 
         Email email = emailService.sendEmail(emailRequest);
-
         EmailResponse response = DtoMapper.mapEmailToEmailResponse(email);
 
         return ResponseEntity
@@ -47,6 +45,4 @@ public class EmailController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
-
-
 }
