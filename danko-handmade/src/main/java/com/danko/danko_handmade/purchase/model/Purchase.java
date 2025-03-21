@@ -3,6 +3,8 @@ package com.danko.danko_handmade.purchase.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -22,4 +24,6 @@ public class Purchase {
 
     @ElementCollection
     private List<UUID> productIds;
+
+    private LocalDateTime purchasedOn;
 }
