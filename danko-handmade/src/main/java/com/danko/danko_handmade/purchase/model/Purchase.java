@@ -16,4 +16,6 @@ public class Purchase {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
+    private UUID userId;
 }
