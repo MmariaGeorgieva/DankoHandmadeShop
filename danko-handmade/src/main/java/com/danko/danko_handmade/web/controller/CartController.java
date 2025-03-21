@@ -22,13 +22,13 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
-public class PurchaseController {
+public class CartController {
 
     private final UserService userService;
     private final ProductService productService;
 
     @Autowired
-    public PurchaseController(UserService userService, ProductService productService) {
+    public CartController(UserService userService, ProductService productService) {
         this.userService = userService;
         this.productService = productService;
     }

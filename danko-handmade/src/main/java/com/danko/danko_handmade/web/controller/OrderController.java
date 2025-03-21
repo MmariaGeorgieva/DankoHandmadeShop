@@ -49,7 +49,7 @@ public class OrderController {
 
             productService.decreaseQuantityByItemsSold(cartContent);
             session.removeAttribute("cartContent");
-            return "redirect:/my-orders";
+            return "redirect:/home";
         }
 
         return "redirect:/cart";
