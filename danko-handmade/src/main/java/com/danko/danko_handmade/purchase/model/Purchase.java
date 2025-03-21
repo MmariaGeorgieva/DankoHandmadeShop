@@ -18,4 +18,6 @@ public class Purchase {
     private UUID id;
 
     private UUID userId;
+
+    private UUID productId;
 }
