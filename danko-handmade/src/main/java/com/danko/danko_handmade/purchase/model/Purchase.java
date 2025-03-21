@@ -3,6 +3,7 @@ package com.danko.danko_handmade.purchase.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -19,5 +20,6 @@ public class Purchase {
 
     private UUID userId;
 
-    private UUID productId;
+    @ElementCollection
+    private List<UUID> productIds;
 }
