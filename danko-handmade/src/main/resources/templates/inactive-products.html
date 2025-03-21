@@ -120,7 +120,6 @@
             <p>Price: $<span th:text="${product.price}"></span></p>
         </div>
 
-        <!-- Формуляр с PUT метод -->
         <form th:action="@{'/admin/product/activate/' + ${product.id}}" th:method="PUT">
             <button type="submit" class="btn-activate" title="Activate product with ID: [[${product.id}]]">
                 Activate

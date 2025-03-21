@@ -125,7 +125,6 @@ public class UserService implements UserDetailsService {
         user.setStreetNumber(userEditRequest.getStreetNumber());
         user.setPhoneNumber(userEditRequest.getPhoneNumber());
 
-
         userRepository.save(user);
     }
 

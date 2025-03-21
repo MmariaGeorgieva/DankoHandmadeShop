@@ -6,6 +6,7 @@ import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
+import com.danko.danko_handmade.web.dto.AddToCartRequest;
 import com.danko.danko_handmade.web.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,6 +33,7 @@ public class HomeController {
 
     @GetMapping()
     public ModelAndView GetHomePage(@RequestParam(value = "section", required = false) String section,
+                                    AddToCartRequest addToCartRequest,
                                     Authentication userAuthentication) {
 
         ModelAndView modelAndView = new ModelAndView();
@@ -57,12 +58,14 @@ public class HomeController {
         modelAndView.addObject("activeProducts", activeProducts);
         modelAndView.addObject("userAuthentication", userAuthentication);
         modelAndView.addObject("productSections", ProductSection.values());
+        modelAndView.addObject("addToCartRequest", new AddToCartRequest());
         modelAndView.setViewName("home");
         return modelAndView;
     }
 
     @GetMapping("/active-product/{productId}")
-    public ModelAndView showActiveProduct(@PathVariable UUID productId, Authentication userAuthentication) {
+    public ModelAndView showActiveProduct(@PathVariable UUID productId,
+                                          Authentication userAuthentication) {
 
         Product activeProduct = productService.getActiveProductById(productId);
 
@@ -88,6 +91,7 @@ public class HomeController {
         modelAndView.addObject("arrivalPeriod", arrivalPeriod);
         modelAndView.addObject("relatedProducts", relatedProducts);
         modelAndView.addObject("userAuthentication", userAuthentication);
+        modelAndView.addObject("addToCartRequest", new AddToCartRequest());
         return modelAndView;
     }
 }

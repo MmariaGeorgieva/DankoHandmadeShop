@@ -72,12 +72,12 @@ public class ProductInit implements CommandLineRunner {
                 .description(description2)
                 .price(new BigDecimal("45"))
                 .productCode("HAllO-1002")
-                .mainPhotoUrl("https://res.cloudinary.com/dsqhkts82/image/upload/v1742458976/awhpcf96cgbhh1iaarwu.png")
+                .mainPhotoUrl( "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458985/p6l1sih4n9xwk9obtqhu.png")
                 .additionalPhotosUrls(List.of(
                         "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458979/oc9gu3ofostztkyc9bc1.png",
                         "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458981/yjmovl868odwa71rh9aq.png",
                         "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458983/pmni4pntl93wgp1i5ldi.png",
-                        "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458985/p6l1sih4n9xwk9obtqhu.png",
+                        "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458976/awhpcf96cgbhh1iaarwu.png",
                         "https://res.cloudinary.com/dsqhkts82/image/upload/v1742458988/nk7fvn5kifo9dot0phy4.png"
                 ))
                 .productSection(ProductSection.HALLOWEEN)

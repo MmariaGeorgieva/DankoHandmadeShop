@@ -1,5 +1,6 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
@@ -57,6 +58,21 @@ public class UserController {
 
         userService.switchSubscription(id);
         return "redirect:/user/" + id;
+    }
+
+    @GetMapping("/cart")
+    public ModelAndView showCart(Authentication userAuthentication) {
+
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (userAuthentication != null && userAuthentication.isAuthenticated()) {
+            AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
+            UUID userId = userData.getUserId();
+            User user = userService.getById(userId);
+            modelAndView.addObject("user", user);
+        }
+        modelAndView.setViewName("cart");
+        return modelAndView;
     }
 
 }

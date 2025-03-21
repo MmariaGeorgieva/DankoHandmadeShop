@@ -244,4 +244,20 @@ public class ProductService {
     public List<Product> getAll() {
         return productRepository.findAll();
     }
+
+    public void decreaseQuantityByItemsSold(Map<Product, Integer> cartContent) {
+        for(Map.Entry<Product, Integer> entry : cartContent.entrySet()) {
+            Product product = entry.getKey();
+            Integer quantity = entry.getValue();
+            if(product.getStockQuantity() >= quantity) {
+                product.setStockQuantity(product.getStockQuantity() - quantity);
+                if (product.getStockQuantity() == 0) {
+                    product.setActive(false);
+                }
+                productRepository.save(product);
+            }
+
+
+        }
+    }
 }

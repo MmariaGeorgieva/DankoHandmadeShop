@@ -39,7 +39,7 @@
         .auth-buttons a, .contact-button a {
             text-decoration: none;
             background-color: rgba(249, 249, 249, 0.4);
-            color: rgba(91, 168, 98);
+            color: rgb(37, 77, 41);
             padding: 10px 15px;
             border-radius: 5px;
             font-weight: bold;
@@ -217,7 +217,7 @@
             font-family: Arial, sans-serif;
             font-size: 32px;
             font-weight: bold;
-            color: rgba(91, 168, 98);
+            color: rgb(37, 77, 41);
             margin-top: 0;
             align-self: flex-start;
         }
@@ -230,6 +230,10 @@
 
         .info-lines {
             color: #555;
+        }
+
+        .click {
+            color: #800020;
         }
 
         .links {
@@ -254,6 +258,13 @@
             color: rgba(91, 168, 98);
             font-weight: bold;
             font-size: 24px;
+        }
+
+        .brackets {
+            text-align: center;
+            color: black;
+            font-weight: normal;
+            font-size: 18px;
         }
 
         .related-products-container {
@@ -312,6 +323,8 @@
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_ADMIN')}"
            th:href="@{/admin}">Admin Page</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
+           th:href="@{/cart}">My Cart</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
            th:href="@{/contact}">Contact</a>
         <a th:if="${user}" th:href="@{'/user/' + ${user.id}}">Edit My Profile</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
@@ -337,7 +350,7 @@
         </div>
         <div class="main-image">
             <a th:href="@{${activeProduct.mainPhotoUrl}}" target="_blank">
-            <img th:src="@{${activeProduct.mainPhotoUrl}}" alt="Thumbnail">
+                <img th:src="@{${activeProduct.mainPhotoUrl}}" alt="Thumbnail">
             </a>
         </div>
     </div>
@@ -350,10 +363,27 @@
         <p class="info-lines">✔ Free shipping.</p>
         <p class="info-lines">✔ Ships from: Bulgaria.</p>
         <br>
+        <div class="click">✔ Click on photos to expand.</div>
+        <br>
+        <br>
+        <br>
         <a th:href="@{/shop-policies}" class="links">✔ Shipping and return policies</a>
         <a th:href="@{/contact}" class="links">✔ Ask a question</a>
         <br>
-        <button class="add-to-cart-button" th:data-product-id="${activeProduct.id}" th:text="'Add to Cart'"></button>
+
+        <form th:action="@{/cart/add}" th:method="post" th:object="${addToCartRequest}">
+            <input type="hidden" name="userId" th:value="${user.id}">
+            <input type="hidden" name="productId" th:value="${activeProduct.id}">
+            <label for="quantity">Quantity:</label>
+            <select id="quantity" name="quantity" th:name="quantity">
+                <option th:each="i : ${#numbers.sequence(1, activeProduct.stockQuantity)}"
+                        th:value="${i}"
+                        th:text="${i}"></option>
+            </select>
+            <input type="hidden" name="quantity" th:value="${addToCartRequest.quantity}">
+            <button type="submit" class="add-to-cart-button">Add to Cart</button>
+        </form>
+
     </div>
 </div>
 
@@ -363,7 +393,8 @@
 
 <div class="related-products-container">
 
-    <p class="you-may">You may also like:</p>
+    <p class="you-may">You may also like: <br>
+        <span class="brackets">(click on photo to open product page)</span></p>
     <div class="related-products">
         <div th:each="product : ${relatedProducts}" class="product-item">
             <a th:href="@{'/home/active-product/' + ${product.id}}">

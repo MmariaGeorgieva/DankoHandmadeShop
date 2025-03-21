@@ -20,10 +20,6 @@ public class SecurityConfiguration {
                                                    CustomAuthenticationSuccessHandler successHandler)
             throws Exception {
 
-        // http.authorizeRequests - конфигуриране на група ендпойнти
-        // requestMatchers - достъп до даден ентпойнт
-        // anyRequest() - всички заявки, които не съм изброил
-        // authenticated() - за да имаш достъп, трябва да са авторизиран
 
         http
                 .csrf(csrf -> csrf
