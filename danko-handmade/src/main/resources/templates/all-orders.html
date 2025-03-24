@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inactive Products - Admin Panel</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #60c6a0;
+      color: white;
+      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+    }
+
+    header h1 {
+      margin: 0;
+    }
+
+    .header-buttons a {
+      background-color: #60c6a0;
+      color: white;
+      padding: 12px 25px; /* Малко по-голямо разстояние в бутоните */
+      text-decoration: none;
+      border-radius: 5px;
+      border: 1px solid #60c6a0;
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+      font-weight: 600; /* Увеличаваме плътността на текста */
+      font-size: 1.1rem; /* Увеличаваме размера на шрифта */
+    }
+
+    .header-buttons a:hover {
+      background-color: #45b38e;
+      border-color: #45b38e;
+    }
+
+
+    .container {
+      width: 80%;
+      margin: auto;
+      padding: 20px;
+    }
+
+    .product-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product-row img {
+      width: 80px;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .product-info {
+      flex-grow: 1;
+      padding-left: 15px;
+    }
+
+    /* Стилове за бутон Activate */
+    .btn-activate {
+      background-color: #4caf50; /* Зелен за активиране */
+      color: white;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .btn-activate:hover {
+      background-color: #45a049; /* По-тъмен зелен при hover */
+      transform: scale(1.05);
+    }
+
+    .order-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #91c495;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      margin: 30px auto;
+      max-width: 900px;
+    }
+
+    .order-header {
+      font-size: 16px;
+      font-weight: normal;
+      color: #444;
+      margin-bottom: 10px;
+      word-wrap: break-word;
+      hyphens: auto;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .cart-item img {
+      width: 120px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 5px;
+      margin-right: 20px;
+    }
+
+    .cart-item-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      justify-content: flex-start;
+      align-items: flex-start;
+      width: 100%;
+    }
+
+    .cart-item-name {
+      font-size: 14px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .cart-item-price,
+    .cart-item-quantity,
+    .cart-item-total {
+      font-size: 14px;
+      color: #666;
+      margin: 0;
+    }
+
+    footer {
+      background-color: #60c6a0;
+      color: white;
+      padding: 10px 0;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>All Orders</h1>
+  <div class="header-buttons">
+    <a href="/admin/products" class="btn btn-secondary">Active Products</a>
+    <a href="/admin/products/inactive" class="btn btn-secondary">Inactive Products</a>
+    <a href="/admin" class="btn btn-secondary">Admin Page</a>
+    <a href="/home" class="btn btn-secondary">Shop</a>
+    <a href="/logout" class="btn btn-secondary">Logout</a>
+  </div>
+</header>
+
+<div th:each="orderEntry : ${allOrdersWithProducts}" class="order-container">
+  <h3 class="order-header">Ordered On: <span th:text="${#temporals.format(orderEntry.key.orderDate, 'dd MMM yyyy HH:mm')}"></span></h3>
+  <div th:each="entry : ${orderEntry.value}" class="cart-item">
+    <img th:src="${entry.key.mainPhotoUrl}" alt="Product Image">
+    <div class="cart-item-info">
+      <p class="cart-item-name" th:text="${entry.key.listingTitle}"></p>
+      <p class="cart-item-price">Price: <span th:text="${entry.key.price}"></span> BGN</p>
+      <p class="cart-item-quantity">Quantity: <span th:text="${entry.value}"></span></p>
+    </div>
+  </div>
+  <p class="cart-item-total">Order Total: <span th:text="${orderEntry.key.totalPaid}"></span>EUR</p>
+  <p class="cart-item-total">User Id: <span th:text="${orderEntry.key.userId}"></span>EUR</p>
+</div>
+
+<div th:replace="~{fragments/footer}"></div>
+
+</body>
+</html>

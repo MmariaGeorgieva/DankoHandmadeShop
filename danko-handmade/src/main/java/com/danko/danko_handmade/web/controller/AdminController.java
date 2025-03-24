@@ -1,5 +1,7 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.order.model.Order;
+import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.service.ProductService;
@@ -20,7 +22,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -29,11 +33,13 @@ public class AdminController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final OrderService orderService;
 
 
-    public AdminController(ProductService productService, UserService userService) {
+    public AdminController(ProductService productService, UserService userService, OrderService orderService) {
         this.productService = productService;
         this.userService = userService;
+        this.orderService = orderService;
     }
 
     @GetMapping
@@ -182,6 +188,30 @@ public class AdminController {
         return "redirect:/admin/product/edit/" + productId;
     }
 
+    @GetMapping("/all-orders")
+    public ModelAndView viewAllOrders() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("all-orders");
 
+        List<Order> allOrdersByDateDesc = orderService.getAllOrdersByOrderedOnDesc();
+        if (allOrdersByDateDesc == null || allOrdersByDateDesc.isEmpty()) {
+            return new ModelAndView("redirect:/admin");
+        }
+        Map<Order, Map<Product, Integer>> allOrdersWithProducts = new LinkedHashMap<>();
+
+        for (Order order : allOrdersByDateDesc) {
+            Map<Product, Integer> allProductsWithQuantity = new LinkedHashMap<>();
+            for (Map.Entry<UUID, Integer> entry : order.getOrderedProducts().entrySet()) {
+                Product product = productService.getProductById(entry.getKey());
+                allProductsWithQuantity.put(product, entry.getValue());
+            }
+            allOrdersWithProducts.put(order, allProductsWithQuantity);
+        }
+
+        modelAndView.addObject("allOrdersWithProducts", allOrdersWithProducts);
+        modelAndView.addObject("allOrders", allOrdersByDateDesc);
+
+        return modelAndView;
+    }
 
 }

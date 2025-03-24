@@ -323,6 +323,8 @@
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_ADMIN')}"
            th:href="@{/admin}">Admin Page</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
+           th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
            th:href="@{/cart}">My Cart</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
            th:href="@{/contact}">Contact</a>

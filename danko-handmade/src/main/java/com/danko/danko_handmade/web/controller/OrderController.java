@@ -1,23 +1,27 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.order.repository.OrderRepository;
 import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
+import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.order.model.Order;
 import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
+import com.danko.danko_handmade.user.repository.UserRepository;
 import com.danko.danko_handmade.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
-import java.security.Principal;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Controller
 @RequestMapping("/orders")
@@ -34,7 +38,7 @@ public class OrderController {
         this.productService = productService;
     }
 
-    @PostMapping("/complete-order")
+    @PostMapping("/order")
     public String completeOrder(HttpSession session, Authentication userAuthentication) {
         Map<Product, Integer> cartContent = (Map<Product, Integer>) session.getAttribute("cartContent");
 
@@ -46,14 +50,40 @@ public class OrderController {
             UUID userId = userData.getUserId();
             User user = userService.getById(userId);
 
-//            orderService.createOrder(user);
+            Order order = orderService.createOrder(user, cartContent);
 
             productService.decreaseQuantityByItemsSold(cartContent);
             session.removeAttribute("cartContent");
-            return "redirect:/home";
+            return "redirect:/orders/my-orders/" + userId;
         }
-
         return "redirect:/cart";
     }
 
+    @GetMapping("/my-orders/{userId}")
+    public ModelAndView GetMyOrders(@PathVariable UUID userId) {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("my-orders");
+        User user = userService.getById(userId);
+
+        List<Order> myOrders = orderService.getAllOrdersByUserId(userId);
+        if (myOrders == null || myOrders.isEmpty()) {
+            return new ModelAndView("redirect:/home");
+        }
+        Map<Order, Map<Product, Integer>> ordersWithProducts = new LinkedHashMap<>();
+
+        for (Order order : myOrders) {
+            Map<Product, Integer> productsWithQuantity = new LinkedHashMap<>();
+            for (Map.Entry<UUID, Integer> entry : order.getOrderedProducts().entrySet()) {
+                Product product = productService.getProductById(entry.getKey());
+                productsWithQuantity.put(product, entry.getValue());
+            }
+            ordersWithProducts.put(order, productsWithQuantity);
+        }
+
+        modelAndView.addObject("ordersWithProducts", ordersWithProducts);
+        modelAndView.addObject("user", user);
+        modelAndView.addObject("myOrders", myOrders);
+
+        return modelAndView;
+    }
 }

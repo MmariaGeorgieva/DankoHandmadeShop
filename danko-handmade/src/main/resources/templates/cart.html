@@ -190,7 +190,8 @@
 
 <div class="banner">
     <div class="auth-buttons">
-        <a th:if="${user}" th:href="@{/home}">Back To Shop</a>
+        <a th:if="${user}" th:href="@{/home}">Shop</a>
+        <a th:if="${user}" th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
         <a th:href="@{/contact}">Contact</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
@@ -227,7 +228,7 @@
         <p class="free-shipping">✔ Free Shipping</p>
     </div>
 
-    <form th:action="@{/orders/complete-order}" th:method="POST" th:object="${cartContent}">
+    <form th:action="@{/orders/order}" th:method="POST" th:object="${cartContent}">
         <button type="submit" class="proceed-button">Proceed to Checkout</button>
     </form>
 

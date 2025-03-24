@@ -10,10 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
@@ -22,6 +19,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Controller
+@RequestMapping("/cart")
 public class CartController {
 
     private final UserService userService;
@@ -33,7 +31,7 @@ public class CartController {
         this.productService = productService;
     }
 
-    @GetMapping("/cart")
+    @GetMapping()
     public ModelAndView getCartPage(Authentication userAuthentication, HttpSession session) {
 
         if (userAuthentication != null && userAuthentication.isAuthenticated()) {
@@ -64,7 +62,7 @@ public class CartController {
         return modelAndView;
     }
 
-    @PostMapping("/cart/add")
+    @PostMapping("/add")
     public String addToCart(AddToCartRequest addToCartRequest,
                             Authentication userAuthentication,
                             HttpSession session) {
@@ -84,7 +82,7 @@ public class CartController {
         return "redirect:/cart";
     }
 
-    @DeleteMapping("/cart/remove/{id}")
+    @DeleteMapping("/remove/{id}")
     public String removeFromCart(@PathVariable UUID id, HttpSession session) {
         Map<Product, Integer> cartContent = (Map<Product, Integer>) session.getAttribute("cartContent");
 
