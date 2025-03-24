@@ -22,11 +22,11 @@ public class TestInit implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-        ResponseEntity<String> helloMessage = reviewClient.getHelloMessage("Danko");
-
-//        if (!helloMessage.getStatusCode().is2xxSuccessful()) {
-//           throw new ...
-//        }
-        System.out.println(helloMessage.getBody());
+//        ResponseEntity<String> helloMessage = reviewClient.getHelloMessage("Danko");
+//
+////        if (!helloMessage.getStatusCode().is2xxSuccessful()) {
+////           throw new ...
+////        }
+//        System.out.println(helloMessage.getBody());
     }
 }

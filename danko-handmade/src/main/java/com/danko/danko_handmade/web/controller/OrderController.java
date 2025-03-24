@@ -1,9 +1,10 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.service.ProductService;
-import com.danko.danko_handmade.purchase.model.Purchase;
-import com.danko.danko_handmade.purchase.service.PurchaseService;
+import com.danko.danko_handmade.order.model.Order;
+import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
@@ -23,13 +24,13 @@ import java.util.UUID;
 public class OrderController {
 
     private final UserService userService;
-    private final PurchaseService purchaseService;
+    private final OrderService orderService;
     private final ProductService productService;
 
     @Autowired
-    public OrderController(UserService userService, PurchaseService purchaseService, ProductService productService) {
+    public OrderController(UserService userService, OrderService orderService, ProductService productService) {
         this.userService = userService;
-        this.purchaseService = purchaseService;
+        this.orderService = orderService;
         this.productService = productService;
     }
 
@@ -45,7 +46,7 @@ public class OrderController {
             UUID userId = userData.getUserId();
             User user = userService.getById(userId);
 
-//            purchaseService.createOrder(user);
+//            orderService.createOrder(user);
 
             productService.decreaseQuantityByItemsSold(cartContent);
             session.removeAttribute("cartContent");
