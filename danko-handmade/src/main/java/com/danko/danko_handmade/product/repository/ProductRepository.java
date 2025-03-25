@@ -24,4 +24,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findAllByOrderByAddedOnDesc();
 
     List<Product> findAllByOrderByItemsSoldDesc();
+
+    Product findTopByOrderByAddedOnDesc();
 }

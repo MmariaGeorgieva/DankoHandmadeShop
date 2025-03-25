@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DankoHandmade - Cart</title>
+    <title>DankoHandmade - Leave a Review</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -69,100 +69,88 @@
             margin-top: 20px;
         }
 
-        .order-container {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 20px;
+        .form-container {
             background-color: #f9f9f9;
+            padding: 20px;
             border: 1px solid #91c495;
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             margin: 30px auto;
-            max-width: 900px;
+            max-width: 600px;
         }
 
-        .order-header {
-            font-size: 16px;
-            font-weight: normal;
-            color: #444;
-            margin-bottom: 10px;
-            word-wrap: break-word;
-            hyphens: auto;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .cart-item img {
-            width: 120px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 20px;
-        }
-
-        .cart-item-info {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            justify-content: flex-start;
-            align-items: flex-start;
+        .form-container img {
             width: 100%;
+            height: auto;
+            border-radius: 5px;
         }
 
-        .cart-item-name {
-            font-size: 14px;
+        .form-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-container .product-title {
+            font-size: 20px;
             font-weight: bold;
             color: #333;
-            margin-bottom: 5px;
+            margin-top: 10px;
+            text-align: center;
         }
 
-        .cart-item-price,
-        .cart-item-quantity,
-        .cart-item-total {
+        .form-container label {
             font-size: 14px;
-            color: #666;
-            margin: 0;
+            margin-bottom: 5px;
+            display: block;
+            color: #333;
         }
 
-        .review-button {
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            resize: vertical;
+            height: 120px;
+        }
+
+        .form-container .rating {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .form-container .star {
+            font-size: 24px;
+            color: #ddd;
+            cursor: pointer;
+        }
+
+        .form-container .star.selected {
+            color: #FFD700;
+        }
+
+        .form-container button {
             background-color: rgba(91, 168, 98, 0.6);
             color: white;
-            padding: 8px 20px;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
-            margin-left: auto;
+            width: 100%;
             transition: background-color 0.3s ease;
-            white-space: nowrap;
         }
 
-        .review-button:hover {
+        .form-container button:hover {
             background-color: rgba(91, 168, 98, 1);
         }
 
-        .review-button:active {
+        .form-container button:active {
             background-color: rgba(91, 168, 98, 0.6);
-        }
-
-        .cart-summary .total-price {
-            font-size: 18px;
-            font-weight: bold;
-            color: rgba(91, 168, 98, 0.8);
-        }
-
-        .gradient-separator {
-            background-color: rgba(91, 168, 98, 0.8);
-            height: 2px;
-            width: 100%;
         }
     </style>
 </head>
@@ -172,34 +160,55 @@
     <div class="auth-buttons">
         <a th:if="${user}" th:href="@{/home}">Shop</a>
         <a th:href="@{/contact}">Contact</a>
-        <a th:if="${user}" th:href="@{/cart}">My Cart</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">
         <h1>DankoHandmade</h1>
-        <p class="subtitle">Your Orders</p>
+        <p class="subtitle">Leave a Review</p>
     </div>
 </div>
 
 <div class="gradient-separator"></div>
 
-<div th:each="orderEntry : ${ordersWithProducts}" class="order-container">
-    <h3 class="order-header">
-        Order number: <span th:text="${orderEntry.key.orderNumber}"></span> |
-        Ordered on: <span th:text="${#temporals.format(orderEntry.key.orderDate, 'dd MMM yyyy HH:mm')}"></span>
-    </h3>
-    <div th:each="entry : ${orderEntry.value}" class="cart-item">
-        <img th:src="${entry.key.mainPhotoUrl}" alt="Product Image">
-        <div class="cart-item-info">
-            <p class="cart-item-name" th:text="${entry.key.listingTitle}"></p>
-            <p class="cart-item-price">Price: <span th:text="${entry.key.price}"></span> BGN</p>
-            <p class="cart-item-quantity">Quantity: <span th:text="${entry.value}"></span></p>
-        </div>
-        <form th:action="@{'/reviews/leave-review/' + ${orderEntry.key.id} + '/' + ${entry.key.id}}" th:method="GET">
-            <button type="submit" class="review-button">Leave Review</button>
-        </form>
+<div class="form-container">
+    <h2>Leave Your Review</h2>
+
+    <div th:object="${product}">
+        <img th:src="@{${product.mainPhotoUrl}}" alt="Product Image" />
+        <div class="product-title" th:text="${product.listingTitle}">Product Title</div>
     </div>
-    <p class="cart-item-total">Order Total: <span th:text="${orderEntry.key.totalPaid}"></span> BGN</p>
+
+    <form th:action="@{/reviews/submit-review}" method="post" th:object="${leaveReview}">
+        <input type="hidden" id="userId" name="userId" th:value="${user.id}" />
+        <input type="hidden" id="orderId" name="orderId" th:value="${order.id}" />
+        <input type="hidden" id="productId" name="productId" th:value="${product.id}" />
+
+        <div class="rating">
+            <input type="radio" th:name="rating" th:value="1" id="star1" />
+            <label for="star1" class="star">&#9733;</label>
+
+            <input type="radio" th:name="rating" th:value="2" id="star2" />
+            <label for="star2" class="star">&#9733;</label>
+
+            <input type="radio" th:name="rating" th:value="3" id="star3" />
+            <label for="star3" class="star">&#9733;</label>
+
+            <input type="radio" th:name="rating" th:value="4" id="star4" />
+            <label for="star4" class="star">&#9733;</label>
+
+            <input type="radio" th:name="rating" th:value="5" id="star5" />
+            <label for="star5" class="star">&#9733;</label>
+        </div>
+
+        <div>
+            <label for="textReview">Your Review</label>
+            <textarea id="textReview" name="textReview" required maxlength="1000" placeholder="Write your review here"></textarea>
+        </div>
+
+        <div>
+            <button type="submit">Submit Review</button>
+        </div>
+    </form>
 </div>
 
 <div th:replace="~{fragments/footer}"></div>

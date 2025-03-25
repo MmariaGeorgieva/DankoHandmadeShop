@@ -228,7 +228,7 @@
         <p class="free-shipping">✔ Free Shipping</p>
     </div>
 
-    <form th:action="@{/orders/order}" th:method="POST" th:object="${cartContent}">
+    <form th:action="@{'/orders/my-orders/' + ${user.id}}" th:method="POST" th:object="${cartContent}">
         <button type="submit" class="proceed-button">Proceed to Checkout</button>
     </form>
 

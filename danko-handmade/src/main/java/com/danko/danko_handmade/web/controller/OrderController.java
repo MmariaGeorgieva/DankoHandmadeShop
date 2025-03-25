@@ -38,19 +38,17 @@ public class OrderController {
         this.productService = productService;
     }
 
-    @PostMapping("/order")
-    public String completeOrder(HttpSession session, Authentication userAuthentication) {
+    @PostMapping("/my-orders/{userId}")
+    public String completeOrder(@PathVariable UUID userId, HttpSession session, Authentication userAuthentication) {
         Map<Product, Integer> cartContent = (Map<Product, Integer>) session.getAttribute("cartContent");
 
         if (cartContent == null || cartContent.isEmpty()) {
             return "redirect:/cart";
         }
         if (userAuthentication != null && userAuthentication.isAuthenticated()) {
-            AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
-            UUID userId = userData.getUserId();
             User user = userService.getById(userId);
 
-            Order order = orderService.createOrder(user, cartContent);
+            orderService.createOrder(user, cartContent);
 
             productService.decreaseQuantityByItemsSold(cartContent);
             session.removeAttribute("cartContent");
@@ -65,7 +63,7 @@ public class OrderController {
         modelAndView.setViewName("my-orders");
         User user = userService.getById(userId);
 
-        List<Order> myOrders = orderService.getAllOrdersByUserId(userId);
+        List<Order> myOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
         if (myOrders == null || myOrders.isEmpty()) {
             return new ModelAndView("redirect:/home");
         }

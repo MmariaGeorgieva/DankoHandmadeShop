@@ -180,15 +180,12 @@
         <p class="subtitle">Your Orders</p>
     </div>
 </div>
-
 <div class="gradient-separator"></div>
 
-<div th:each="orderEntry : ${ordersWithProducts}" class="order-container">
+<div th:each="review : ${allReviews}" class="order-container">
     <h3 class="order-header">
-        Order number: <span th:text="${orderEntry.key.orderNumber}"></span> |
-        Ordered on: <span th:text="${#temporals.format(orderEntry.key.orderDate, 'dd MMM yyyy HH:mm')}"></span>
+        Left on: <span th:text="${#temporals.format(review.createdOn, 'dd MMM yyyy HH:mm')}"></span>
     </h3>
-    <div th:each="entry : ${orderEntry.value}" class="cart-item">
         <img th:src="${entry.key.mainPhotoUrl}" alt="Product Image">
         <div class="cart-item-info">
             <p class="cart-item-name" th:text="${entry.key.listingTitle}"></p>

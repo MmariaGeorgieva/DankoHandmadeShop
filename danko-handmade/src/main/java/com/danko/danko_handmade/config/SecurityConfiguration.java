@@ -34,7 +34,8 @@ public class SecurityConfiguration {
                                 "/contact",
                                 "/shop-policies",
                                 "/faq",
-                                "/home/**").permitAll()
+                                "/home/**",
+                                "/reviews/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()

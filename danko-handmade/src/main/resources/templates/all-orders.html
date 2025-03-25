@@ -175,7 +175,10 @@
 </header>
 
 <div th:each="orderEntry : ${allOrdersWithProducts}" class="order-container">
-  <h3 class="order-header">Ordered On: <span th:text="${#temporals.format(orderEntry.key.orderDate, 'dd MMM yyyy HH:mm')}"></span></h3>
+  <h3 class="order-header">
+    Order number: <span th:text="${orderEntry.key.orderNumber}"></span> |
+    Ordered on: <span th:text="${#temporals.format(orderEntry.key.orderDate, 'dd MMM yyyy HH:mm')}"></span>
+  </h3>
   <div th:each="entry : ${orderEntry.value}" class="cart-item">
     <img th:src="${entry.key.mainPhotoUrl}" alt="Product Image">
     <div class="cart-item-info">

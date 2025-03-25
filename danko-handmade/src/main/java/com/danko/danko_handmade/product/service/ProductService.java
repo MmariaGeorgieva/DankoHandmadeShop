@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
-    private static int start = 1011;
 
     private final ProductRepository productRepository;
     private final CloudinaryService cloudinaryService;
@@ -89,8 +88,15 @@ public class ProductService {
             default -> "";
         };
 
-        int suffix = start++;
-        return prefix + "-" + suffix;
+        Product lastProduct = productRepository.findTopByOrderByAddedOnDesc();
+
+        int lastNumber = 1011;
+        if (lastProduct != null) {
+            String lastProductCode = lastProduct.getProductCode();
+            String[] parts = lastProductCode.split("-");
+            lastNumber = Integer.parseInt(parts[1]) + 1;
+        }
+        return prefix + "-" + lastNumber;
     }
 
     public Product getProductById(UUID id) {
