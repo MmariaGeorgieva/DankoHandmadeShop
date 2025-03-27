@@ -7,6 +7,7 @@ import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.service.ProductService;
+import com.danko.danko_handmade.review.service.ReviewService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
@@ -39,7 +40,10 @@ public class AdminController {
     private final EmailService emailService;
 
 
-    public AdminController(ProductService productService, UserService userService, OrderService orderService, EmailService emailService) {
+    public AdminController(ProductService productService,
+                           UserService userService,
+                           OrderService orderService,
+                           EmailService emailService) {
         this.productService = productService;
         this.userService = userService;
         this.orderService = orderService;

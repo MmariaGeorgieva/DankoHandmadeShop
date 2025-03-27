@@ -9,7 +9,7 @@ import com.danko.danko_handmade.review.service.ReviewService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
-import com.danko.danko_handmade.web.dto.ReviewDto;
+import com.danko.danko_handmade.review.client.dto.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -64,6 +64,7 @@ public class ReviewController {
                                @RequestParam("orderId") UUID orderId,
                                @RequestParam("rating") int rating,
                                @RequestParam("textReview") String textReview,
+                               @RequestParam("mainPhotoUrl") String mainPhotoUrl,
                                Authentication userAuthentication) {
 
         if (userAuthentication != null && userAuthentication.isAuthenticated()) {
@@ -74,7 +75,7 @@ public class ReviewController {
                 return "redirect:/not-found";
             }
 
-            reviewService.leaveReview(currentUserId, productCode, orderId, textReview, rating);
+            reviewService.leaveReview(currentUserId, productCode, orderId, textReview, rating, mainPhotoUrl);
             return "redirect:/reviews/public-reviews";
         }
         return "redirect:/login";

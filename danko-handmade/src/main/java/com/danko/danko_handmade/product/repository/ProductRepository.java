@@ -14,7 +14,7 @@ import java.util.UUID;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, UUID> {
-    List<Product> findAllByActive(boolean active);
+    List<Product> findAllByActiveOrderByAddedOnDesc(boolean active);
 
     @Query("SELECT p FROM Product p ORDER BY RAND()")
     List<Product> findSixRandomProducts(Pageable pageable);
@@ -26,4 +26,6 @@ public interface ProductRepository extends JpaRepository<Product, UUID> {
     List<Product> findAllByOrderByItemsSoldDesc();
 
     Product findTopByOrderByAddedOnDesc();
+
+    Product findByProductCode(String productCode);
 }

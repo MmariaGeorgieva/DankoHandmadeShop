@@ -1,4 +1,4 @@
-package com.danko.danko_handmade.web.dto;
+package com.danko.danko_handmade.review.client.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +9,9 @@ public class ReviewDto {
 
     @NotBlank
     private String productCode;
+
+    @NotBlank
+    private String mainPhotoUrl;
 
     @NotNull
     private int rating;

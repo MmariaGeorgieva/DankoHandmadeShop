@@ -6,7 +6,7 @@ import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.review.client.ReviewClient;
 import com.danko.danko_handmade.review.client.dto.LeaveReview;
 import com.danko.danko_handmade.user.service.UserService;
-import com.danko.danko_handmade.web.dto.ReviewDto;
+import com.danko.danko_handmade.review.client.dto.ReviewDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +34,7 @@ public class ReviewService {
     }
 
     public void leaveReview(UUID userId, String productCode, UUID orderId, String textReview,
-                            int rating) {
+                            int rating, String mainPhotoUrl) {
 
         List<Order> userOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
         Order order = orderService.getOrderById(orderId);
@@ -45,6 +45,7 @@ public class ReviewService {
         LeaveReview review = LeaveReview.builder()
                 .userId(userId)
                 .productCode(productCode)
+                .mainPhotoUrl(mainPhotoUrl)
                 .textReview(textReview)
                 .rating(rating)
                 .createdOn(LocalDateTime.now())

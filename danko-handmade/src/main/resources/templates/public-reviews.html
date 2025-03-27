@@ -7,7 +7,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
+            margin-bottom: 80px;
             padding: 0;
             background-color: #f4f4f4;
             display: flex;
@@ -80,38 +80,11 @@
             padding: 3px;
         }
 
-        .product-page {
-            display: flex;
-            align-items: flex-start;
-            gap: 20px;
-            padding: 20px;
-        }
-
-        .product-gallery {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-        }
-
-        .thumbnail-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            align-items: flex-start;
-            height: 500px;
-            overflow: auto;
-        }
-
         .thumbnail-list img {
             width: 133px;
             height: 100px;
             margin-left: 10px;
             cursor: pointer;
-        }
-
-        .main-image {
-            width: 667px;
-            height: 500px;
         }
 
         .main-image img {
@@ -120,55 +93,10 @@
             object-fit: cover;
         }
 
-        .product-info {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
         .product-info p {
             font-size: 16px;
             color: #333;
             margin: 0;
-        }
-
-        .add-to-cart-button {
-            background-color: rgba(91, 168, 98, 0.6);
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        .add-to-cart-button:hover {
-            background-color: rgba(91, 168, 98, 0.4);
-        }
-
-        .product-description {
-            width: 90%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-family: 'Arial', sans-serif;
-            font-size: 18px;
-        }
-
-        .related-products {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 20px;
-        }
-
-        .product-item {
-            width: 16.66%;
-            box-sizing: border-box;
-            text-align: center;
-            margin-bottom: 20px;
         }
 
         .product-item img {
@@ -182,75 +110,45 @@
             margin: 10px 0;
         }
 
-        .product-info {
+        .review-container {
             display: flex;
             align-items: flex-start;
-            flex-direction: column;
-            justify-content: flex-start;
-            margin-top: 20px;
-            padding: 10px;
+            gap: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+            width: 70%;
+            margin: 0 auto;
         }
 
-        .product-info p {
-            font-size: 16px;
-            color: #333;
-            margin: 0;
+        .review-image-container {
+            width: 150px;
+            height: 120px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .add-to-cart-button {
+        .review-image {
             width: 100%;
-            background-color: rgba(91, 168, 98, 0.8);
-            color: white;
-            padding: 8px 12px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 10px;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
         }
 
-        .product-info h3 {
-            width: 100%;
+        .review-text-container {
+            flex-grow: 1;
+            text-align: left;
+            max-width: calc(100% - 170px);
+            text-overflow: ellipsis;
         }
 
-        .product-info .price {
-            font-family: Arial, sans-serif;
-            font-size: 32px;
-            font-weight: bold;
-            color: rgb(37, 77, 41);
-            margin-top: 0;
-            align-self: flex-start;
-        }
-
-        .arrival-period {
-            color: #555;
-            font-style: italic;
-            font-weight: bold;
-        }
-
-        .info-lines {
-            color: #555;
-        }
-
-        .click {
-            color: #800020;
-        }
-
-        .links {
-            color: #333;
-            text-decoration: none;
-        }
-
-        .links:hover {
-            color: #800020;
-            text-decoration: underline;
-        }
-
-        .product-description pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
-            max-width: 100%;
-            margin-top: 10px;
+        .stars {
+            color: #FFD700;
+            font-size: 18px;
         }
 
         .you-may {
@@ -258,75 +156,16 @@
             color: rgba(91, 168, 98);
             font-weight: bold;
             font-size: 24px;
-        }
-
-        .brackets {
-            text-align: center;
-            color: black;
-            font-weight: normal;
-            font-size: 18px;
-        }
-
-        .related-products-container {
-            width: 90%;
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-size: 18px;
-            font-family: 'Arial', sans-serif;
-        }
-
-        .related-products {
-            display: flex;
-            justify-content: space-between;
-            gap: 5px;
-            padding: 10px;
-            width: 100%;
-            height: auto;
-        }
-
-        .product-item {
-            width: 16%;
-            box-sizing: border-box;
-            text-align: center;
-        }
-
-        .product-item img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        .product-item h4 {
-            font-weight: normal;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            width: 100%;
-            display: block;
+            margin-bottom: 30px;
         }
 
         .gradient-separator {
             background-color: rgba(91, 168, 98, 0.8);
             height: 2px;
             width: 100%;
+            margin-top: 20px;
         }
 
-        .review {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        .review:last-child {
-            border-bottom: none;
-        }
-
-        .stars {
-            color: #FFD700;
-            font-size: 18px;
-        }
     </style>
 </head>
 <body>
@@ -359,9 +198,15 @@
     <h3 class="you-may">All customer reviews:</h3>
     <div th:if="${allReviews != null}">
         <div th:each="review : ${allReviews}">
-            <div class="review">
-                <span class="stars" th:text="${#strings.repeat('★', review.rating)}"></span>
-                <p th:text="${review.reviewText}"></p>
+            <div class="review-container">
+                <div class="review-image-container">
+                    <img th:src="${review.mainPhotoUrl}" alt="Review Image" class="review-image"/>
+                </div>
+                <div class="review-text-container">
+<!--                    <p th:text="${'Product code: ' + review.productCode}"></p>-->
+                    <span class="stars" th:text="${#strings.repeat('★', review.rating)}"></span>
+                    <p th:text="${review.reviewText}"></p>
+                </div>
             </div>
         </div>
     </div>

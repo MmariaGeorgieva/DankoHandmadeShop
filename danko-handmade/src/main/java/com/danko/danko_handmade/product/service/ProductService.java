@@ -10,6 +10,7 @@ import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -124,11 +125,11 @@ public class ProductService {
     }
 
     public List<Product> getAllActiveProducts() {
-        return productRepository.findAllByActive(true);
+        return productRepository.findAllByActiveOrderByAddedOnDesc(true);
     }
 
     public List<Product> getAllInactiveProducts() {
-        return productRepository.findAllByActive(false);
+        return productRepository.findAllByActiveOrderByAddedOnDesc(false);
     }
 
     public void activateProduct(UUID id) {
@@ -251,19 +252,18 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public void decreaseQuantityByItemsSold(Map<Product, Integer> cartContent) {
+    public void decreaseQuantityAndIncreaseItemsSold(Map<Product, Integer> cartContent) {
         for(Map.Entry<Product, Integer> entry : cartContent.entrySet()) {
             Product product = entry.getKey();
             Integer quantity = entry.getValue();
             if(product.getStockQuantity() >= quantity) {
                 product.setStockQuantity(product.getStockQuantity() - quantity);
+                product.setItemsSold(product.getItemsSold() + quantity);
                 if (product.getStockQuantity() == 0) {
                     product.setActive(false);
                 }
                 productRepository.save(product);
             }
-
-
         }
     }
 }

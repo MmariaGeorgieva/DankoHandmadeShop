@@ -8,7 +8,7 @@ import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.AddToCartRequest;
-import com.danko.danko_handmade.web.dto.ReviewDto;
+import com.danko.danko_handmade.review.client.dto.ReviewDto;
 import com.danko.danko_handmade.web.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -18,9 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/home")

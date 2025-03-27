@@ -50,7 +50,7 @@ public class OrderController {
 
             orderService.createOrder(user, cartContent);
 
-            productService.decreaseQuantityByItemsSold(cartContent);
+            productService.decreaseQuantityAndIncreaseItemsSold(cartContent);
             session.removeAttribute("cartContent");
             return "redirect:/orders/my-orders/" + userId;
         }
