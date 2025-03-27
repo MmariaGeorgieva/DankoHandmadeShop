@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DankoHandmade - Cart</title>
+    <title>DankoHandmade - Home</title>
     <style>
         body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
             background-color: #f4f4f4;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            margin: 0 auto;
-            padding: 0;
-            padding-bottom: 50px;
         }
 
         .banner {
@@ -27,7 +26,6 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-bottom: 30px;
         }
 
         .auth-buttons {
@@ -38,19 +36,33 @@
             gap: 10px;
         }
 
-        .auth-buttons a {
+        .auth-buttons a, .contact-button a {
             text-decoration: none;
             background-color: rgba(249, 249, 249, 0.4);
-            color: rgb(37, 66, 40);
+            color: rgb(37, 77, 41);
             padding: 10px 15px;
             border-radius: 5px;
             font-weight: bold;
             border: 1px solid rgba(221, 221, 221, 0.4);
         }
 
+        .auth-buttons a:hover, .contact-button a:hover {
+            background-color: rgba(224, 224, 224, 0.4);
+        }
+
         .banner-content {
             color: #fff;
             text-shadow: -1px -1px 1px #800020, 1px -1px 1px #800020, -1px 1px 1px #800020, 1px 1px 1px #800020;
+        }
+
+        .banner-content h1 {
+            font-size: 32px;
+            margin-bottom: 5px;
+        }
+
+        .banner-content .subtitle {
+            font-size: 20px;
+            color: #ddd;
         }
 
         footer {
@@ -66,97 +78,234 @@
             align-items: center;
             justify-content: center;
             padding: 3px;
-            margin-top: 20px;
         }
 
-        .order-container {
+        .product-page {
             display: flex;
-            flex-direction: column;
+            align-items: flex-start;
             gap: 20px;
             padding: 20px;
-            background-color: #f9f9f9;
-            border: 1px solid #91c495;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            margin: 30px auto;
-            max-width: 900px;
         }
 
-        .order-header {
-            font-size: 16px;
-            font-weight: normal;
-            color: #444;
-            margin-bottom: 10px;
-            word-wrap: break-word;
-            hyphens: auto;
-        }
-
-        .cart-item {
+        .product-gallery {
             display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #ddd;
+            flex-direction: row;
+            gap: 20px;
         }
 
-        .cart-item img {
-            width: 120px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 5px;
-            margin-right: 20px;
-        }
-
-        .cart-item-info {
+        .thumbnail-list {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            justify-content: flex-start;
+            gap: 0;
             align-items: flex-start;
+            height: 500px;
+            overflow: auto;
+        }
+
+        .thumbnail-list img {
+            width: 133px;
+            height: 100px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .main-image {
+            width: 667px;
+            height: 500px;
+        }
+
+        .main-image img {
             width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .cart-item-name {
-            font-size: 14px;
-            font-weight: bold;
+        .product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .product-info p {
+            font-size: 16px;
             color: #333;
-            margin-bottom: 5px;
-        }
-
-        .cart-item-price,
-        .cart-item-quantity,
-        .cart-item-total {
-            font-size: 14px;
-            color: #666;
             margin: 0;
         }
 
-        .review-button {
+        .add-to-cart-button {
             background-color: rgba(91, 168, 98, 0.6);
             color: white;
-            padding: 8px 20px;
+            padding: 8px 12px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            margin-left: auto;
-            transition: background-color 0.3s ease;
-            white-space: nowrap;
+            font-size: 16px;
         }
 
-        .review-button:hover {
-            background-color: rgba(91, 168, 98, 1);
+        .add-to-cart-button:hover {
+            background-color: rgba(91, 168, 98, 0.4);
         }
 
-        .review-button:active {
-            background-color: rgba(91, 168, 98, 0.6);
-        }
-
-        .cart-summary .total-price {
+        .product-description {
+            width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-family: 'Arial', sans-serif;
             font-size: 18px;
-            font-weight: bold;
+        }
+
+        .related-products {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 20px;
+        }
+
+        .product-item {
+            width: 16.66%;
+            box-sizing: border-box;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product-item h3 {
+            font-size: 18px;
             color: rgba(91, 168, 98, 0.8);
+            margin: 10px 0;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            justify-content: flex-start;
+            margin-top: 20px;
+            padding: 10px;
+        }
+
+        .product-info p {
+            font-size: 16px;
+            color: #333;
+            margin: 0;
+        }
+
+        .add-to-cart-button {
+            width: 100%;
+            background-color: rgba(91, 168, 98, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+
+        .product-info h3 {
+            width: 100%;
+        }
+
+        .product-info .price {
+            font-family: Arial, sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            color: rgb(37, 77, 41);
+            margin-top: 0;
+            align-self: flex-start;
+        }
+
+        .arrival-period {
+            color: #555;
+            font-style: italic;
+            font-weight: bold;
+        }
+
+        .info-lines {
+            color: #555;
+        }
+
+        .click {
+            color: #800020;
+        }
+
+        .links {
+            color: #333;
+            text-decoration: none;
+        }
+
+        .links:hover {
+            color: #800020;
+            text-decoration: underline;
+        }
+
+        .product-description pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-width: 100%;
+            margin-top: 10px;
+        }
+
+        .you-may {
+            text-align: center;
+            color: rgba(91, 168, 98);
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        .brackets {
+            text-align: center;
+            color: black;
+            font-weight: normal;
+            font-size: 18px;
+        }
+
+        .related-products-container {
+            width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            font-size: 18px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .related-products {
+            display: flex;
+            justify-content: space-between;
+            gap: 5px;
+            padding: 10px;
+            width: 100%;
+            height: auto;
+        }
+
+        .product-item {
+            width: 16%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .product-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .product-item h4 {
+            font-weight: normal;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+            display: block;
         }
 
         .gradient-separator {
@@ -164,39 +313,61 @@
             height: 2px;
             width: 100%;
         }
+
+        .review {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .review:last-child {
+            border-bottom: none;
+        }
+
+        .stars {
+            color: #FFD700;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
 
 <div class="banner">
     <div class="auth-buttons">
+        <a th:unless="${user}" th:href="@{/login}">Login</a>
+        <a th:unless="${user}" th:href="@{/register}">Register</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_ADMIN')}"
+           th:href="@{/admin}">Admin Page</a>
         <a th:if="${user}" th:href="@{/home}">Shop</a>
-        <a th:href="@{/contact}">Contact</a>
-        <a th:if="${user}" th:href="@{/cart}">My Cart</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
+           th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
+           th:href="@{/cart}">My Cart</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
+           th:href="@{/contact}">Contact</a>
+        <a th:if="${user}" th:href="@{'/user/' + ${user.id}}">Edit My Profile</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">
         <h1>DankoHandmade</h1>
-        <p class="subtitle">Your Orders</p>
+        <p class="subtitle">Real Reviews from Real Customers</p>
     </div>
 </div>
+
 <div class="gradient-separator"></div>
 
-<div th:each="review : ${allReviews}" class="order-container">
-    <h3 class="order-header">
-        Left on: <span th:text="${#temporals.format(review.createdOn, 'dd MMM yyyy HH:mm')}"></span>
-    </h3>
-        <img th:src="${entry.key.mainPhotoUrl}" alt="Product Image">
-        <div class="cart-item-info">
-            <p class="cart-item-name" th:text="${entry.key.listingTitle}"></p>
-            <p class="cart-item-price">Price: <span th:text="${entry.key.price}"></span> BGN</p>
-            <p class="cart-item-quantity">Quantity: <span th:text="${entry.value}"></span></p>
+<div class="related-products-container">
+    <h3 class="you-may">All customer reviews:</h3>
+    <div th:if="${allReviews != null}">
+        <div th:each="review : ${allReviews}">
+            <div class="review">
+                <span class="stars" th:text="${#strings.repeat('★', review.rating)}"></span>
+                <p th:text="${review.reviewText}"></p>
+            </div>
         </div>
-        <form th:action="@{'/reviews/leave-review/' + ${orderEntry.key.id} + '/' + ${entry.key.id}}" th:method="GET">
-            <button type="submit" class="review-button">Leave Review</button>
-        </form>
     </div>
-    <p class="cart-item-total">Order Total: <span th:text="${orderEntry.key.totalPaid}"></span> BGN</p>
+    <div th:if="${allReviews == null || allReviews.isEmpty()}">
+        <p>No reviews yet. Be the first to leave one! 🌟</p>
+    </div>
 </div>
 
 <div th:replace="~{fragments/footer}"></div>

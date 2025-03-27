@@ -195,7 +195,7 @@
             <p class="cart-item-price">Price: <span th:text="${entry.key.price}"></span> BGN</p>
             <p class="cart-item-quantity">Quantity: <span th:text="${entry.value}"></span></p>
         </div>
-        <form th:action="@{'/reviews/leave-review/' + ${orderEntry.key.id} + '/' + ${entry.key.id}}" th:method="GET">
+        <form th:action="@{'/reviews/new-review/' + ${orderEntry.key.id} + '/' + ${entry.key.id}}" th:method="GET">
             <button type="submit" class="review-button">Leave Review</button>
         </form>
     </div>

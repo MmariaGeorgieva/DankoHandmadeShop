@@ -3,10 +3,12 @@ package com.danko.danko_handmade.web.controller;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.model.ProductSection;
 import com.danko.danko_handmade.product.service.ProductService;
+import com.danko.danko_handmade.review.service.ReviewService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.AddToCartRequest;
+import com.danko.danko_handmade.web.dto.ReviewDto;
 import com.danko.danko_handmade.web.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,7 +18,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/home")
@@ -24,11 +28,13 @@ public class HomeController {
 
     private final ProductService productService;
     private final UserService userService;
+    private final ReviewService reviewService;
 
     @Autowired
-    public HomeController(ProductService productService, UserService userService) {
+    public HomeController(ProductService productService, UserService userService, ReviewService reviewService) {
         this.productService = productService;
         this.userService = userService;
+        this.reviewService = reviewService;
     }
 
     @GetMapping()
@@ -87,11 +93,16 @@ public class HomeController {
             modelAndView.addObject("user", user);
             modelAndView.addObject("authorities", userData.getAuthorities());
         }
+        String productCode = activeProduct.getProductCode();
+        List<ReviewDto> productReviews = reviewService.getAllReviews().stream()
+                .filter(review -> review.getProductCode().equals(productCode))
+                .toList();
         modelAndView.addObject("activeProduct", activeProduct);
         modelAndView.addObject("arrivalPeriod", arrivalPeriod);
         modelAndView.addObject("relatedProducts", relatedProducts);
         modelAndView.addObject("userAuthentication", userAuthentication);
         modelAndView.addObject("addToCartRequest", new AddToCartRequest());
+        modelAndView.addObject("productReviews", productReviews);
         return modelAndView;
     }
 }

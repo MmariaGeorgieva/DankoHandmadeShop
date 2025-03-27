@@ -116,4 +116,8 @@ public class EmailService {
 
         contactFormEmailRepository.save(contactFormEmail);
     }
+
+    public List<ContactFormEmail> getContactFormEmails() {
+        return contactFormEmailRepository.findAllByOrderByCreatedOnDesc();
+    }
 }

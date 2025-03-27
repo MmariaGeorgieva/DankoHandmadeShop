@@ -1,5 +1,7 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.email.model.ContactFormEmail;
+import com.danko.danko_handmade.email.service.EmailService;
 import com.danko.danko_handmade.order.model.Order;
 import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
@@ -34,12 +36,14 @@ public class AdminController {
     private final ProductService productService;
     private final UserService userService;
     private final OrderService orderService;
+    private final EmailService emailService;
 
 
-    public AdminController(ProductService productService, UserService userService, OrderService orderService) {
+    public AdminController(ProductService productService, UserService userService, OrderService orderService, EmailService emailService) {
         this.productService = productService;
         this.userService = userService;
         this.orderService = orderService;
+        this.emailService = emailService;
     }
 
     @GetMapping
@@ -211,6 +215,15 @@ public class AdminController {
         modelAndView.addObject("allOrdersWithProducts", allOrdersWithProducts);
         modelAndView.addObject("allOrders", allOrdersByDateDesc);
 
+        return modelAndView;
+    }
+
+    @GetMapping("/contact-form-emails")
+    public ModelAndView viewContactFormEmails() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("contact-form-emails");
+        List<ContactFormEmail> allContactFormEmails = emailService.getContactFormEmails();
+        modelAndView.addObject("allContactFormEmails", allContactFormEmails);
         return modelAndView;
     }
 

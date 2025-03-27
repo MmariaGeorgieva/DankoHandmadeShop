@@ -21,7 +21,7 @@ public class LeaveReview {
     private UUID userId;
 
     @NotNull
-    private UUID productId;
+    private String productCode;
 
     @NotNull
     @NotBlank

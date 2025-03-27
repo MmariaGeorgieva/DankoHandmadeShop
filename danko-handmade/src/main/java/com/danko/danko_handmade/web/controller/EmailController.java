@@ -1,5 +1,6 @@
 package com.danko.danko_handmade.web.controller;
 
+import com.danko.danko_handmade.email.model.ContactFormEmail;
 import com.danko.danko_handmade.email.model.Email;
 import com.danko.danko_handmade.email.model.Newsletter;
 import com.danko.danko_handmade.email.service.EmailService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController

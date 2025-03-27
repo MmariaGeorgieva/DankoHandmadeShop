@@ -208,6 +208,7 @@
         <a th:unless="${user}" th:href="@{/register}">Register</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_ADMIN')}"
            th:href="@{/admin}">Admin Page</a>
+        <a th:if="${user}" th:href="@{/reviews/public-reviews}">Reviews</a>
         <a th:if="${user}" th:href="@{/cart}">My Cart</a>
         <a th:if="${user}" th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"

@@ -9,15 +9,14 @@ import com.danko.danko_handmade.review.service.ReviewService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
+import com.danko.danko_handmade.web.dto.ReviewDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller
@@ -37,7 +36,7 @@ public class ReviewController {
         this.orderService = orderService;
     }
 
-    @GetMapping("/leave-review/{orderId}/{productId}")
+    @GetMapping("/new-review/{orderId}/{productId}")
     public ModelAndView getLeaveReviewPage(@PathVariable UUID orderId,
                                            @PathVariable UUID productId,
                                            Authentication userAuthentication) {
@@ -50,7 +49,7 @@ public class ReviewController {
             Order order = orderService.getOrderById(orderId);
 
 
-            modelAndView.setViewName("leave-review");
+            modelAndView.setViewName("new-review");
             modelAndView.addObject("user", user);
             modelAndView.addObject("product", product);
             modelAndView.addObject("order", order);
@@ -59,8 +58,8 @@ public class ReviewController {
         return modelAndView;
     }
 
-    @PostMapping("/submit-review")
-    public String submitReview(@RequestParam("productId") UUID productId,
+    @PostMapping("/new-review")
+    public String submitReview(@RequestParam("productCode") String productCode,
                                @RequestParam("userId") UUID userId,
                                @RequestParam("orderId") UUID orderId,
                                @RequestParam("rating") int rating,
@@ -75,10 +74,9 @@ public class ReviewController {
                 return "redirect:/not-found";
             }
 
-            reviewService.leaveReview(currentUserId, productId, orderId, textReview, rating);
-            return "redirect:/home";
+            reviewService.leaveReview(currentUserId, productCode, orderId, textReview, rating);
+            return "redirect:/reviews/public-reviews";
         }
-
         return "redirect:/login";
     }
 
@@ -91,9 +89,9 @@ public class ReviewController {
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("public-reviews");
             modelAndView.addObject("user", user);
+            modelAndView.addObject("authorities", userData.getAuthorities());
 
-            List<Object> allReviews = reviewService.getAllReviews();
-
+            List<ReviewDto> allReviews = reviewService.getAllReviews();
             modelAndView.addObject("allReviews", allReviews);
             return modelAndView;
         }

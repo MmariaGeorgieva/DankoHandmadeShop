@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inactive Products - Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #60c6a0;
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .header-buttons a {
+            background-color: #60c6a0;
+            color: white;
+            padding: 12px 25px; /* Малко по-голямо разстояние в бутоните */
+            text-decoration: none;
+            border-radius: 5px;
+            border: 1px solid #60c6a0;
+            transition: background-color 0.3s ease, border-color 0.3s ease;
+            font-weight: 600; /* Увеличаваме плътността на текста */
+            font-size: 1.1rem; /* Увеличаваме размера на шрифта */
+        }
+
+        .header-buttons a:hover {
+            background-color: #45b38e;
+            border-color: #45b38e;
+        }
+
+
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+
+        .product-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-row img {
+            width: 80px;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .product-info {
+            flex-grow: 1;
+            padding-left: 15px;
+        }
+
+        footer {
+            background-color: #60c6a0;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Contact Form Emails</h1>
+    <div class="header-buttons">
+        <a href="/admin" class="btn btn-secondary">Admin Page</a>
+        <a href="/home" class="btn btn-secondary">Shop</a>
+        <a href="/logout" class="btn btn-secondary">Logout</a>
+    </div>
+</header>
+
+<div class="container">
+    <div th:each="email : ${allContactFormEmails}" class="product-row">
+        <div class="product-info">
+            <h3 th:text="'Sent from: ' + ${email.name}"></h3>
+            <p>Sender's email address: <span th:text="${email.email}"></span></p>
+            <p>Sent on: <span th:text="${#temporals.format(email.createdOn, 'dd MMM yyyy HH:mm')}"></span></p>
+            <p>Subject: <span th:text="${email.getSubject()}"></span></p>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragments/footer}"></div>
+
+</body>
+</html>

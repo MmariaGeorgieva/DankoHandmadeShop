@@ -178,10 +178,10 @@
         <div class="product-title" th:text="${product.listingTitle}">Product Title</div>
     </div>
 
-    <form th:action="@{/reviews/submit-review}" method="post" th:object="${leaveReview}">
+    <form th:action="@{/reviews/new-review}" method="POST" th:object="${leaveReview}">
         <input type="hidden" id="userId" name="userId" th:value="${user.id}" />
         <input type="hidden" id="orderId" name="orderId" th:value="${order.id}" />
-        <input type="hidden" id="productId" name="productId" th:value="${product.id}" />
+        <input type="hidden" id="productCode" name="productCode" th:value="${product.productCode}" />
 
         <div class="rating">
             <input type="radio" th:name="rating" th:value="1" id="star1" />

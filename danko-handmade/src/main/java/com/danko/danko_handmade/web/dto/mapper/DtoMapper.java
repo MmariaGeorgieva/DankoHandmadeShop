@@ -54,5 +54,4 @@ public class DtoMapper {
                 .createdOn(newsletter.getCreatedOn())
                 .build();
     }
-
 }
