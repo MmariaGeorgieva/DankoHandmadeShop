@@ -93,7 +93,7 @@ public class HomeController {
         }
         String productCode = activeProduct.getProductCode();
         List<ReviewDto> productReviews = reviewService.getAllReviews().stream()
-                .filter(review -> review.getProductCode().equals(productCode))
+                .filter(review -> review.getProductId().equals(activeProduct.getId()))
                 .toList();
         modelAndView.addObject("activeProduct", activeProduct);
         modelAndView.addObject("arrivalPeriod", arrivalPeriod);

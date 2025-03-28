@@ -59,7 +59,7 @@ public class ReviewController {
     }
 
     @PostMapping("/new-review")
-    public String submitReview(@RequestParam("productCode") String productCode,
+    public String submitReview(@RequestParam("productId") UUID productId,
                                @RequestParam("userId") UUID userId,
                                @RequestParam("orderId") UUID orderId,
                                @RequestParam("rating") int rating,
@@ -75,7 +75,7 @@ public class ReviewController {
                 return "redirect:/not-found";
             }
 
-            reviewService.leaveReview(currentUserId, productCode, orderId, textReview, rating, mainPhotoUrl);
+            reviewService.leaveReview(currentUserId, productId, orderId, textReview, rating, mainPhotoUrl);
             return "redirect:/reviews/public-reviews";
         }
         return "redirect:/login";

@@ -159,6 +159,14 @@
             margin-bottom: 30px;
         }
 
+        .no-reviews-yet {
+            text-align: center;
+            color: black;
+            font-weight: normal;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
         .gradient-separator {
             background-color: rgba(91, 168, 98, 0.8);
             height: 2px;
@@ -199,11 +207,11 @@
     <div th:if="${allReviews != null}">
         <div th:each="review : ${allReviews}">
             <div class="review-container">
-                <div class="review-image-container">
+                <a th:href="@{'/home/active-product/' + ${review.productId}}"
+                   class="review-image-container">
                     <img th:src="${review.mainPhotoUrl}" alt="Review Image" class="review-image"/>
-                </div>
+                </a>
                 <div class="review-text-container">
-<!--                    <p th:text="${'Product code: ' + review.productCode}"></p>-->
                     <span class="stars" th:text="${#strings.repeat('★', review.rating)}"></span>
                     <p th:text="${review.reviewText}"></p>
                 </div>
@@ -211,7 +219,7 @@
         </div>
     </div>
     <div th:if="${allReviews == null || allReviews.isEmpty()}">
-        <p>No reviews yet. Be the first to leave one! 🌟</p>
+        <p class="no-reviews-yet">No reviews yet. Be the first to leave one! 🌟</p>
     </div>
 </div>
 

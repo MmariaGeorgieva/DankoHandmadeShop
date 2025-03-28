@@ -33,7 +33,7 @@ public class ReviewService {
         this.productService = productService;
     }
 
-    public void leaveReview(UUID userId, String productCode, UUID orderId, String textReview,
+    public void leaveReview(UUID userId, UUID productId, UUID orderId, String textReview,
                             int rating, String mainPhotoUrl) {
 
         List<Order> userOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
@@ -44,7 +44,7 @@ public class ReviewService {
 
         LeaveReview review = LeaveReview.builder()
                 .userId(userId)
-                .productCode(productCode)
+                .productId(productId)
                 .mainPhotoUrl(mainPhotoUrl)
                 .textReview(textReview)
                 .rating(rating)
