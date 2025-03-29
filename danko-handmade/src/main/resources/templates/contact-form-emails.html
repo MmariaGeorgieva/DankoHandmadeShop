@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inactive Products - Admin Panel</title>
+    <title>Contact Form Emails - Admin Panel</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -29,13 +29,13 @@
         .header-buttons a {
             background-color: #60c6a0;
             color: white;
-            padding: 12px 25px; /* Малко по-голямо разстояние в бутоните */
+            padding: 12px 25px;
             text-decoration: none;
             border-radius: 5px;
             border: 1px solid #60c6a0;
             transition: background-color 0.3s ease, border-color 0.3s ease;
-            font-weight: 600; /* Увеличаваме плътността на текста */
-            font-size: 1.1rem; /* Увеличаваме размера на шрифта */
+            font-weight: 600;
+            font-size: 1.1rem;
         }
 
         .header-buttons a:hover {
@@ -97,9 +97,9 @@
     <div th:each="email : ${allContactFormEmails}" class="product-row">
         <div class="product-info">
             <h3 th:text="'Sent from: ' + ${email.name}"></h3>
-            <p>Sender's email address: <span th:text="${email.email}"></span></p>
-            <p>Sent on: <span th:text="${#temporals.format(email.createdOn, 'dd MMM yyyy HH:mm')}"></span></p>
-            <p>Subject: <span th:text="${email.getSubject()}"></span></p>
+            <p> <strong>Sender's email address: </strong><span th:text="${email.email}"></span></p>
+            <p><strong>Sent on: </strong><span th:text="${#temporals.format(email.createdOn, 'dd MMM yyyy HH:mm')}"></span></p>
+            <p><strong>Subject: </strong><span th:text="${email.getSubject()}"></span></p>
         </div>
     </div>
 </div>

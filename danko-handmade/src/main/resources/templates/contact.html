@@ -140,33 +140,33 @@
     </div>
 </header>
 
+<div th:if="${successMessage}" class="container">
+    <p th:text="${successMessage}"></p>
+</div>
+
 <div class="container">
     <h1>We’d love to hear from you!</h1>
     <p>If you have any questions, comments, or concerns, please feel free to reach out to us using the form below.
         <br> We will get back to you as soon as possible.</p>
 
-    <div th:if="${successMessage}" style="background-color: rgba(51, 51, 51, 0.3); color: white; padding: 15px;
-    margin-bottom: 20px; border-radius: 5px;">
-        <p th:text="${successMessage}"></p>
-    </div>
-
     <form th:action="@{/contact}" th:method="POST" th:object="${contactShopRequest}">
         <label for="name">Your Name</label>
-        <input type="text" id="name" name="name" required placeholder="Enter your full name"
-               th:value="${user != null ? (user.firstName != null && !user.firstName.isEmpty() ?
-               user.firstName : '') + ' ' + (user.lastName != null && !user.lastName.isEmpty() ? user.lastName : '') : ''}">
-
+<!--        <input type="text" id="name" name="name" required placeholder="Enter your full name"-->
+<!--               th:value="${user != null ? (user.firstName != null && !user.firstName.isEmpty() ?-->
+<!--               user.firstName : '') + ' ' + (user.lastName != null && !user.lastName.isEmpty() ? user.lastName : '') : ''}">-->
+        <input type="text" id="name" name="name" required
+               placeholder="This field cannot be empty. Please write your name.">
 
         <input type="email" id="email" name="email" required placeholder="Enter your email address"
                th:value="${user != null ? user.email : ''}">
 
         <label for="subject">Subject</label>
         <input type="text" id="subject" name="subject" required
-               placeholder="This field cannot be empty. Write the subject of your message">
+               placeholder="This field cannot be empty. Please write the subject of your message.">
 
         <label for="message">Your Message</label>
         <textarea id="message" name="body" required
-                  placeholder="This field cannot be empty. Write your message here..."></textarea>
+                  placeholder="This field cannot be empty. Please write your message here..."></textarea>
 
         <button type="submit">Send Message</button>
     </form>

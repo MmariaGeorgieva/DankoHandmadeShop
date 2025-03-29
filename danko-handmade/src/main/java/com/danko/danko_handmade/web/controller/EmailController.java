@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/emails")
@@ -46,5 +46,14 @@ public class EmailController {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<ContactFormEmail>> getContactFormHistory() {
+        List<ContactFormEmail> contactFormEmails = emailService.getContactFormEmails();
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(contactFormEmails);
     }
 }

@@ -230,5 +230,4 @@ public class AdminController {
         modelAndView.addObject("allContactFormEmails", allContactFormEmails);
         return modelAndView;
     }
-
 }
