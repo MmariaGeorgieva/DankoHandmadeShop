@@ -47,13 +47,4 @@ public class EmailController {
                 .status(HttpStatus.CREATED)
                 .body(response);
     }
-
-    @GetMapping
-    public ResponseEntity<List<ContactFormEmail>> getContactFormHistory() {
-        List<ContactFormEmail> contactFormEmails = emailService.getContactFormEmails();
-
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(contactFormEmails);
-    }
 }

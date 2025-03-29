@@ -44,7 +44,7 @@ public class User {
 
     private boolean subscribedToBulletin;
 
-    private String packageRecipientName;
+    private String recipientName;
 
     @Enumerated(EnumType.STRING)
     private Country country;

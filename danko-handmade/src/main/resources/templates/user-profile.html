@@ -216,7 +216,6 @@
 
         .alert-warning {
             color: #ff0900;
-            background-color: rgba(255, 30, 0, 0.2);
             padding: 5px;
             border-radius: 5px;
             margin-top: 5px;
@@ -255,16 +254,16 @@
 
     <form th:action="@{'/user/' + ${user.id}}" th:method="PUT" th:object="${userEditRequest}">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" th:field="*{firstName}">
+        <input type="text" id="firstName" placeholder="First Name" th:field="*{firstName}">
         <p class="alert-warning" th:if="${#fields.hasErrors('firstName')}"
-           th:text="${#fields.errors('firstName')}"></p>
+           th:errors="*{firstName}"></p>
 
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" th:field="*{lastName}">
+        <input type="text" id="lastName" placeholder="Last Name" th:field="*{lastName}">
         <p class="alert-warning" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></p>
 
         <label for="email">Email:</label>
-        <input type="text" id="email" th:field="*{email}">
+        <input type="text" id="email" placeholder="Email" th:field="*{email}">
         <p class="alert-warning" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
 
         <label for="profilePicture">Profile Picture URL:</label>
@@ -272,10 +271,10 @@
                placeholder="Enter an image URL (e.g., https://example.com/picture.jpg)">
         <p class="alert-warning" th:if="${#fields.hasErrors('profilePicture')}" th:errors="*{profilePicture}"></p>
 
-        <label for="packageRecipientName">Package Recipient Name:</label>
-        <input type="text" id="packageRecipientName" th:field="*{packageRecipientName}">
+        <label for="recipientName">Recipient Name:</label>
+        <input type="text" id="recipientName" placeholder="Recipient Name" th:field="*{recipientName}">
         <p class="alert-warning"
-           th:if="${#fields.hasErrors('packageRecipientName')}" th:errors="*{packageRecipientName}"></p>
+           th:if="${#fields.hasErrors('recipientName')}" th:errors="*{recipientName}"></p>
 
         <label for="country">Country:</label>
         <select id="country" th:field="*{country}">
@@ -287,19 +286,29 @@
         </select>
 
         <label for="city">City:</label>
-        <input type="text" id="city" th:field="*{city}">
+        <input type="text" id="city" placeholder="City" th:field="*{city}">
+        <p class="alert-warning"
+           th:if="${#fields.hasErrors('city')}" th:errors="*{city}"></p>
 
         <label for="postalCode">Postal Code:</label>
-        <input type="text" id="postalCode" th:field="*{postalCode}">
+        <input type="text" id="postalCode" placeholder="Postal Code" th:field="*{postalCode}">
+        <p class="alert-warning"
+           th:if="${#fields.hasErrors('postalCode')}" th:errors="*{postalCode}"></p>
 
         <label for="street">Street:</label>
-        <input type="text" id="street" th:field="*{street}">
+        <input type="text" id="street" placeholder="Street" th:field="*{street}">
+        <p class="alert-warning"
+           th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></p>
 
         <label for="streetNumber">Street Number:</label>
-        <input type="text" id="streetNumber" th:field="*{streetNumber}">
+        <input type="text" id="streetNumber" placeholder="Street Number" th:field="*{streetNumber}">
+        <p class="alert-warning"
+           th:if="${#fields.hasErrors('streetNumber')}" th:errors="*{streetNumber}"></p>
 
         <label for="phoneNumber">Phone Number:</label>
-        <input type="text" id="phoneNumber" th:field="*{phoneNumber}">
+        <input type="text" id="phoneNumber" placeholder="Phone Number" th:field="*{phoneNumber}">
+        <p class="alert-warning"
+           th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></p>
 
         <button type="submit" class="submit-button">Save Changes</button>
     </form>

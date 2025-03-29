@@ -40,13 +40,15 @@ public class UserController {
     @PutMapping("/{id}")
     public ModelAndView updateUserProfile(@PathVariable UUID id,
                                           @Valid UserEditRequest userEditRequest,
-                                          BindingResult bindingResult) {
+                                          BindingResult bindingResult,
+                                          Authentication userAuthentication) {
         if (bindingResult.hasErrors()) {
             User user = userService.getById(id);
             ModelAndView modelAndView = new ModelAndView();
             modelAndView.setViewName("user-profile");
             modelAndView.addObject("user", user);
             modelAndView.addObject("userEditRequest", userEditRequest);
+            modelAndView.addObject("userAuthentication", userAuthentication);
             return modelAndView;
         }
         userService.editUserDetails(id, userEditRequest);

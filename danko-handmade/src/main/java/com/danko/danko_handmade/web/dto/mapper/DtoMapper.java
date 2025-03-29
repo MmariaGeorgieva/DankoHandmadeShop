@@ -29,7 +29,7 @@ public class DtoMapper {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .profilePicture(user.getProfilePicture())
-                .packageRecipientName(user.getPackageRecipientName())
+                .recipientName(user.getRecipientName())
                 .country(user.getCountry())
                 .city(user.getCity())
                 .postalCode(user.getPostalCode())

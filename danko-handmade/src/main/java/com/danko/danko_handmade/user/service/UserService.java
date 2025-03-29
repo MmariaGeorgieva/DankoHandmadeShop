@@ -117,7 +117,7 @@ public class UserService implements UserDetailsService {
         user.setLastName(userEditRequest.getLastName());
         user.setEmail(userEditRequest.getEmail());
         user.setProfilePicture(userEditRequest.getProfilePicture());
-        user.setPackageRecipientName(userEditRequest.getPackageRecipientName());
+        user.setRecipientName(userEditRequest.getRecipientName());
         user.setCountry(userEditRequest.getCountry());
         user.setCity(userEditRequest.getCity());
         user.setPostalCode(userEditRequest.getPostalCode());
