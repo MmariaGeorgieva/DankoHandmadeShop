@@ -4,15 +4,17 @@ import com.danko.danko_handmade.order.model.Order;
 import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.review.client.ReviewClient;
-import com.danko.danko_handmade.review.client.dto.LeaveReview;
+import com.danko.danko_handmade.review.client.dto.UpsertReview;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.review.client.dto.ReviewDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +35,7 @@ public class ReviewService {
         this.productService = productService;
     }
 
-    public void leaveReview(UUID userId, UUID productId, UUID orderId, String textReview,
+    public void upsertReview(UUID userId, UUID productId, UUID orderId, String textReview,
                             int rating, String mainPhotoUrl) {
 
         List<Order> userOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
@@ -42,7 +44,7 @@ public class ReviewService {
             throw new RuntimeException("You are not allowed to leave Review for this order");
         }
 
-        LeaveReview review = LeaveReview.builder()
+        UpsertReview review = UpsertReview.builder()
                 .userId(userId)
                 .productId(productId)
                 .mainPhotoUrl(mainPhotoUrl)
@@ -51,13 +53,16 @@ public class ReviewService {
                 .createdOn(LocalDateTime.now())
                 .build();
 
-        ResponseEntity<Void> httpResponse = reviewClient.leaveReview(review);
+        ResponseEntity<Void> httpResponse = reviewClient.upsertReview(review);
         if (!httpResponse.getStatusCode().is2xxSuccessful()) {
             log.error("[Feign call to review-svc failed] Cannot leave review");
         }
     }
 
-    public List<ReviewDto> getAllReviews() {
-        return reviewClient.getAllReviews();
+    public ResponseEntity<List<ReviewDto>> getAllReviews() {
+        List<ReviewDto> allReviews = reviewClient.getAllReviews().getBody();
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(allReviews);
     }
 }

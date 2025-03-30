@@ -174,6 +174,9 @@
 </div>
 
 <div class="gradient-separator"></div>
+<div th:if="${message}" class="alert alert-success">
+    <p th:text="${message}"></p>
+</div>
 
 <div class="form-container">
     <h2>Leave Your Review</h2>
@@ -183,7 +186,7 @@
         <div class="product-title" th:text="${product.listingTitle}">Product Title</div>
     </div>
 
-    <form th:action="@{/reviews/new-review}" method="POST" th:object="${leaveReview}">
+    <form th:action="@{/reviews/new-review}" method="POST" th:object="${upsertReview}">
         <input type="hidden" id="userId" name="userId" th:value="${user.id}" />
         <input type="hidden" id="orderId" name="orderId" th:value="${order.id}" />
         <input type="hidden" id="productId" name="productId" th:value="${product.id}" />

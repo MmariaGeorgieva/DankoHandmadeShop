@@ -1,6 +1,6 @@
 package com.danko.danko_handmade.review.client;
 
-import com.danko.danko_handmade.review.client.dto.LeaveReview;
+import com.danko.danko_handmade.review.client.dto.UpsertReview;
 import com.danko.danko_handmade.review.client.dto.ReviewDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import java.util.List;
 public interface ReviewClient {
 
     @PostMapping
-    ResponseEntity<Void> leaveReview(@RequestBody LeaveReview leaveReview);
+    ResponseEntity<Void> upsertReview(@RequestBody UpsertReview upsertReview);
 
     @GetMapping("/all")
-    List<ReviewDto> getAllReviews();
+    ResponseEntity<List<ReviewDto>> getAllReviews();
 
 
 }

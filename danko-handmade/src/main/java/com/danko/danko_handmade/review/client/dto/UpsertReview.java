@@ -15,7 +15,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LeaveReview {
+public class UpsertReview {
 
     @NotNull
     private UUID userId;

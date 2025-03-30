@@ -4,7 +4,7 @@ import com.danko.danko_handmade.order.model.Order;
 import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
 import com.danko.danko_handmade.product.service.ProductService;
-import com.danko.danko_handmade.review.client.dto.LeaveReview;
+import com.danko.danko_handmade.review.client.dto.UpsertReview;
 import com.danko.danko_handmade.review.service.ReviewService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
@@ -15,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.UUID;
@@ -37,10 +38,14 @@ public class ReviewController {
     }
 
     @GetMapping("/new-review/{orderId}/{productId}")
-    public ModelAndView getLeaveReviewPage(@PathVariable UUID orderId,
+    public ModelAndView getUpsertReviewPage(@PathVariable UUID orderId,
                                            @PathVariable UUID productId,
-                                           Authentication userAuthentication) {
+                                           Authentication userAuthentication,
+                                           @RequestParam(value = "message", required = false) String message) {
         ModelAndView modelAndView = new ModelAndView();
+        if (message != null) {
+            modelAndView.addObject("message", message);
+        }
         if (userAuthentication != null && userAuthentication.isAuthenticated()) {
             AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
             UUID userId = userData.getUserId();
@@ -53,29 +58,33 @@ public class ReviewController {
             modelAndView.addObject("user", user);
             modelAndView.addObject("product", product);
             modelAndView.addObject("order", order);
-            modelAndView.addObject("leaveReview", new LeaveReview());
+            modelAndView.addObject("upsertReview", new UpsertReview());
         }
         return modelAndView;
     }
 
     @PostMapping("/new-review")
-    public String submitReview(@RequestParam("productId") UUID productId,
+    public String upsertReview(@RequestParam("productId") UUID productId,
                                @RequestParam("userId") UUID userId,
                                @RequestParam("orderId") UUID orderId,
                                @RequestParam("rating") int rating,
                                @RequestParam("textReview") String textReview,
                                @RequestParam("mainPhotoUrl") String mainPhotoUrl,
-                               Authentication userAuthentication) {
+                               Authentication userAuthentication,
+                               RedirectAttributes redirectAttributes) {
 
         if (userAuthentication != null && userAuthentication.isAuthenticated()) {
             AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
             UUID currentUserId = userData.getUserId();
 
             if (!currentUserId.equals(userId)) {
-                return "redirect:/not-found";
+                redirectAttributes.addFlashAttribute("message", "In order to leave a review, you have to purchase " +
+                        "this item first");
+                return "redirect:/new-review/" + orderId + "/" + productId;
             }
 
-            reviewService.leaveReview(currentUserId, productId, orderId, textReview, rating, mainPhotoUrl);
+            reviewService.upsertReview(currentUserId, productId, orderId, textReview, rating,
+                    mainPhotoUrl);
             return "redirect:/reviews/public-reviews";
         }
         return "redirect:/login";
@@ -92,7 +101,7 @@ public class ReviewController {
             modelAndView.addObject("user", user);
             modelAndView.addObject("authorities", userData.getAuthorities());
 
-            List<ReviewDto> allReviews = reviewService.getAllReviews();
+            List<ReviewDto> allReviews = reviewService.getAllReviews().getBody();
             modelAndView.addObject("allReviews", allReviews);
             return modelAndView;
         }

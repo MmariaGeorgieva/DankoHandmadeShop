@@ -33,9 +33,9 @@
             top: 10px;
             right: 20px;
             display: flex;
-            flex-direction: row; /* Подрежда бутоните хоризонтално */
-            align-items: center; /* Центрира ги вертикално */
-            gap: 10px; /* Разстояние между бутоните */
+            flex-direction: row;
+            align-items: center;
+            gap: 10px;
         }
 
         .auth-buttons a {
@@ -46,7 +46,7 @@
             border-radius: 5px;
             font-weight: bold;
             border: 1px solid rgba(221, 221, 221, 0.4);
-            display: inline-block; /* Гарантира, че бутоните не се сливат */
+            display: inline-block;
         }
 
         .auth-buttons a:hover {
@@ -114,25 +114,17 @@
         .submit-button {
             background-color: rgba(91, 168, 98, 0.5);
             color: white;
-            padding: 10px 20px; /* Стандартен padding за бутона за запазване на промени */
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             width: 100%;
             margin-top: 20px;
-            transition: background-color 0.3s ease; /* Плавен ховър ефект */
+            transition: background-color 0.3s ease;
         }
 
         .submit-button:hover {
-            background-color: rgba(91, 168, 98, 0.8); /* Тъмно зелен при ховър */
-        }
-
-        .address-section {
-            margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+            background-color: rgba(91, 168, 98, 0.8);
         }
 
         .gradient-separator {
@@ -141,77 +133,37 @@
             width: 100%;
         }
 
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 40px;
-            height: 20px;
-        }
-
         .switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            transition: 0.4s;
-            border-radius: 20px;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 14px;
-            width: 14px;
-            left: 3px;
-            bottom: 3px;
-            background-color: white;
-            transition: 0.4s;
-            border-radius: 50%;
-        }
-
-        input:checked + .slider {
-            background-color: #60c6a0;
-        }
-
-        input:checked + .slider:before {
-            transform: translateX(20px);
-        }
-
         .subscription-actions-button {
             background-color: rgba(91, 168, 98, 0.5);
             color: white;
-            padding: 8px 20px; /* По-тесен бутон */
+            padding: 8px 20px;
             gap: 10px;
             display: inline-flex;
             justify-content: center;
             align-items: center;
             width: auto;
-            height: 40px; /* Височина на бутона */
-            border-radius: 5px; /* Заоблени ръбове */
-            border: none; /* Премахване на очертанието */
-            transition: background-color 0.3s ease; /* За плавен ефект при ховър */
+            height: 40px;
+            border-radius: 5px;
+            border: none;
+            transition: background-color 0.3s ease;
         }
 
         .subscription-actions-button:hover {
-            background-color: rgba(91, 168, 98, 0.8); /* Тъмно зелен при ховър */
+            background-color: rgba(91, 168, 98, 0.8);
         }
 
-        /* Новите стилове за подреждане на елементите вертикално и центрирано */
         .subscription-container {
             display: flex;
-            flex-direction: column;  /* Разполага елементите вертикално */
-            align-items: center;     /* Центрира ги хоризонтално */
-            gap: 10px;               /* Разстояние между елементите */
-            margin-top: 10px;        /* Малко отстояние от предишния елемент */
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
         }
 
         .alert-warning {
@@ -219,6 +171,20 @@
             padding: 5px;
             border-radius: 5px;
             margin-top: 5px;
+        }
+
+        .alert-success {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(91, 168, 98);
+            border: 2px solid rgba(91, 168, 98);
+            padding: 10px 20px;
+            border-radius: 8px;
+            margin: 10px auto;
+            width: 50%;
+            font-weight: bold;
+            text-align: center;
         }
     </style>
 </head>
@@ -239,6 +205,9 @@
 </div>
 
 <div class="gradient-separator"></div>
+<div th:if="${successMessage}" class="alert alert-success">
+    <p th:text="${successMessage}"></p>
+</div>
 
 <div class="container">
 
@@ -252,6 +221,8 @@
         </div>
     </div>
 
+    <p>✔ You are logged in as <span th:text="${user.username}">Username</span>!</p>
+    <br>
     <form th:action="@{'/user/' + ${user.id}}" th:method="PUT" th:object="${userEditRequest}">
         <label for="firstName">First Name:</label>
         <input type="text" id="firstName" placeholder="First Name" th:field="*{firstName}">

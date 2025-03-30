@@ -65,6 +65,15 @@
             color: #ddd;
         }
 
+        .welcome-text {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+            font-size: 18px;
+            color: white;
+            font-weight: bold;
+        }
+
         footer {
             background-color: rgba(91, 168, 98, 0.5);
             color: black;
@@ -178,9 +187,9 @@
             font-weight: normal;
             display: -webkit-box;
             -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2; /* Ограничаване на два реда */
+            -webkit-line-clamp: 2;
             overflow: hidden;
-            text-overflow: ellipsis; /* Многоточие за скрития текст */
+            text-overflow: ellipsis;
         }
 
         .gradient-separator {
@@ -197,6 +206,19 @@
             color: #90451d;
             text-align: center;
             font-style: italic;
+        }
+
+        .alert-success {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: rgba(91, 168, 98);
+            border: 2px solid rgba(91, 168, 98);
+            padding: 10px 20px;
+            margin: 10px auto;
+            width: 100%;
+            font-weight: bold;
+            text-align: center;
         }
     </style>
 </head>
@@ -216,6 +238,7 @@
         <a th:if="${user}" th:href="@{'/user/' + ${user.id}}">Edit My Profile</a>
         <a th:if="${user}" th:href="@{/logout}">Logout</a>
     </div>
+
     <div class="banner-content">
         <h1>DankoHandmade</h1>
         <p class="subtitle">Artisan Pottery: Handmade Elegance, Distinctive Style</p>
@@ -224,10 +247,15 @@
 
 <div class="gradient-separator"></div>
 
+<div th:if="${message}" class="alert alert-success">
+    <p th:text="${message}"></p>
+</div>
+
 <div class="available-products">
 
     <div class="content-wrapper">
         <div class="category-list">
+            <p class="info-text">Welcome, <span th:text="${user.username}">Username</span>!</p>
             <p class="info-text"><strong>Click on image <br> to open product page!</strong></p>
             <a th:each="section : ${productSections}"
                th:href="@{'/home?section=' + ${section}}"
@@ -253,7 +281,7 @@
                                     th:text="${i}"></option>
                         </select>
                         <input type="hidden" name="quantity" th:value="${addToCartRequest.quantity}">
-                    <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
+                        <button class="add-to-cart-button" th:data-product-id="${product.id}">Add to Cart</button>
                     </form>
 
                 </div>

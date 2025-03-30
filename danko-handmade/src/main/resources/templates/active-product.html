@@ -374,6 +374,8 @@
         </div>
     </div>
     <div class="product-info">
+        <p class="click">✔ Welcome, <span th:text="${user.username}">Username</span>!</p>
+        <br>
         <p class="price" th:text="${activeProduct.price} + ' EUR'"></p>
         <h3 th:text="${activeProduct.listingTitle}"></h3>
         <p>✔ Arrives soon! Get it between <span th:text="${arrivalPeriod}" class="arrival-period"></span> if you order
@@ -383,8 +385,6 @@
         <p class="info-lines">✔ Ships from: Bulgaria.</p>
         <br>
         <div class="click">✔ Click on photos to expand.</div>
-        <br>
-        <br>
         <br>
         <a th:href="@{/shop-policies}" class="links">✔ Shipping and return policies</a>
         <a th:href="@{/contact}" class="links">✔ Ask a question</a>

@@ -79,23 +79,16 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
             margin: 30px auto;
             max-width: 900px;
-        }
-
-        .order-header {
-            font-size: 16px;
-            font-weight: normal;
-            color: #444;
-            margin-bottom: 10px;
-            word-wrap: break-word;
-            hyphens: auto;
+            width: 100%;
         }
 
         .cart-item {
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
             padding: 10px 0;
             border-bottom: 1px solid #ddd;
+            width: 100%;
         }
 
         .cart-item img {
@@ -112,7 +105,8 @@
             gap: 5px;
             justify-content: flex-start;
             align-items: flex-start;
-            width: 100%;
+            flex-grow: 1;
+            min-width: 0;
         }
 
         .cart-item-name {
@@ -120,14 +114,9 @@
             font-weight: bold;
             color: #333;
             margin-bottom: 5px;
-        }
-
-        .cart-item-price,
-        .cart-item-quantity,
-        .cart-item-total {
-            font-size: 14px;
-            color: #666;
-            margin: 0;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            max-width: 100%;
         }
 
         .review-button {
@@ -139,17 +128,12 @@
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
-            margin-left: auto;
             transition: background-color 0.3s ease;
             white-space: nowrap;
         }
 
         .review-button:hover {
             background-color: rgba(91, 168, 98, 1);
-        }
-
-        .review-button:active {
-            background-color: rgba(91, 168, 98, 0.6);
         }
 
         .cart-summary .total-price {
@@ -191,14 +175,14 @@
         <img th:src="${entry.key.mainPhotoUrl}" alt="Product Image">
         <div class="cart-item-info">
             <p class="cart-item-name" th:text="${entry.key.listingTitle}"></p>
-            <p class="cart-item-price">Price: <span th:text="${entry.key.price}"></span> BGN</p>
+            <p class="cart-item-price">Price: <span th:text="${entry.key.price}"></span> EUR</p>
             <p class="cart-item-quantity">Quantity: <span th:text="${entry.value}"></span></p>
         </div>
         <form th:action="@{'/reviews/new-review/' + ${orderEntry.key.id} + '/' + ${entry.key.id}}" th:method="GET">
-            <button type="submit" class="review-button">Leave Review</button>
+            <button type="submit" class="review-button">Leave or Update Review</button>
         </form>
     </div>
-    <p class="cart-item-total">Order Total: <span th:text="${orderEntry.key.totalPaid}"></span> BGN</p>
+    <p class="cart-item-total">Order Total: <span th:text="${orderEntry.key.totalPaid}"></span> EUR</p>
 </div>
 
 <div th:replace="~{fragments/footer}"></div>

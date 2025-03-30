@@ -22,6 +22,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -150,7 +151,8 @@ public class AdminController {
     @PutMapping("/product/edit/{id}")
     public ModelAndView updateProduct(@PathVariable UUID id,
                                       @Valid EditProductRequest editProductRequest,
-                                      BindingResult bindingResult) {
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
             Product product = productService.getProductById(id);
@@ -160,6 +162,7 @@ public class AdminController {
             return modelAndView;
         }
         productService.editProductDetails(id, editProductRequest);
+        redirectAttributes.addFlashAttribute("successMessage", "Product has been updated!");
         return new ModelAndView("redirect:/admin/product/edit/" + id);
     }
 

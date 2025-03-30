@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -58,13 +59,14 @@ public class OrderController {
     }
 
     @GetMapping("/my-orders/{userId}")
-    public ModelAndView GetMyOrders(@PathVariable UUID userId) {
+    public ModelAndView GetMyOrders(@PathVariable UUID userId, RedirectAttributes redirectAttributes) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("my-orders");
         User user = userService.getById(userId);
 
         List<Order> myOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
         if (myOrders == null || myOrders.isEmpty()) {
+            redirectAttributes.addFlashAttribute("message", "You have no orders yet!");
             return new ModelAndView("redirect:/home");
         }
         Map<Order, Map<Product, Integer>> ordersWithProducts = new LinkedHashMap<>();

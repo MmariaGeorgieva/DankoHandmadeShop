@@ -38,9 +38,13 @@ public class HomeController {
     @GetMapping()
     public ModelAndView GetHomePage(@RequestParam(value = "section", required = false) String section,
                                     AddToCartRequest addToCartRequest,
-                                    Authentication userAuthentication) {
+                                    Authentication userAuthentication,
+                                    @RequestParam(value = "message", required = false) String message) {
 
         ModelAndView modelAndView = new ModelAndView();
+        if (message != null) {
+            modelAndView.addObject("message", message);
+        }
 
         if (userAuthentication != null) {
             AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
@@ -92,7 +96,7 @@ public class HomeController {
             modelAndView.addObject("authorities", userData.getAuthorities());
         }
         String productCode = activeProduct.getProductCode();
-        List<ReviewDto> productReviews = reviewService.getAllReviews().stream()
+        List<ReviewDto> productReviews = reviewService.getAllReviews().getBody().stream()
                 .filter(review -> review.getProductId().equals(activeProduct.getId()))
                 .toList();
         modelAndView.addObject("activeProduct", activeProduct);

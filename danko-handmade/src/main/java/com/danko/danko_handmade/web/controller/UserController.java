@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.UUID;
 
@@ -41,7 +42,8 @@ public class UserController {
     public ModelAndView updateUserProfile(@PathVariable UUID id,
                                           @Valid UserEditRequest userEditRequest,
                                           BindingResult bindingResult,
-                                          Authentication userAuthentication) {
+                                          Authentication userAuthentication,
+                                          RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             User user = userService.getById(id);
             ModelAndView modelAndView = new ModelAndView();
@@ -52,6 +54,7 @@ public class UserController {
             return modelAndView;
         }
         userService.editUserDetails(id, userEditRequest);
+        redirectAttributes.addFlashAttribute("successMessage", "User profile has been updated!");
         return new ModelAndView("redirect:/user/" + id);
     }
 
