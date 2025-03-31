@@ -76,7 +76,11 @@ public class CartController {
                 cartContent = new HashMap<>();
             }
 
-            cartContent.put(product, quantity);
+            if (cartContent.containsKey(product)) {
+                cartContent.put(product, cartContent.get(product) + quantity);
+            } else {
+                cartContent.put(product, quantity);
+            }
             session.setAttribute("cartContent", cartContent);
         }
         return "redirect:/cart";

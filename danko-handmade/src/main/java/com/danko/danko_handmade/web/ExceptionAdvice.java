@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.nio.file.AccessDeniedException;
+import java.util.UUID;
 
 @ControllerAdvice
 public class ExceptionAdvice {
@@ -61,7 +62,10 @@ public class ExceptionAdvice {
     @ExceptionHandler({
             NoResourceFoundException.class,
             MethodArgumentTypeMismatchException.class,
-            MissingRequestValueException.class
+            MissingRequestValueException.class,
+            OrderNotFoundException.class,
+            UserNotFoundException.class,
+            UsernameNotFoundException.class
     })
     public ModelAndView handleNotFoundException() {
         return new ModelAndView("not-found");
@@ -78,6 +82,6 @@ public class ExceptionAdvice {
     @ExceptionHandler(AccessDeniedException.class)
     public String handleAccessDeniedException(RedirectAttributes redirectAttributes) {
         redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this page.");
-        return "redirect:/access-denied"; // Пренасочване към твоя страница
+        return "redirect:/access-denied";
     }
 }
