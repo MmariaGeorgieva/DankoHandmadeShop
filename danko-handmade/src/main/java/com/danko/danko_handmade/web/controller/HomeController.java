@@ -96,7 +96,7 @@ public class HomeController {
             modelAndView.addObject("authorities", userData.getAuthorities());
         }
         String productCode = activeProduct.getProductCode();
-        List<ReviewDto> productReviews = reviewService.getAllReviews().getBody().stream()
+        List<ReviewDto> productReviews = reviewService.getAllReviews().stream()
                 .filter(review -> review.getProductId().equals(activeProduct.getId()))
                 .toList();
         modelAndView.addObject("activeProduct", activeProduct);

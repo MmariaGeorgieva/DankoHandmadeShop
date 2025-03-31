@@ -118,7 +118,7 @@
                 <p><strong>New Arrivals:</strong></p>
                 <table class="product-container" role="presentation" cellspacing="10" cellpadding="0" border="0" width="100%">
                     <tr>
-                        <td th:each="product, iterStat : ${newProducts}" th:if="${iterStat.index < 5}" align="center">
+                        <td th:each="product : ${newProducts}" align="center">
                             <div class="product-box">
                                 <img th:src="${product}" alt="New Product">
                             </div>
@@ -134,7 +134,7 @@
                 <p><strong>Bestsellers:</strong></p>
                 <table class="product-container" role="presentation" cellspacing="10" cellpadding="0" border="0" width="100%">
                     <tr>
-                        <td th:each="product, iterStat : ${bestSellers}" th:if="${iterStat.index < 5}" align="center">
+                        <td th:each="product : ${bestSellers}" align="center">
                             <div class="product-box">
                                 <img th:src="${product}" alt="Best Seller">
                             </div>

@@ -40,6 +40,9 @@ public class SecurityConfiguration {
                         .requestMatchers("/api/**").permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(exception -> exception
+                        .accessDeniedPage("/access-denied")
+                )
                 .formLogin(form -> form
                         .loginPage("/login")
                         .successHandler(successHandler)

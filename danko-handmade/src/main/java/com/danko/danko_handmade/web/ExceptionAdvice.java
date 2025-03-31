@@ -2,11 +2,7 @@ package com.danko.danko_handmade.web;
 
 import com.danko.danko_handmade.exception.*;
 import jakarta.servlet.http.HttpServletRequest;
-import org.hibernate.TypeMismatchException;
-import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingRequestValueException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,14 +28,27 @@ public class ExceptionAdvice {
         return "redirect:/register";
     }
 
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public String handleEmailAlreadyExistsException(RedirectAttributes redirectAttributes) {
+
+        String message = "The email you entered is already in use";
+
+        redirectAttributes.addFlashAttribute("emailAlreadyExistsMessage", message);
+        return "redirect:/register";
+    }
+
     @ExceptionHandler(ProductNotFoundException.class)
-    public String handleUserAlreadyExistsException(RedirectAttributes redirectAttributes) {
+    public String handleProductNotFoundException(RedirectAttributes redirectAttributes) {
+
+        String message = "Product not found";
+        redirectAttributes.addFlashAttribute("productNotFoundMessage", message);
         return "redirect:/products";
     }
 
     @ExceptionHandler(MaxUploadSizeExceededException.class)
     public String handleMaxSizeException(RedirectAttributes redirectAttributes) {
-        redirectAttributes.addFlashAttribute("errorMessage", "File size exceeds the maximum allowed limit!");
+        redirectAttributes.addFlashAttribute("MaxUploadSizeExceededMessage",
+                "File size exceeds the maximum allowed limit!");
         return "redirect:/add-product";
     }
 
@@ -50,12 +59,11 @@ public class ExceptionAdvice {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler({
-            AccessDeniedException.class,
             NoResourceFoundException.class,
             MethodArgumentTypeMismatchException.class,
             MissingRequestValueException.class
     })
-    public ModelAndView handleNotFoundException(RedirectAttributes redirectAttributes) {
+    public ModelAndView handleNotFoundException() {
         return new ModelAndView("not-found");
     }
 
@@ -67,13 +75,9 @@ public class ExceptionAdvice {
         return modelAndView;
     }
 
-
-//
-//    @ResponseStatus(HttpStatus.BAD_REQUEST)
-//    @ExceptionHandler(RuntimeException.class)
-//    public ModelAndView handleRuntimeException() {
-//        ModelAndView mav = new ModelAndView();
-//        mav.setViewName("internal-server-error");
-//        return mav;
-//    }
+    @ExceptionHandler(AccessDeniedException.class)
+    public String handleAccessDeniedException(RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", "You do not have permission to access this page.");
+        return "redirect:/access-denied"; // Пренасочване към твоя страница
+    }
 }

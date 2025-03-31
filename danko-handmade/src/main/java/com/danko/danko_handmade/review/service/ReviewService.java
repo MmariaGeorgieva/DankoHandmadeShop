@@ -1,11 +1,7 @@
 package com.danko.danko_handmade.review.service;
 
-import com.danko.danko_handmade.order.model.Order;
-import com.danko.danko_handmade.order.service.OrderService;
-import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.review.client.ReviewClient;
 import com.danko.danko_handmade.review.client.dto.UpsertReview;
-import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.review.client.dto.ReviewDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,30 +18,19 @@ import java.util.UUID;
 public class ReviewService {
 
     private final ReviewClient reviewClient;
-    private final OrderService orderService;
-    private final UserService userService;
-    private final ProductService productService;
 
     @Autowired
-    public ReviewService(ReviewClient reviewClient, OrderService orderService, UserService userService, ProductService productService) {
+    public ReviewService(ReviewClient reviewClient) {
         this.reviewClient = reviewClient;
-        this.orderService = orderService;
-        this.userService = userService;
-        this.productService = productService;
     }
 
     public void upsertReview(UUID userId, UUID productId, UUID orderId, String textReview,
                             int rating, String mainPhotoUrl) {
 
-        List<Order> userOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
-        Order order = orderService.getOrderById(orderId);
-        if(!userOrders.contains(order)) {
-            throw new RuntimeException("You are not allowed to leave Review for this order");
-        }
-
         UpsertReview review = UpsertReview.builder()
                 .userId(userId)
                 .productId(productId)
+                .orderId(orderId)
                 .mainPhotoUrl(mainPhotoUrl)
                 .textReview(textReview)
                 .rating(rating)
@@ -59,10 +43,8 @@ public class ReviewService {
         }
     }
 
-    public ResponseEntity<List<ReviewDto>> getAllReviews() {
-        List<ReviewDto> allReviews = reviewClient.getAllReviews().getBody();
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(allReviews);
+    public List<ReviewDto> getAllReviews() {
+        ResponseEntity<List<ReviewDto>> response = reviewClient.getAllReviews();
+        return response.getBody();
     }
 }

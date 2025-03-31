@@ -10,7 +10,6 @@ import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.web.dto.AddProductRequest;
 import com.danko.danko_handmade.web.dto.EditProductRequest;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,13 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
@@ -118,7 +115,7 @@ public class ProductService {
     }
 
     public void deactivateProductById(UUID id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
 
         product.setActive(false);
         productRepository.save(product);
@@ -133,14 +130,14 @@ public class ProductService {
     }
 
     public void activateProduct(UUID id) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         product.setActive(true);
         productRepository.save(product);
     }
 
     @Transactional
     public void deleteMainPhotoOfProductWithId(UUID productId) throws URISyntaxException {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
 
         if (product.getMainPhotoUrl() != null) {
             String mainPhotoUrl = product.getMainPhotoUrl();
@@ -170,7 +167,7 @@ public class ProductService {
     }
 
     public void uploadNewMainPhoto(UUID productId, MultipartFile file) throws IOException {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
 
         product.setMainPhotoUrl(cloudinaryService.uploadPhoto(file, "products/main/"));
         productRepository.save(product);
@@ -178,7 +175,7 @@ public class ProductService {
 
     @Transactional
     public void deleteAdditionalPhoto(UUID productId, int photoIndex) throws URISyntaxException {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
 
         List<String> additionalPhotos = product.getAdditionalPhotosUrls();
 
@@ -205,7 +202,7 @@ public class ProductService {
             throw new IllegalArgumentException("Uploaded file cannot be empty");
         }
 
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
 
         String newAdditionalPhotoUrl = cloudinaryService.uploadPhoto(file, "products/additional/");
         product.getAdditionalPhotosUrls().add(newAdditionalPhotoUrl);
@@ -218,7 +215,7 @@ public class ProductService {
     }
 
     public Product getActiveProductById(UUID productId) {
-        Product product = productRepository.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product not found"));
+        Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
 
         Product activeProduct = null;
         if (product.isActive()) {

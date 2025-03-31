@@ -1,6 +1,7 @@
 package com.danko.danko_handmade.user.service;
 
 import com.danko.danko_handmade.email.service.EmailService;
+import com.danko.danko_handmade.exception.EmailAlreadyExistsException;
 import com.danko.danko_handmade.exception.UserNotFoundException;
 import com.danko.danko_handmade.exception.UsernameAlreadyExistsException;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
@@ -46,7 +47,12 @@ public class UserService implements UserDetailsService {
     public void register(RegisterRequest registerRequest) {
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
         if (optionalUser.isPresent()) {
-            throw new UsernameAlreadyExistsException("Username %s is already in use.".formatted(registerRequest.getUsername()));
+            throw new UsernameAlreadyExistsException();
+        }
+
+        Optional<User> optionalUser1 = userRepository.findByEmail(registerRequest.getEmail());
+        if (optionalUser1.isPresent()) {
+            throw new EmailAlreadyExistsException();
         }
 
         User user = User.builder()

@@ -24,7 +24,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
+            padding-bottom: 10px;
             text-align: center;
         }
 
@@ -41,7 +42,7 @@
         .auth-buttons a {
             text-decoration: none;
             background-color: rgba(249, 249, 249, 0.4);
-            color: rgba(91, 168, 98);
+            color: rgb(37, 77, 41);
             padding: 10px 15px;
             border-radius: 5px;
             font-weight: bold;
@@ -55,7 +56,7 @@
 
         .banner-content {
             color: #fff;
-            text-shadow: -1px -1px 1px #800020, 1px -1px 1px #800020, -1px 1px 1px #800020, 1px 1px 1px #800020;
+            text-shadow: -1px -1px 1px rgb(37, 77, 41), 1px -1px 1px rgb(37, 77, 41), -1px 1px 1px rgb(37, 77, 41), 1px 1px 1px rgb(37, 77, 41);
         }
 
         .banner-content h1 {
@@ -194,13 +195,17 @@
     <div class="auth-buttons">
         <a th:if="${#strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
            th:href="@{/admin}">Admin Page</a>
+        <a th:href="@{/home}">Shop</a>
+        <a th:if="${user}" th:href="@{/reviews/public-reviews}">Reviews</a>
+        <a th:if="${user}" th:href="@{/cart}">My Cart</a>
+        <a th:if="${user}" th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
         <a th:unless="${userAuthentication != null and #strings.contains(userAuthentication.getAuthorities(), 'ROLE_ADMIN')}"
            th:href="@{/contact}">Contact</a>
-        <a th:href="@{/home}">Shop</a>
         <a th:href="@{/logout}">Logout</a>
     </div>
     <div class="banner-content">
         <h1>Edit Profile</h1>
+        <p class="subtitle">Edit your user info and newsletter subscription</p>
     </div>
 </div>
 

@@ -36,6 +36,8 @@ public class NewsletterScheduler {
     public void sendWeeklyNewsletter() {
         List<String> mainPhotoUrlsNewProducts = productService.getMainPhotosNewProducts();
         List<String> bestSellingProductsUrls = productService.getBestSellers();
+        bestSellingProductsUrls = bestSellingProductsUrls.stream().limit(5).toList();
+        mainPhotoUrlsNewProducts = mainPhotoUrlsNewProducts.stream().limit(5).toList();
 
         Map<String, Object> model = new HashMap<>();
         model.put("newProducts", mainPhotoUrlsNewProducts);

@@ -77,10 +77,13 @@ public class ReviewController {
             AuthenticationMetadata userData = (AuthenticationMetadata) userAuthentication.getPrincipal();
             UUID currentUserId = userData.getUserId();
 
-            if (!currentUserId.equals(userId)) {
-                redirectAttributes.addFlashAttribute("message", "In order to leave a review, you have to purchase " +
-                        "this item first");
-                return "redirect:/new-review/" + orderId + "/" + productId;
+            List<Order> userOrders = orderService.getAllOrdersByUserIdNewestFirst(userId);
+            Order order = orderService.getOrderById(orderId);
+
+            if (!currentUserId.equals(userId) || !userOrders.contains(order)) {
+                redirectAttributes.addFlashAttribute("message",
+                        "You are not allowed to leave a review for this order");
+                return "redirect:/reviews/new-review/" + orderId + "/" + productId;
             }
 
             reviewService.upsertReview(currentUserId, productId, orderId, textReview, rating,
@@ -101,7 +104,7 @@ public class ReviewController {
             modelAndView.addObject("user", user);
             modelAndView.addObject("authorities", userData.getAuthorities());
 
-            List<ReviewDto> allReviews = reviewService.getAllReviews().getBody();
+            List<ReviewDto> allReviews = reviewService.getAllReviews();
             modelAndView.addObject("allReviews", allReviews);
             return modelAndView;
         }

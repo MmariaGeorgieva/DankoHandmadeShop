@@ -24,6 +24,9 @@ public class UpsertReview {
     private UUID productId;
 
     @NotNull
+    private UUID orderId;
+
+    @NotNull
     private String mainPhotoUrl;
 
     @NotNull

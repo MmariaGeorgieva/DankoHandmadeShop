@@ -26,7 +26,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
+            padding-bottom: 10px;
             text-align: center;
         }
 
@@ -54,7 +55,7 @@
 
         .banner-content {
             color: #fff;
-            text-shadow: -1px -1px 1px #800020, 1px -1px 1px #800020, -1px 1px 1px #800020, 1px 1px 1px #800020;
+            text-shadow: -1px -1px 1px rgb(37, 77, 41), 1px -1px 1px rgb(37, 77, 41), -1px 1px 1px rgb(37, 77, 41), 1px 1px 1px rgb(37, 77, 41);
         }
 
         .banner-content h1 {
@@ -187,9 +188,9 @@
            th:href="@{/admin}">Admin Page</a>
         <a th:if="${user}" th:href="@{/home}">Shop</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
-           th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
-        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
            th:href="@{/cart}">My Cart</a>
+        <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
+           th:href="@{'/orders/my-orders/' + ${user.id}}">My Orders</a>
         <a th:if="${user != null and #strings.contains(authorities, 'ROLE_USER')}"
            th:href="@{/contact}">Contact</a>
         <a th:if="${user}" th:href="@{'/user/' + ${user.id}}">Edit My Profile</a>

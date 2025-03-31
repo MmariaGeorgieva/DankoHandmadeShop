@@ -165,6 +165,7 @@
     </div>
 
     <div class="container">
+        <p class="error-message" th:text="${productNotFoundMessage}"></p>
         <div th:each="product : ${activeProducts}" class="product-row">
             <a th:href="@{'/admin/product/edit/' + ${product.id}}">
                 <img th:src="${product.mainPhotoUrl != null and product.mainPhotoUrl != '' ? product.mainPhotoUrl : '/images/Logo.jpg'}" alt="Product Image">
