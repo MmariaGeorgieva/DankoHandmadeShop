@@ -11,6 +11,7 @@ import com.danko.danko_handmade.user.repository.UserRepository;
 import com.danko.danko_handmade.web.dto.EmailRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
 import com.danko.danko_handmade.web.dto.UserEditRequest;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public void register(RegisterRequest registerRequest) {
         Optional<User> optionalUser = userRepository.findByUsername(registerRequest.getUsername());
         if (optionalUser.isPresent()) {
@@ -89,7 +91,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String username) {
 
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("User not " +
                 "found"));
@@ -99,11 +101,6 @@ public class UserService implements UserDetailsService {
 
     public User getById(UUID id) {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
-    }
-
-    public User getByUsername(String username) {
-        return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not " +
-                "found"));
     }
 
     public void switchRole(UUID id) {

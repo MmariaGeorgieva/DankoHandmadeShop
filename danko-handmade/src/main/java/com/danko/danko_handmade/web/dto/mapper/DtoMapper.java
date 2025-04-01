@@ -35,8 +35,7 @@ public class DtoMapper {
                 .postalCode(user.getPostalCode())
                 .street(user.getStreet())
                 .streetNumber(user.getStreetNumber())
-                .phoneNumber(user.getPhoneNumber())
-                .build();
+                .phoneNumber(user.getPhoneNumber())                .build();
     }
 
     public static EmailResponse mapEmailToEmailResponse(Email email) {
