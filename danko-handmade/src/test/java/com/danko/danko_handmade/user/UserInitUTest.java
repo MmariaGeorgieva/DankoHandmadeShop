@@ -61,8 +61,4 @@ public class UserInitUTest {
         assertEquals("DankoHandmade", createdUsers.get(0).getUsername());
         assertEquals("Mimozi", createdUsers.get(1).getUsername());
     }
-
-
-
-
 }

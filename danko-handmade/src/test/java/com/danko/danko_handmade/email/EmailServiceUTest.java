@@ -1,19 +1,18 @@
 package com.danko.danko_handmade.email;
 
-import com.danko.danko_handmade.email.model.Email;
-import com.danko.danko_handmade.email.model.EmailStatus;
-import com.danko.danko_handmade.email.model.Newsletter;
-import com.danko.danko_handmade.email.model.NewsletterStatus;
+import com.danko.danko_handmade.email.model.*;
 import com.danko.danko_handmade.email.repository.ContactFormEmailRepository;
 import com.danko.danko_handmade.email.repository.EmailRepository;
 import com.danko.danko_handmade.email.repository.NewsletterRepository;
 import com.danko.danko_handmade.email.service.EmailService;
 import com.danko.danko_handmade.user.model.User;
+import com.danko.danko_handmade.web.dto.ContactShopRequest;
 import com.danko.danko_handmade.web.dto.EmailRequest;
 import com.danko.danko_handmade.web.dto.NewsletterRequest;
 import jakarta.mail.MessagingException;
 import jakarta.mail.Session;
 import jakarta.mail.internet.MimeMessage;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -46,6 +45,11 @@ public class EmailServiceUTest {
 
     @InjectMocks
     private EmailService emailService;
+
+    @BeforeEach
+    void setUp() {
+        reset(mailSender, javaMailSender, emailRepository, newsletterRepository, contactFormEmailRepository);
+    }
 
     @Test
     void whenSendEmailSucceeds_thenEmailIsSent() {
@@ -94,12 +98,15 @@ public class EmailServiceUTest {
                 .status(EmailStatus.FAILED)
                 .build();
 
-        doThrow(new RuntimeException("Email server down")).when(mailSender).send(any(SimpleMailMessage.class));
+        doAnswer(invocation -> {
+            throw new RuntimeException("Email server down");
+        }).when(mailSender).send(any(SimpleMailMessage.class));
         when(emailRepository.save(any(Email.class))).thenReturn(email);
 
         Email result = emailService.sendEmail(emailRequest);
 
         assertEquals(EmailStatus.FAILED, result.getStatus());
+        System.out.println("Did mailSender.send() execute?");
         verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
         verify(emailRepository, times(1)).save(any(Email.class));
     }
@@ -151,5 +158,36 @@ public class EmailServiceUTest {
         assertEquals(NewsletterStatus.FAILED, result.getStatus());
         verify(javaMailSender, times(1)).send(any(MimeMessage.class));
         verify(newsletterRepository, times(1)).save(any(Newsletter.class));
+    }
+
+    @Test
+    void whenSendEmailThroughContactFormIsCalled_thenContactFormIsSent() throws MessagingException {
+
+        ContactShopRequest contactShopRequest = ContactShopRequest.builder()
+                .name("Test name")
+                .email("test@example.com")
+                .subject("Test Subject")
+                .body("Test Body")
+                .build();
+
+        emailService.sendEmailThroughContactForm(contactShopRequest);
+
+        verify(mailSender, times(1)).send(any(SimpleMailMessage.class));
+
+        verify(contactFormEmailRepository, times(1)).save(argThat(contactFormEmail ->
+                contactFormEmail.getName().equals(contactShopRequest.getName()) &&
+                        contactFormEmail.getEmail().equals(contactShopRequest.getEmail()) &&
+                        contactFormEmail.getSubject().equals(contactShopRequest.getSubject()) &&
+                        contactFormEmail.getBody().equals(contactShopRequest.getBody()) &&
+                        contactFormEmail.getCreatedOn() != null
+        ));
+    }
+
+    @Test
+    void whenGetContactFormEmailsIsCalled_thenCorrectListIsReceived() {
+        List<ContactFormEmail> contactFormEmails = List.of(new ContactFormEmail(), new ContactFormEmail());
+        when(contactFormEmailRepository.findAllByOrderByCreatedOnDesc()).thenReturn(contactFormEmails);
+        List<ContactFormEmail> result = emailService.getContactFormEmails();
+        assertEquals(2, result.size());
     }
 }

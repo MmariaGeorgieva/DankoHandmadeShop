@@ -70,11 +70,10 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    private String generateProductCode(AddProductRequest addProductRequest) {
+    public String generateProductCode(AddProductRequest addProductRequest) {
 
         String prefix = switch (addProductRequest.getProductSection().toString()) {
             case "CUPS_AND_MUGS" -> "C&M";
-            case "All" -> "ALL";
             case "HALLOWEEN" -> "HAllO";
             case "TEAPOTS" -> "TEA";
             case "SUGAR_BOWLS" -> "SCC";
@@ -83,7 +82,7 @@ public class ProductService {
             case "TRAYS" -> "TPW";
             case "HOME_DECOR" -> "HOME";
             case "TILES" -> "TILE";
-            default -> "";
+            default -> "ALL";
         };
 
         Product lastProduct = productRepository.findTopByOrderByAddedOnDesc();

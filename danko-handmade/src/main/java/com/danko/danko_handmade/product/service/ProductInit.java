@@ -267,7 +267,7 @@ public class ProductInit implements CommandLineRunner {
     }
 
 
-    private String readDescriptionFromFile(String fileName) throws IOException {
+    public String readDescriptionFromFile(String fileName) throws IOException {
         ClassPathResource resource = new ClassPathResource("InitialProductDescriptions/" + fileName);
         Path path = resource.getFile().toPath();
         return Files.readString(path, StandardCharsets.UTF_8);

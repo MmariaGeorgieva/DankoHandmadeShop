@@ -41,6 +41,8 @@ public class EmailService {
         this.emailRepository = emailRepository;
         this.newsletterRepository = newsletterRepository;
         this.contactFormEmailRepository = contactFormEmailRepository;
+
+        log.info("MailSender injected: {}", mailSender.getClass().getName());
     }
 
     public Email sendEmail(EmailRequest emailRequest) {
@@ -61,7 +63,9 @@ public class EmailService {
                 .build();
 
         try {
+            log.info("Sending email to: {}", user.getEmail());
             mailSender.send(message);
+            log.info("Email sent successfully to: {}", user.getEmail());
             email.setStatus(EmailStatus.SUCCEEDED);
         } catch (Exception e) {
             email.setStatus(EmailStatus.FAILED);
