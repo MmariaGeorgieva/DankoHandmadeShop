@@ -1,6 +1,5 @@
 package com.danko.danko_handmade.web.dto.mapper;
 
-import com.danko.danko_handmade.email.model.ContactFormEmail;
 import com.danko.danko_handmade.email.model.Email;
 import com.danko.danko_handmade.email.model.Newsletter;
 import com.danko.danko_handmade.product.model.Product;
@@ -35,7 +34,8 @@ public class DtoMapper {
                 .postalCode(user.getPostalCode())
                 .street(user.getStreet())
                 .streetNumber(user.getStreetNumber())
-                .phoneNumber(user.getPhoneNumber())                .build();
+                .phoneNumber(user.getPhoneNumber())
+                .build();
     }
 
     public static EmailResponse mapEmailToEmailResponse(Email email) {

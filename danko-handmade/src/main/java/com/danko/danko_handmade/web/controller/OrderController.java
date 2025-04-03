@@ -1,15 +1,10 @@
 package com.danko.danko_handmade.web.controller;
 
-import com.danko.danko_handmade.order.repository.OrderRepository;
 import com.danko.danko_handmade.order.service.OrderService;
 import com.danko.danko_handmade.product.model.Product;
-import com.danko.danko_handmade.product.repository.ProductRepository;
 import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.order.model.Order;
-import com.danko.danko_handmade.order.service.OrderService;
-import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
-import com.danko.danko_handmade.user.repository.UserRepository;
 import com.danko.danko_handmade.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

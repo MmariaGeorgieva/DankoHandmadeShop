@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-// ТОЗИ КЛАС ПАЗИ ДАННИТЕ НА ЛОГНАТИЯ ПОТРЕБИТЕЛ
+
 @Data
 @Getter
 @AllArgsConstructor
@@ -22,8 +22,6 @@ public class AuthenticationMetadata implements UserDetails {
     private String password;
     private Role role;
 
-    // Този метод се използва от Спринг Секюрити, за да разбере какви роли/оторитита има потребителят
-    // Authority значи пърмишън или роля
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + role.name());

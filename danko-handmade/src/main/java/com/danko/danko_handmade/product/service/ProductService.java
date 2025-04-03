@@ -134,7 +134,6 @@ public class ProductService {
         productRepository.save(product);
     }
 
-    @Transactional
     public void deleteMainPhotoOfProductWithId(UUID productId) throws URISyntaxException {
         Product product = productRepository.findById(productId).orElseThrow(ProductNotFoundException::new);
 
@@ -248,6 +247,7 @@ public class ProductService {
         return productRepository.findAll();
     }
 
+    @Transactional
     public void decreaseQuantityAndIncreaseItemsSold(Map<Product, Integer> cartContent) {
         for(Map.Entry<Product, Integer> entry : cartContent.entrySet()) {
             Product product = entry.getKey();

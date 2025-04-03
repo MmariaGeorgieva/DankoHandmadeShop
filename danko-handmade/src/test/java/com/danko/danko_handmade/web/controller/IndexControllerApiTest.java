@@ -95,23 +95,6 @@ public class IndexControllerApiTest {
         verify(userService, never()).register(any());
     }
 
-//    @Test
-//    void postRequestToRegisterEndpoint_whenUsernameAlreadyExists_thenRedirectToRegisterViewWithFlashParam() throws Exception {
-//
-//        doThrow(new UsernameAlreadyExistsException()).when(userService).register(any(RegisterRequest.class));
-//
-//        MockHttpServletRequestBuilder request = post("/register")
-//                .formField("username", "")
-//                .formField("password", "")
-//                .formField("email", "test@test.com")
-//                .with(csrf());
-//        mockMvc.perform(request)
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("register"))
-//                .andExpect(flash().attributeExists("usernameAlreadyExistsMessage"));
-//        verify(userService, never()).register(any());
-//    }
-
     @Test
     @WithMockUser(username = "test-user")
     void getRequestToAboutEndpointAsAuthenticatedUser_shouldReturnAboutViewWithUserAttribute() throws Exception {

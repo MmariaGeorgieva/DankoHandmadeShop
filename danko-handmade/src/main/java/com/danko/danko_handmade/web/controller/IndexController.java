@@ -1,21 +1,14 @@
 package com.danko.danko_handmade.web.controller;
 
-import com.danko.danko_handmade.email.model.ContactFormEmail;
 import com.danko.danko_handmade.email.service.EmailService;
-import com.danko.danko_handmade.product.model.Product;
-import com.danko.danko_handmade.product.model.ProductSection;
-import com.danko.danko_handmade.product.service.ProductService;
 import com.danko.danko_handmade.security.AuthenticationMetadata;
 import com.danko.danko_handmade.user.model.User;
 import com.danko.danko_handmade.user.service.UserService;
 import com.danko.danko_handmade.web.dto.ContactShopRequest;
-import com.danko.danko_handmade.web.dto.EmailResponse;
 import com.danko.danko_handmade.web.dto.LoginRequest;
 import com.danko.danko_handmade.web.dto.RegisterRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -26,9 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.security.Principal;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Controller

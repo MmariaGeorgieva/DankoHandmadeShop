@@ -1,7 +1,6 @@
 package com.danko.danko_handmade.product;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.utils.ObjectUtils;
 import com.danko.danko_handmade.exception.ProductNotActiveException;
 import com.danko.danko_handmade.exception.ProductNotFoundException;
 import com.danko.danko_handmade.product.model.Product;
@@ -22,7 +21,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.*;
 
