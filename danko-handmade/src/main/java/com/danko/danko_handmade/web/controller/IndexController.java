@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,11 +43,11 @@ public class IndexController {
         this.emailService = emailService;
     }
 
-//    @GetMapping("/")
-//    public String getIndexPage() {
-//
-//        return "index";
-//    }
+    @GetMapping("/")
+    public String getIndexPage() {
+
+        return "index";
+    }
 
     @GetMapping("/login")
     public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam) {
@@ -82,7 +84,7 @@ public class IndexController {
     }
 
     @GetMapping("/about")
-    public ModelAndView getAboutPage(Authentication user) {
+    public ModelAndView getAboutPage(@AuthenticationPrincipal UserDetails user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("about");
         if (user != null) {
@@ -92,7 +94,7 @@ public class IndexController {
     }
 
     @GetMapping("/shop-policies")
-    public ModelAndView getPoliciesPage(Authentication user) {
+    public ModelAndView getPoliciesPage(@AuthenticationPrincipal UserDetails user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("shop-policies");
         if (user != null) {
@@ -134,7 +136,7 @@ public class IndexController {
     }
 
     @GetMapping("/faq")
-    public ModelAndView getFaqsPage(Authentication user) {
+    public ModelAndView getFaqsPage(@AuthenticationPrincipal UserDetails user) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("faq");
         if (user != null) {
