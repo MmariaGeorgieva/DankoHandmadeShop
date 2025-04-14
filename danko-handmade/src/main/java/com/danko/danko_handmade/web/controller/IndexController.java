@@ -25,7 +25,7 @@ import java.util.UUID;
 public class IndexController {
 
     private final UserService userService;
-    private  final EmailService emailService;
+    private final EmailService emailService;
 
     @Autowired
     public IndexController(UserService userService, EmailService emailService) {
@@ -40,8 +40,14 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLoginPage(@RequestParam(value = "error", required = false) String errorParam) {
+    public ModelAndView getLoginPage(@AuthenticationPrincipal UserDetails user,
+                                     @RequestParam(value = "error",
+                                             required = false) String errorParam) {
         ModelAndView modelAndView = new ModelAndView();
+        if (user != null) {
+            modelAndView.addObject("user", user);
+            return new ModelAndView("redirect:/home");
+        }
         modelAndView.setViewName("login");
         modelAndView.addObject("loginRequest", new LoginRequest());
 
@@ -53,9 +59,13 @@ public class IndexController {
     }
 
     @GetMapping("/register")
-    public ModelAndView getRegisterPage() {
+    public ModelAndView getRegisterPage(@AuthenticationPrincipal UserDetails user) {
 
         ModelAndView modelAndView = new ModelAndView();
+        if (user != null) {
+            modelAndView.addObject("user", user);
+            return new ModelAndView("redirect:/home");
+        }
         modelAndView.setViewName("register");
         modelAndView.addObject("registerRequest", new RegisterRequest());
 
